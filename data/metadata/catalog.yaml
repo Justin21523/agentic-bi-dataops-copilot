@@ -1,0 +1,512 @@
+version: "1.0"
+description: >
+  Retail data warehouse schema catalog for Text2SQL prompt augmentation.
+  Contains table descriptions, column semantics, sample values, and
+  a metric dictionary for BI-layer query generation.
+
+tables:
+
+  customers:
+    description: >
+      Customer master dimension table. Each row is a unique customer account.
+      Used for customer segmentation, geographic analysis, cohort studies,
+      and joining to orders for customer-level revenue attribution.
+    primary_key: customer_id
+    row_count_approx: 300
+    keywords: [customer, customers, buyer, user, client, person, account, segment, b2c, b2b, smb]
+    relationships:
+      - { column: customer_id, references: "orders.customer_id", type: one-to-many }
+    columns:
+      - name: customer_id
+        type: VARCHAR
+        description: "Unique customer identifier. Format: CUST-NNNN"
+        sample_values: ["CUST-0001", "CUST-0042", "CUST-0198", "CUST-0300"]
+        semantic_tags: [id, dimension]
+        nullable: false
+
+      - name: name
+        type: VARCHAR
+        description: "Full name of the customer"
+        sample_values: ["Alice Johnson", "Bob Smith", "Carol Williams"]
+        semantic_tags: [dimension, text, pii]
+        nullable: false
+
+      - name: email
+        type: VARCHAR
+        description: "Customer email address (PII)"
+        sample_values: ["alice.j@example.com", "bsmith@example.com"]
+        semantic_tags: [dimension, pii]
+        nullable: true
+
+      - name: city
+        type: VARCHAR
+        description: "City of the customer's primary address"
+        sample_values: ["New York", "Los Angeles", "Chicago", "Houston", "Phoenix"]
+        semantic_tags: [dimension, geography]
+        nullable: true
+
+      - name: state
+        type: VARCHAR
+        description: "US state code (2-letter)"
+        sample_values: ["NY", "CA", "IL", "TX", "AZ"]
+        semantic_tags: [dimension, geography]
+        nullable: true
+
+      - name: country
+        type: VARCHAR
+        description: "ISO country code"
+        sample_values: ["US", "CA", "GB"]
+        semantic_tags: [dimension, geography]
+        nullable: true
+
+      - name: segment
+        type: VARCHAR
+        description: "Business classification of the customer account (B2C, B2B, SMB)"
+        sample_values: ["B2C", "B2B", "SMB"]
+        semantic_tags: [dimension, category]
+        nullable: true
+
+      - name: signup_date
+        type: DATE
+        description: "Date the customer registered their account"
+        sample_values: ["2023-01-15", "2023-06-22", "2024-03-01"]
+        semantic_tags: [date, dimension]
+        nullable: true
+
+  products:
+    description: >
+      Product catalog dimension table. Each row is a unique SKU available for sale.
+      Contains pricing, cost (COGS), category, and availability.
+      Used for product performance analysis, margin calculations, and category aggregations.
+    primary_key: product_id
+    row_count_approx: 100
+    keywords: [product, products, item, sku, goods, merchandise, category, price, catalog]
+    relationships:
+      - { column: product_id, references: "order_items.product_id", type: one-to-many }
+    columns:
+      - name: product_id
+        type: VARCHAR
+        description: "Unique product identifier. Format: PROD-NNN"
+        sample_values: ["PROD-001", "PROD-042", "PROD-099"]
+        semantic_tags: [id, dimension]
+        nullable: false
+
+      - name: name
+        type: VARCHAR
+        description: "Product display name"
+        sample_values: ["Wireless Bluetooth Headphones", "USB-C Charging Cable 6ft"]
+        semantic_tags: [dimension, text]
+        nullable: false
+
+      - name: category
+        type: VARCHAR
+        description: "Top-level product category (8 categories in dataset)"
+        sample_values: ["Electronics", "Apparel", "Home & Garden", "Sports & Outdoors", "Books", "Toys", "Beauty", "Food & Grocery"]
+        semantic_tags: [dimension, category]
+        nullable: false
+
+      - name: subcategory
+        type: VARCHAR
+        description: "Product subcategory within the main category"
+        sample_values: ["Audio", "Accessories", "Peripherals", "Running", "Fiction"]
+        semantic_tags: [dimension, category]
+        nullable: true
+
+      - name: price
+        type: DOUBLE
+        description: "Base retail price per unit in USD"
+        sample_values: [9.99, 29.99, 79.99, 149.00, 499.99]
+        semantic_tags: [metric, currency]
+        nullable: false
+
+      - name: cost
+        type: DOUBLE
+        description: "Cost of goods sold (COGS) per unit in USD"
+        sample_values: [4.50, 14.00, 38.50, 72.00]
+        semantic_tags: [metric, currency]
+        nullable: true
+
+      - name: stock_quantity
+        type: INTEGER
+        description: "Current units in stock"
+        sample_values: [0, 12, 45, 200, 500]
+        semantic_tags: [metric]
+        nullable: false
+
+      - name: is_active
+        type: BOOLEAN
+        description: "Whether the product is currently available for purchase"
+        sample_values: [true, false]
+        semantic_tags: [flag, dimension]
+        nullable: false
+
+  orders:
+    description: >
+      Order header fact table. Each row represents one customer order transaction.
+      Central fact table connecting customers, items, payments, and reviews.
+      total_amount is pre-computed as the sum of order_items.line_total for that order.
+    primary_key: order_id
+    row_count_approx: 750
+    keywords: [order, orders, purchase, transaction, placed, shipped, status, fulfillment]
+    relationships:
+      - { column: customer_id, references: "customers.customer_id", type: many-to-one }
+      - { column: order_id, references: "order_items.order_id", type: one-to-many }
+      - { column: order_id, references: "payments.order_id", type: one-to-one }
+      - { column: order_id, references: "reviews.order_id", type: one-to-many }
+    columns:
+      - name: order_id
+        type: VARCHAR
+        description: "Unique order identifier. Format: ORD-NNNNNN"
+        sample_values: ["ORD-000001", "ORD-000042", "ORD-000750"]
+        semantic_tags: [id, dimension]
+        nullable: false
+
+      - name: customer_id
+        type: VARCHAR
+        description: "Foreign key to customers table"
+        sample_values: ["CUST-0001", "CUST-0042", "CUST-0198"]
+        semantic_tags: [id, fk]
+        nullable: false
+
+      - name: order_date
+        type: TIMESTAMP
+        description: "Date and time the order was placed"
+        sample_values: ["2024-01-15 10:23:00", "2024-03-22 14:05:00"]
+        semantic_tags: [date, dimension]
+        nullable: false
+
+      - name: status
+        type: VARCHAR
+        description: "Order fulfillment status: completed, pending, cancelled, returned"
+        sample_values: ["completed", "pending", "cancelled", "returned"]
+        semantic_tags: [dimension, status]
+        nullable: false
+
+      - name: shipping_city
+        type: VARCHAR
+        description: "Destination city for shipment"
+        sample_values: ["New York", "Los Angeles", "Chicago"]
+        semantic_tags: [dimension, geography]
+        nullable: true
+
+      - name: shipping_state
+        type: VARCHAR
+        description: "Destination state code for shipment"
+        sample_values: ["NY", "CA", "IL"]
+        semantic_tags: [dimension, geography]
+        nullable: true
+
+      - name: shipping_country
+        type: VARCHAR
+        description: "Destination country code"
+        sample_values: ["US", "CA", "GB"]
+        semantic_tags: [dimension, geography]
+        nullable: true
+
+      - name: total_amount
+        type: DOUBLE
+        description: "Total order value in USD — sum of order_items.line_total"
+        sample_values: [9.99, 45.98, 127.93, 389.00]
+        semantic_tags: [metric, currency]
+        nullable: true
+
+  order_items:
+    description: >
+      Order line-item fact table. Each row is one product in one order.
+      discount is stored as a fraction (0.0 = no discount, 0.20 = 20% off).
+      line_total is pre-computed: quantity * unit_price * (1 - discount).
+    primary_key: order_item_id
+    row_count_approx: 2200
+    keywords: [item, items, line, quantity, ordered, units, discount, sku]
+    relationships:
+      - { column: order_id, references: "orders.order_id", type: many-to-one }
+      - { column: product_id, references: "products.product_id", type: many-to-one }
+    columns:
+      - name: order_item_id
+        type: VARCHAR
+        description: "Unique line-item identifier. Format: ITEM-NNNNNN"
+        sample_values: ["ITEM-000001", "ITEM-001000", "ITEM-002199"]
+        semantic_tags: [id, dimension]
+        nullable: false
+
+      - name: order_id
+        type: VARCHAR
+        description: "Foreign key to orders table"
+        sample_values: ["ORD-000042", "ORD-000500"]
+        semantic_tags: [id, fk]
+        nullable: false
+
+      - name: product_id
+        type: VARCHAR
+        description: "Foreign key to products table"
+        sample_values: ["PROD-001", "PROD-042", "PROD-099"]
+        semantic_tags: [id, fk]
+        nullable: false
+
+      - name: quantity
+        type: INTEGER
+        description: "Number of units ordered (always >= 1)"
+        sample_values: [1, 2, 3, 5]
+        semantic_tags: [metric]
+        nullable: false
+
+      - name: unit_price
+        type: DOUBLE
+        description: "Price per unit at time of purchase in USD"
+        sample_values: [9.99, 29.95, 79.99, 149.00]
+        semantic_tags: [metric, currency]
+        nullable: false
+
+      - name: discount
+        type: DOUBLE
+        description: "Discount fraction applied (0.0 = no discount, 0.10 = 10% off)"
+        sample_values: [0.0, 0.05, 0.10, 0.15, 0.20]
+        semantic_tags: [metric]
+        nullable: false
+
+      - name: line_total
+        type: DOUBLE
+        description: "Final line-item revenue: quantity * unit_price * (1 - discount)"
+        sample_values: [9.99, 59.90, 143.98, 298.00]
+        semantic_tags: [metric, currency]
+        nullable: false
+
+  payments:
+    description: >
+      Payment transaction table. One row per order (1:1 with orders).
+      status=refunded corresponds to orders.status=returned.
+      status=failed corresponds to orders.status=cancelled.
+    primary_key: payment_id
+    row_count_approx: 750
+    keywords: [payment, payments, revenue, paid, charge, billing, amount, method, refund]
+    relationships:
+      - { column: order_id, references: "orders.order_id", type: many-to-one }
+    columns:
+      - name: payment_id
+        type: VARCHAR
+        description: "Unique payment identifier. Format: PAY-NNNNNN"
+        sample_values: ["PAY-000001", "PAY-000042", "PAY-000750"]
+        semantic_tags: [id, dimension]
+        nullable: false
+
+      - name: order_id
+        type: VARCHAR
+        description: "Foreign key to orders table (one payment per order)"
+        sample_values: ["ORD-000001", "ORD-000042"]
+        semantic_tags: [id, fk]
+        nullable: false
+
+      - name: method
+        type: VARCHAR
+        description: "Payment method: credit_card, paypal, bank_transfer, cod"
+        sample_values: ["credit_card", "paypal", "bank_transfer", "cod"]
+        semantic_tags: [dimension, category]
+        nullable: false
+
+      - name: amount
+        type: DOUBLE
+        description: "Payment amount in the transaction currency"
+        sample_values: [9.99, 45.98, 127.93, 389.00]
+        semantic_tags: [metric, currency]
+        nullable: false
+
+      - name: currency
+        type: VARCHAR
+        description: "ISO 4217 currency code"
+        sample_values: ["USD", "CAD", "GBP"]
+        semantic_tags: [dimension]
+        nullable: false
+
+      - name: status
+        type: VARCHAR
+        description: "Payment outcome: completed, refunded, failed"
+        sample_values: ["completed", "refunded", "failed"]
+        semantic_tags: [dimension, status]
+        nullable: false
+
+      - name: paid_at
+        type: TIMESTAMP
+        description: "Timestamp of successful payment. NULL for failed payments."
+        sample_values: ["2024-01-15 11:30:00", "2024-03-22 15:00:00", null]
+        semantic_tags: [date, audit]
+        nullable: true
+
+  reviews:
+    description: >
+      Customer product review table. Each row is one review for a product from an order.
+      Only completed orders generate reviews (~60% review rate).
+      score is 1-5 stars, biased toward 4-5.
+    primary_key: review_id
+    row_count_approx: 450
+    keywords: [review, reviews, rating, feedback, satisfaction, score, stars, comment]
+    relationships:
+      - { column: order_id, references: "orders.order_id", type: many-to-one }
+      - { column: product_id, references: "products.product_id", type: many-to-one }
+      - { column: customer_id, references: "customers.customer_id", type: many-to-one }
+    columns:
+      - name: review_id
+        type: VARCHAR
+        description: "Unique review identifier. Format: REV-NNNNNN"
+        sample_values: ["REV-000001", "REV-000028", "REV-000450"]
+        semantic_tags: [id, dimension]
+        nullable: false
+
+      - name: order_id
+        type: VARCHAR
+        description: "Foreign key to orders table"
+        sample_values: ["ORD-000042", "ORD-000100"]
+        semantic_tags: [id, fk]
+        nullable: false
+
+      - name: product_id
+        type: VARCHAR
+        description: "Foreign key to products table — the specific product being reviewed"
+        sample_values: ["PROD-042", "PROD-001", "PROD-099"]
+        semantic_tags: [id, fk]
+        nullable: true
+
+      - name: customer_id
+        type: VARCHAR
+        description: "Denormalized FK — customer who wrote the review"
+        sample_values: ["CUST-0001", "CUST-0042"]
+        semantic_tags: [id, fk, dimension]
+        nullable: false
+
+      - name: score
+        type: INTEGER
+        description: "Star rating from 1 (worst) to 5 (best)"
+        sample_values: [1, 2, 3, 4, 5]
+        semantic_tags: [metric]
+        nullable: false
+
+      - name: comment
+        type: VARCHAR
+        description: "Free-text review comment"
+        sample_values: ["Excellent product!", "Works as described.", "Arrived damaged."]
+        semantic_tags: [text]
+        nullable: true
+
+      - name: created_at
+        type: TIMESTAMP
+        description: "Timestamp when the review was submitted"
+        sample_values: ["2024-02-01 08:00:00", "2024-04-15 19:30:00"]
+        semantic_tags: [date, audit]
+        nullable: false
+
+  daily_sales:
+    description: >
+      Pre-aggregated daily sales metrics. Materialized by the ETL pipeline.
+      One row per calendar day with at least one completed order.
+      Use this table for time-series trend queries and daily dashboards — do NOT
+      query orders/payments directly for daily aggregates.
+    primary_key: date
+    row_count_approx: 500
+    keywords: [daily, day, sales, summary, aggregate, total, trend, revenue, kpi]
+    relationships: []
+    columns:
+      - name: date
+        type: DATE
+        description: "Calendar date — one row per day with activity"
+        sample_values: ["2023-01-01", "2024-06-15", "2025-01-01"]
+        semantic_tags: [date, dimension]
+        nullable: false
+
+      - name: revenue
+        type: DOUBLE
+        description: "Total revenue for the day — sum of completed payments.amount"
+        sample_values: [245.90, 1823.44, 5102.00]
+        semantic_tags: [metric, currency]
+        nullable: false
+
+      - name: order_count
+        type: INTEGER
+        description: "Number of distinct completed orders placed on this date"
+        sample_values: [3, 12, 28]
+        semantic_tags: [metric]
+        nullable: false
+
+      - name: avg_order_value
+        type: DOUBLE
+        description: "Mean value of completed orders on this date (revenue / order_count)"
+        sample_values: [81.97, 151.95, 182.21]
+        semantic_tags: [metric, currency]
+        nullable: false
+
+      - name: unique_customers
+        type: INTEGER
+        description: "Number of distinct customers who placed completed orders on this date"
+        sample_values: [3, 11, 25]
+        semantic_tags: [metric]
+        nullable: false
+
+      - name: units_sold
+        type: INTEGER
+        description: "Total units across all order_items for completed orders"
+        sample_values: [8, 34, 92]
+        semantic_tags: [metric]
+        nullable: false
+
+      - name: top_category
+        type: VARCHAR
+        description: "Product category with the highest revenue contribution on this date"
+        sample_values: ["Electronics", "Apparel", "Home & Garden"]
+        semantic_tags: [dimension, category]
+        nullable: true
+
+metric_dictionary:
+
+  revenue:
+    display_name: "Gross Revenue"
+    description: "Total revenue from completed payments"
+    formula: "SUM(payments.amount) WHERE payments.status = 'completed'"
+    tables: [payments]
+    unit: USD
+    aliases: ["total sales", "total revenue", "gmv", "gross revenue"]
+
+  aov:
+    display_name: "Average Order Value"
+    description: "Mean revenue per completed order"
+    formula: "SUM(payments.amount) / COUNT(DISTINCT orders.order_id) WHERE payments.status = 'completed'"
+    tables: [payments, orders]
+    unit: USD
+    aliases: ["average order value", "avg order value", "aov"]
+
+  gross_margin:
+    display_name: "Gross Margin %"
+    description: "Revenue minus COGS as a percentage of revenue"
+    formula: "(SUM(order_items.line_total) - SUM(order_items.quantity * products.cost)) / SUM(order_items.line_total) * 100"
+    tables: [order_items, products]
+    unit: percent
+    aliases: ["margin", "gross margin", "product margin"]
+
+  repeat_purchase_rate:
+    display_name: "Repeat Purchase Rate"
+    description: "Percentage of customers who have placed more than one completed order"
+    formula: "COUNT(DISTINCT customer_id WHERE order_count > 1) / COUNT(DISTINCT customer_id) * 100"
+    tables: [orders]
+    unit: percent
+    aliases: ["repeat rate", "returning customer rate", "repeat purchase"]
+
+  avg_review_score:
+    display_name: "Average Review Score"
+    description: "Mean star rating across all reviews (scale 1-5)"
+    formula: "AVG(reviews.score)"
+    tables: [reviews]
+    unit: score_1_5
+    aliases: ["average rating", "mean score", "avg rating", "avg score"]
+
+  return_rate:
+    display_name: "Order Return Rate"
+    description: "Percentage of orders with status = 'returned'"
+    formula: "COUNT(order_id WHERE status = 'returned') / COUNT(order_id) * 100"
+    tables: [orders]
+    unit: percent
+    aliases: ["return rate", "refund rate", "returns"]
+
+  customer_ltv:
+    display_name: "Customer Lifetime Value"
+    description: "Total revenue attributed to a customer across all completed orders"
+    formula: "SUM(payments.amount) WHERE payments.status = 'completed' GROUP BY orders.customer_id"
+    tables: [payments, orders]
+    unit: USD
+    aliases: ["ltv", "clv", "lifetime value", "customer value", "customer lifetime value"]

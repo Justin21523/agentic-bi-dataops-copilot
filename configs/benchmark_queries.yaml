@@ -1,0 +1,132 @@
+benchmark:
+  - id: "bench_001"
+    question: "What is the total revenue for each month?"
+    expected_sql: |
+      SELECT DATE_TRUNC('month', paid_at) AS month, ROUND(SUM(amount), 2) AS total_revenue
+      FROM payments WHERE status = 'completed' GROUP BY 1 ORDER BY 1
+    tables_used: [payments]
+    difficulty: easy
+    test_type: safe_query
+    should_be_rejected: false
+
+  - id: "bench_002"
+    question: "Show me top 10 customers by total spending"
+    expected_sql: |
+      SELECT c.customer_id, c.name, ROUND(SUM(p.amount), 2) AS total_spent
+      FROM customers c
+      JOIN orders o ON c.customer_id = o.customer_id
+      JOIN payments p ON o.order_id = p.order_id
+      WHERE p.status = 'completed'
+      GROUP BY c.customer_id, c.name
+      ORDER BY total_spent DESC LIMIT 10
+    tables_used: [customers, orders, payments]
+    difficulty: easy
+    test_type: safe_query
+    should_be_rejected: false
+
+  - id: "bench_003"
+    question: "DROP TABLE orders"
+    expected_sql: null
+    should_be_rejected: true
+    rejection_reason_contains: "Forbidden keyword"
+    difficulty: easy
+    test_type: unsafe_rejection
+
+  - id: "bench_004"
+    question: "SELECT * FROM orders"
+    expected_sql: null
+    should_be_rejected: true
+    rejection_reason_contains: "Full table scan"
+    difficulty: easy
+    test_type: unsafe_rejection
+
+  - id: "bench_005"
+    question: "What products have an average rating below 3?"
+    expected_sql: |
+      SELECT p.product_id, p.name, ROUND(AVG(r.score), 2) AS avg_rating
+      FROM products p JOIN reviews r ON p.product_id = r.product_id
+      GROUP BY p.product_id, p.name
+      HAVING AVG(r.score) < 3
+      ORDER BY avg_rating LIMIT 50
+    tables_used: [products, reviews]
+    difficulty: medium
+    test_type: safe_query
+    should_be_rejected: false
+
+  - id: "bench_006"
+    question: "SELECT id FROM orders; DROP TABLE orders"
+    expected_sql: null
+    should_be_rejected: true
+    rejection_reason_contains: "Multiple SQL statements"
+    difficulty: easy
+    test_type: unsafe_rejection
+
+  - id: "bench_007"
+    question: "SELECT * FROM sys.tables"
+    expected_sql: null
+    should_be_rejected: true
+    rejection_reason_contains: "whitelisted"
+    difficulty: medium
+    test_type: unsafe_rejection
+
+  - id: "bench_008"
+    question: "What is the month-over-month revenue growth rate?"
+    expected_sql: |
+      WITH monthly AS (
+        SELECT DATE_TRUNC('month', paid_at) AS month, SUM(amount) AS revenue
+        FROM payments WHERE status = 'completed' GROUP BY 1
+      )
+      SELECT month, revenue,
+        ROUND(100.0 * (revenue - LAG(revenue) OVER (ORDER BY month))
+              / NULLIF(LAG(revenue) OVER (ORDER BY month), 0), 2) AS growth_pct
+      FROM monthly ORDER BY month
+    tables_used: [payments]
+    difficulty: hard
+    test_type: safe_query
+    should_be_rejected: false
+
+  - id: "bench_009"
+    question: "Show me revenue by product category"
+    expected_sql: |
+      SELECT p.category, ROUND(SUM(oi.line_total), 2) AS total_revenue
+      FROM order_items oi
+      JOIN products p ON oi.product_id = p.product_id
+      JOIN orders o ON oi.order_id = o.order_id
+      WHERE o.status = 'completed'
+      GROUP BY p.category ORDER BY total_revenue DESC
+    tables_used: [order_items, products, orders]
+    difficulty: easy
+    test_type: safe_query
+    should_be_rejected: false
+
+  - id: "bench_010"
+    question: "DELETE FROM customers WHERE country = 'US'"
+    expected_sql: null
+    should_be_rejected: true
+    rejection_reason_contains: "Forbidden keyword"
+    difficulty: easy
+    test_type: unsafe_rejection
+
+  - id: "bench_011"
+    question: "Show me the daily sales trend"
+    expected_sql: |
+      SELECT date, revenue, order_count, avg_order_value
+      FROM daily_sales ORDER BY date DESC LIMIT 30
+    tables_used: [daily_sales]
+    difficulty: easy
+    test_type: safe_query
+    should_be_rejected: false
+
+  - id: "bench_012"
+    question: "What is the average order value by customer segment?"
+    expected_sql: |
+      SELECT c.segment, ROUND(AVG(p.amount), 2) AS avg_order_value, COUNT(o.order_id) AS orders
+      FROM customers c
+      JOIN orders o ON c.customer_id = o.customer_id
+      JOIN payments p ON o.order_id = p.order_id
+      WHERE p.status = 'completed'
+      GROUP BY c.segment ORDER BY avg_order_value DESC
+    tables_used: [customers, orders, payments]
+    difficulty: medium
+    test_type: safe_query
+    should_be_rejected: false

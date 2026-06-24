@@ -1,0 +1,13 @@
+duckdb_path: "data/warehouse.duckdb"
+log_level: "INFO"
+sample_data_path: "data/sample"
+metadata_catalog_path: "data/metadata/catalog.yaml"
+sample_customers: 300
+sample_products: 100
+sample_orders: 750
+sample_seed: 42
+max_rows: 10000
+query_timeout: 30
+api_host: "0.0.0.0"
+api_port: 8000
+llm_provider: "rule_based"
