@@ -14,12 +14,11 @@ RUN uv sync --no-group dev
 
 COPY src/ ./src/
 COPY configs/ ./configs/
-COPY scripts/ ./scripts/
-COPY data/metadata/ ./data/metadata/
+
+RUN mkdir -p data/sample data/schemas data/metadata
+
 COPY .env.example ./.env
 
-RUN mkdir -p data/sample data/schemas
-
-EXPOSE 8000 8501
+EXPOSE 8000
 
 CMD ["uv", "run", "uvicorn", "api.main:app", "--host", "0.0.0.0", "--port", "8000"]
