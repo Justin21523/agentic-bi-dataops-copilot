@@ -6,6 +6,33 @@
 
 ---
 
+## 截圖展示 / Screenshots & Demo
+
+> 進入網頁後導覽模式自動啟動，逐步帶覽所有 16 個功能階段。  
+> The guided tour auto-starts when you open the app and walks through all 16 DataOps stages.
+
+![導覽展示 / Tour Demo](docs/demo.gif)
+
+### 各功能頁面 / Feature Pages
+
+| Dashboard | Workflow Map | NL Query |
+|:---------:|:-----------:|:--------:|
+| ![Dashboard](docs/screenshots/page-dashboard-1.png) | ![Workflow](docs/screenshots/page-workflow-1.png) | ![NL Query](docs/screenshots/page-nl-query-1.png) |
+
+| Customer Analytics | Product Matrix | Funnel & Cohort |
+|:-----------------:|:-------------:|:---------------:|
+| ![Customers](docs/screenshots/page-customers-1.png) | ![Products](docs/screenshots/page-products-1.png) | ![Funnel](docs/screenshots/page-funnel-cohort-1.png) |
+
+| Revenue Intelligence | Guardrails | Insights |
+|:--------------------:|:----------:|:--------:|
+| ![Revenue](docs/screenshots/page-revenue-1.png) | ![Guardrails](docs/screenshots/page-guardrails-1.png) | ![Insights](docs/screenshots/page-insights-1.png) |
+
+| SQL Playground | Data Quality | Schema Explorer |
+|:--------------:|:------------:|:---------------:|
+| ![Playground](docs/screenshots/page-sql-playground-1.png) | ![DQ](docs/screenshots/page-data-quality-1.png) | ![Schema](docs/screenshots/page-schema-explorer-1.png) |
+
+---
+
 ## Overview / 專案概述
 
 Agentic BI / DataOps Copilot 是一個面向資料倉儲的自然語言分析平台。使用者可以用中文或英文提問，系統會進行 schema retrieval、Text2SQL、SQL safety validation、query execution、chart recommendation、query history 與 data quality checks。
@@ -25,16 +52,30 @@ This is a **portfolio-quality, production-like** repository demonstrating:
 
 ## Quick Start
 
+### React Frontend (推薦 / Recommended)
+
 ```bash
-git clone <repo-url> agentic-bi-dataops-copilot
+git clone https://github.com/Justin21523/agentic-bi-dataops-copilot.git
 cd agentic-bi-dataops-copilot
 
+# Backend (FastAPI + DuckDB)
 cp .env.example .env
-make install        # uv sync
+make install           # uv sync
+make sample-data       # generate synthetic retail CSV files
+make etl               # load into DuckDB warehouse
+PYTHONPATH=src uv run uvicorn api.main:app --host 0.0.0.0 --port 8003
 
-make sample-data    # generate synthetic retail CSV files
-make etl            # load into DuckDB warehouse
+# Frontend (React + Vite) — new tab
+cd frontend
+npm install
+npm run dev
+```
 
+Open **http://localhost:5173** — the interactive tour starts automatically!
+
+### Legacy Streamlit
+
+```bash
 make api            # FastAPI on :8000 (keep running in tab 1)
 make app            # Streamlit on :8501 (tab 2)
 ```

@@ -62,9 +62,21 @@ class QueryHistoryItem(BaseModel):
 
 # ── Request models ───────────────────────────────────────────────────────────
 
+class ConversationMessage(BaseModel):
+    role: str  # "user" or "assistant"
+    content: str
+
+
 class NLQueryRequest(BaseModel):
     question: str = Field(..., min_length=3, max_length=1000)
     max_rows: int = Field(default=1000, ge=1, le=10000)
+    conversation_history: list[ConversationMessage] = Field(default_factory=list)
+
+
+class FewShotAddRequest(BaseModel):
+    question: str = Field(..., min_length=3, max_length=500)
+    sql: str = Field(..., min_length=5)
+    notes: str = ""
 
 
 class SQLValidateRequest(BaseModel):
@@ -111,12 +123,13 @@ class NLQueryResponse(BaseModel):
     sql: str
     is_safe: bool
     safety_issues: list[str] = Field(default_factory=list)
-    rows: list[dict[str, Any]] = Field(default_factory=list)
+    rows: list[list[Any]] = Field(default_factory=list)
     row_count: int = 0
     columns: list[str] = Field(default_factory=list)
     execution_time_ms: float | None = None
     chart_recommendation: ChartRecommendation | None = None
     error: str | None = None
+    adapter: str = "unknown"
 
 
 class SQLValidateResponse(BaseModel):
@@ -128,7 +141,7 @@ class SQLValidateResponse(BaseModel):
 
 class SQLExecuteResponse(BaseModel):
     sql: str
-    rows: list[dict[str, Any]] = Field(default_factory=list)
+    rows: list[list[Any]] = Field(default_factory=list)
     row_count: int = 0
     columns: list[str] = Field(default_factory=list)
     execution_time_ms: float | None = None
@@ -143,3 +156,14 @@ class QueryHistoryResponse(BaseModel):
 class DQReport(BaseModel):
     generated_at: str
     tables: list[DQTableReport]
+
+
+class DataFreshnessResponse(BaseModel):
+    tables: dict[str, str | None]
+    generated_at: str
+
+
+class FewShotAddResponse(BaseModel):
+    success: bool
+    total_examples: int
+    message: str

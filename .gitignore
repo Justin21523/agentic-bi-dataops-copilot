@@ -54,3 +54,12 @@ logs/
 .coverage
 htmlcov/
 .pytest_cache/
+
+# Node
+node_modules/
+frontend/node_modules/
+
+# Playwright artifacts
+frontend/test-results/
+frontend/playwright-report/
+frontend/.playwright-browsers/

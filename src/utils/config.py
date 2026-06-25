@@ -33,13 +33,15 @@ class Settings(BaseSettings):
     api_port: int = _YAML.get("api_port", 8000)
     llm_provider: str = _YAML.get("llm_provider", "rule_based")
     openai_api_key: str | None = None
+    llama_cpp_base_url: str = _YAML.get("llama_cpp_base_url", "http://localhost:8080/v1")
+    llama_cpp_model: str = _YAML.get("llama_cpp_model", "default")
     sample_customers: int = _YAML.get("sample_customers", 300)
     sample_products: int = _YAML.get("sample_products", 100)
     sample_orders: int = _YAML.get("sample_orders", 750)
     sample_seed: int = _YAML.get("sample_seed", 42)
 
     model_config = SettingsConfigDict(
-        env_file=".env",
+        env_file=str(_ROOT / ".env"),
         env_file_encoding="utf-8",
         extra="ignore",
     )

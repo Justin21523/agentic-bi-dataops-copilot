@@ -123,6 +123,7 @@ _ALL_DDL: list[str] = [
 RETAIL_TABLES = frozenset({
     "orders", "order_items", "customers",
     "products", "payments", "reviews", "daily_sales",
+    "query_history",
 })
 
 

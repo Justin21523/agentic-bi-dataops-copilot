@@ -1,6 +1,7 @@
 """ETL orchestrator: per-table CSVs → DuckDB + materialized daily_sales view."""
 from __future__ import annotations
 
+from datetime import datetime, timedelta
 from pathlib import Path
 from typing import Callable
 
@@ -109,6 +110,63 @@ def materialize_daily_sales(conn: duckdb.DuckDBPyConnection) -> None:
     log.info(f"daily_sales: {n} rows materialized")
 
 
+def seed_query_history(conn: duckdb.DuckDBPyConnection) -> None:
+    """Seed realistic query history so GuardrailAnalytics shows data on first run."""
+    conn.execute("DELETE FROM query_history")
+    now = datetime.now()
+
+    safe_sqls = [
+        ("月份銷售趨勢", "SELECT DATE_TRUNC('month', order_date) AS month, SUM(total_amount) AS rev FROM orders WHERE status='completed' GROUP BY 1 ORDER BY 1"),
+        ("Top 10 客戶 LTV", "SELECT c.name, ROUND(SUM(p.amount),2) AS ltv FROM customers c JOIN orders o ON c.customer_id=o.customer_id JOIN payments p ON o.order_id=p.order_id WHERE p.status='completed' GROUP BY c.customer_id, c.name ORDER BY ltv DESC LIMIT 10"),
+        ("商品分類收入", "SELECT pr.category, ROUND(SUM(oi.line_total),2) AS revenue FROM products pr JOIN order_items oi ON pr.product_id=oi.product_id GROUP BY pr.category ORDER BY revenue DESC"),
+        ("付款方式統計", "SELECT method, COUNT(*) AS cnt, ROUND(SUM(amount),2) AS total FROM payments WHERE status='completed' GROUP BY method ORDER BY total DESC"),
+        ("評分分布", "SELECT CAST(score AS INTEGER) AS stars, COUNT(*) AS count FROM reviews GROUP BY stars ORDER BY stars"),
+        ("客戶地理分布", "SELECT state, COUNT(DISTINCT customer_id) AS customers FROM customers WHERE state IS NOT NULL GROUP BY state ORDER BY customers DESC"),
+        ("每月新客戶", "SELECT DATE_TRUNC('month', signup_date)::VARCHAR AS month, COUNT(*) AS new_customers FROM customers WHERE signup_date IS NOT NULL GROUP BY 1 ORDER BY 1"),
+        ("庫存預警", "SELECT name, category, stock_quantity FROM products WHERE stock_quantity < 10 ORDER BY stock_quantity LIMIT 20"),
+        ("訂單狀態分布", "SELECT status, COUNT(*) AS count FROM orders GROUP BY status ORDER BY count DESC"),
+        ("RFM 分析", "SELECT c.segment, COUNT(DISTINCT c.customer_id) AS customers FROM customers c GROUP BY c.segment ORDER BY customers DESC"),
+        ("日銷售趨勢", "SELECT CAST(order_date AS DATE) AS day, COUNT(*) AS orders FROM orders WHERE status='completed' GROUP BY day ORDER BY day DESC LIMIT 30"),
+    ]
+
+    blocked_sqls = [
+        ("刪除資料表", "DROP TABLE orders", "Forbidden keyword: DROP"),
+        ("批量更新", "UPDATE customers SET segment='VIP' WHERE 1=1", "Forbidden keyword: UPDATE"),
+        ("不安全掃描", "SELECT * FROM customers", "SELECT * is not allowed — specify columns explicitly"),
+        ("多語句注入", "SELECT name FROM customers; DROP TABLE payments", "Forbidden keyword: DROP"),
+        ("刪除記錄", "DELETE FROM order_items WHERE 1=1", "Forbidden keyword: DELETE"),
+        ("跨表清空", "TRUNCATE TABLE reviews", "Forbidden keyword: TRUNCATE"),
+    ]
+
+    rows = []
+    rid = 1
+    hours = [9, 10, 11, 13, 14, 15, 16, 17, 18, 19, 20]
+
+    for day in range(30, 0, -1):
+        base = now - timedelta(days=day)
+        for hour in hours:
+            q = safe_sqls[(rid - 1) % len(safe_sqls)]
+            ts = base.replace(hour=hour, minute=(rid * 7) % 60, second=0, microsecond=0)
+            exec_ms = round(35.0 + (rid % 13) * 18.5, 2)
+            rows.append((rid, ts, q[0], q[1], 5 + (rid % 45), exec_ms, True, None))
+            rid += 1
+
+    for i, (q_name, q_sql, err) in enumerate(blocked_sqls * 2):
+        day = max(1, 28 - i * 2)
+        hour = 10 + (i % 6)
+        base = now - timedelta(days=day)
+        ts = base.replace(hour=hour, minute=i * 5 % 60, second=0, microsecond=0)
+        rows.append((rid, ts, q_name, q_sql, None, None, False, err))
+        rid += 1
+
+    conn.executemany(
+        "INSERT INTO query_history (id, timestamp, question, sql, row_count, execution_time_ms, is_safe, error_message) VALUES (?,?,?,?,?,?,?,?)",
+        rows,
+    )
+    n = conn.execute("SELECT COUNT(*) FROM query_history").fetchone()[0]
+    log.info(f"query_history: {n} seed rows inserted")
+
+
 def run_etl(
     sample_dir: Path | None = None,
     db_path: str | None = None,
@@ -148,6 +206,9 @@ def run_etl(
 
     log.info("Materializing daily_sales aggregate...")
     materialize_daily_sales(conn)
+
+    log.info("Seeding query_history sample data...")
+    seed_query_history(conn)
 
     conn.close()
     log.info("=" * 60)

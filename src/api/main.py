@@ -29,12 +29,13 @@ async def lifespan(app: FastAPI):
     catalog = load_catalog(Path(settings.metadata_catalog_path))
 
     executor = QueryExecutor(
-        db_path=settings.duckdb_path,
+        db_path=":memory:",
         timeout_seconds=settings.query_timeout,
         row_limit=settings.max_rows,
         history_conn=conn,
         strict_validation=True,
     )
+    executor._conn = conn  # reuse the single writable connection; validator provides safety
 
     app.state.db = conn
     app.state.catalog = catalog

@@ -99,6 +99,7 @@ class QueryExecutor:
         self._strict = strict_validation
         self._history_conn = history_conn
         self._conn = self._open()
+        self._lock = threading.Lock()
         self._history_counter = 0
         if self._history_conn:
             row = self._history_conn.execute(
@@ -129,7 +130,8 @@ class QueryExecutor:
         validation = validate_sql(sql, strict=self._strict)
 
         if not validation.is_safe:
-            self._log_history(question, sql, None, None, validation.reason, validation)
+            with self._lock:
+                self._log_history(question, sql, None, None, validation.reason, validation)
             return QueryError(
                 error_type="validation_error",
                 message=validation.reason,
@@ -137,45 +139,51 @@ class QueryExecutor:
             )
 
         limited_sql = _inject_limit(sql, limit)
-        result: QueryResult | None = None
-        exc_holder: list[Exception] = []
-        start = time.perf_counter()
 
-        def _run() -> None:
-            try:
-                rel = self._conn.execute(limited_sql)
-                columns = [desc[0] for desc in rel.description]
-                rows = [list(r) for r in rel.fetchall()]
-                elapsed = (time.perf_counter() - start) * 1000
-                nonlocal result
-                result = QueryResult(
-                    columns=columns,
-                    rows=rows,
-                    execution_time_ms=round(elapsed, 2),
-                )
-            except Exception as e:
-                exc_holder.append(e)
+        # Serialize all access to the shared DuckDB connection. The connection is
+        # NOT thread-safe; FastAPI's sync endpoints run concurrently in a threadpool,
+        # and each page fires several queries via Promise.all. Without this lock,
+        # concurrent queries on self._conn race and intermittently return empty results.
+        with self._lock:
+            result: QueryResult | None = None
+            exc_holder: list[Exception] = []
+            start = time.perf_counter()
 
-        thread = threading.Thread(target=_run, daemon=True)
-        thread.start()
-        thread.join(timeout=self._timeout)
+            def _run() -> None:
+                try:
+                    rel = self._conn.execute(limited_sql)
+                    columns = [desc[0] for desc in rel.description]
+                    rows = [list(r) for r in rel.fetchall()]
+                    elapsed = (time.perf_counter() - start) * 1000
+                    nonlocal result
+                    result = QueryResult(
+                        columns=columns,
+                        rows=rows,
+                        execution_time_ms=round(elapsed, 2),
+                    )
+                except Exception as e:
+                    exc_holder.append(e)
 
-        if thread.is_alive():
-            self._conn.close()
-            self._conn = self._open()
-            err = QueryError("timeout", f"Query exceeded {self._timeout}s timeout", sql)
-            self._log_history(question, sql, None, None, err.message, validation)
-            return err
+            thread = threading.Thread(target=_run, daemon=True)
+            thread.start()
+            thread.join(timeout=self._timeout)
 
-        if exc_holder:
-            err = QueryError("duckdb_error", str(exc_holder[0]), sql)
-            self._log_history(question, sql, None, None, err.message, validation)
-            return err
+            if thread.is_alive():
+                self._conn.close()
+                self._conn = self._open()
+                err = QueryError("timeout", f"Query exceeded {self._timeout}s timeout", sql)
+                self._log_history(question, sql, None, None, err.message, validation)
+                return err
 
-        self._log_history(
-            question, sql, result.row_count, result.execution_time_ms, None, validation
-        )
-        return result
+            if exc_holder:
+                err = QueryError("duckdb_error", str(exc_holder[0]), sql)
+                self._log_history(question, sql, None, None, err.message, validation)
+                return err
+
+            self._log_history(
+                question, sql, result.row_count, result.execution_time_ms, None, validation
+            )
+            return result
 
     def _log_history(
         self,

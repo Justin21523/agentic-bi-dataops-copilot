@@ -1,99 +1,58 @@
-- question: "What is the total revenue by month?"
-  sql: |
-    SELECT
-        DATE_TRUNC('month', p.paid_at) AS month,
-        ROUND(SUM(p.amount), 2)         AS total_revenue
-    FROM payments p
-    WHERE p.status = 'completed'
-    GROUP BY 1
-    ORDER BY 1
-  tables_used: [payments]
-  notes: "Basic time-series aggregation. Use DATE_TRUNC not strftime for DuckDB."
-
-- question: "Who are the top 5 customers by total spending?"
-  sql: |
-    SELECT
-        c.customer_id,
-        c.name,
-        ROUND(SUM(p.amount), 2) AS total_spent
-    FROM customers c
-    JOIN orders o   ON c.customer_id = o.customer_id
-    JOIN payments p ON o.order_id    = p.order_id
-    WHERE p.status = 'completed'
-    GROUP BY c.customer_id, c.name
-    ORDER BY total_spent DESC
-    LIMIT 5
-  tables_used: [customers, orders, payments]
-
-- question: "What is the average product rating per category?"
-  sql: |
-    SELECT
-        p.category,
-        ROUND(AVG(r.score), 2) AS avg_rating,
-        COUNT(r.review_id)      AS num_reviews
-    FROM reviews r
-    JOIN products p ON r.product_id = p.product_id
-    GROUP BY p.category
-    ORDER BY avg_rating DESC
-  tables_used: [reviews, products]
-
-- question: "Show me the daily revenue trend for the last 30 days"
-  sql: |
-    SELECT
-        date,
-        revenue,
-        order_count,
-        avg_order_value
-    FROM daily_sales
-    WHERE date >= CURRENT_DATE - INTERVAL '30 days'
-    ORDER BY date
-  tables_used: [daily_sales]
-
-- question: "What is the order fulfillment breakdown by status?"
-  sql: |
-    SELECT
-        status,
-        COUNT(*)                                                    AS order_count,
-        ROUND(100.0 * COUNT(*) / SUM(COUNT(*)) OVER (), 2)         AS pct_of_total
-    FROM orders
-    GROUP BY status
-    ORDER BY order_count DESC
-  tables_used: [orders]
-
-- question: "Which products have never been reviewed?"
-  sql: |
-    SELECT
-        p.product_id,
-        p.name,
-        p.category
-    FROM products p
-    LEFT JOIN reviews r ON p.product_id = r.product_id
-    WHERE r.review_id IS NULL
-    ORDER BY p.name
-    LIMIT 50
-  tables_used: [products, reviews]
-  notes: "Tests LEFT JOIN / anti-join pattern."
-
-- question: "What is the month-over-month revenue growth rate?"
-  sql: |
-    WITH monthly AS (
-        SELECT
-            DATE_TRUNC('month', paid_at) AS month,
-            SUM(amount)                   AS revenue
-        FROM payments
-        WHERE status = 'completed'
-        GROUP BY 1
-    )
-    SELECT
-        month,
-        ROUND(revenue, 2)                                                  AS revenue,
-        ROUND(LAG(revenue) OVER (ORDER BY month), 2)                       AS prev_revenue,
-        ROUND(
-            100.0 * (revenue - LAG(revenue) OVER (ORDER BY month))
-                  / NULLIF(LAG(revenue) OVER (ORDER BY month), 0),
-            2
-        ) AS growth_pct
-    FROM monthly
-    ORDER BY month
-  tables_used: [payments]
-  notes: "Tests window functions (LAG). Important for demonstrating analytical capability."
+- question: What is the total revenue by month?
+  sql: "SELECT\n    DATE_TRUNC('month', p.paid_at) AS month,\n    ROUND(SUM(p.amount),\
+    \ 2)         AS total_revenue\nFROM payments p\nWHERE p.status = 'completed'\n\
+    GROUP BY 1\nORDER BY 1\n"
+  tables_used:
+  - payments
+  notes: Basic time-series aggregation. Use DATE_TRUNC not strftime for DuckDB.
+- question: Who are the top 5 customers by total spending?
+  sql: "SELECT\n    c.customer_id,\n    c.name,\n    ROUND(SUM(p.amount), 2) AS total_spent\n\
+    FROM customers c\nJOIN orders o   ON c.customer_id = o.customer_id\nJOIN payments\
+    \ p ON o.order_id    = p.order_id\nWHERE p.status = 'completed'\nGROUP BY c.customer_id,\
+    \ c.name\nORDER BY total_spent DESC\nLIMIT 5\n"
+  tables_used:
+  - customers
+  - orders
+  - payments
+- question: What is the average product rating per category?
+  sql: "SELECT\n    p.category,\n    ROUND(AVG(r.score), 2) AS avg_rating,\n    COUNT(r.review_id)\
+    \      AS num_reviews\nFROM reviews r\nJOIN products p ON r.product_id = p.product_id\n\
+    GROUP BY p.category\nORDER BY avg_rating DESC\n"
+  tables_used:
+  - reviews
+  - products
+- question: Show me the daily revenue trend for the last 30 days
+  sql: "SELECT\n    date,\n    revenue,\n    order_count,\n    avg_order_value\nFROM\
+    \ daily_sales\nWHERE date >= CURRENT_DATE - INTERVAL '30 days'\nORDER BY date\n"
+  tables_used:
+  - daily_sales
+- question: What is the order fulfillment breakdown by status?
+  sql: "SELECT\n    status,\n    COUNT(*)                                        \
+    \            AS order_count,\n    ROUND(100.0 * COUNT(*) / SUM(COUNT(*)) OVER\
+    \ (), 2)         AS pct_of_total\nFROM orders\nGROUP BY status\nORDER BY order_count\
+    \ DESC\n"
+  tables_used:
+  - orders
+- question: Which products have never been reviewed?
+  sql: "SELECT\n    p.product_id,\n    p.name,\n    p.category\nFROM products p\n\
+    LEFT JOIN reviews r ON p.product_id = r.product_id\nWHERE r.review_id IS NULL\n\
+    ORDER BY p.name\nLIMIT 50\n"
+  tables_used:
+  - products
+  - reviews
+  notes: Tests LEFT JOIN / anti-join pattern.
+- question: What is the month-over-month revenue growth rate?
+  sql: "WITH monthly AS (\n    SELECT\n        DATE_TRUNC('month', paid_at) AS month,\n\
+    \        SUM(amount)                   AS revenue\n    FROM payments\n    WHERE\
+    \ status = 'completed'\n    GROUP BY 1\n)\nSELECT\n    month,\n    ROUND(revenue,\
+    \ 2)                                                  AS revenue,\n    ROUND(LAG(revenue)\
+    \ OVER (ORDER BY month), 2)                       AS prev_revenue,\n    ROUND(\n\
+    \        100.0 * (revenue - LAG(revenue) OVER (ORDER BY month))\n            \
+    \  / NULLIF(LAG(revenue) OVER (ORDER BY month), 0),\n        2\n    ) AS growth_pct\n\
+    FROM monthly\nORDER BY month\n"
+  tables_used:
+  - payments
+  notes: Tests window functions (LAG). Important for demonstrating analytical capability.
+- question: Which city has the most customers?
+  sql: SELECT shipping_city, COUNT(DISTINCT customer_id) AS customers FROM orders
+    GROUP BY shipping_city ORDER BY customers DESC LIMIT 10

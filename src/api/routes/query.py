@@ -12,6 +12,8 @@ from api.schemas import (
     SQLExecuteRequest, SQLExecuteResponse,
     QueryHistoryResponse, QueryHistoryItem,
     ChartRecommendation, ColumnSchema,
+    FewShotAddRequest, FewShotAddResponse,
+    DataFreshnessResponse,
 )
 from features.chart_recommender import ColumnSchema as ChartColSchema, recommend
 from models.llm_adapter import get_adapter
@@ -46,19 +48,16 @@ def natural_language_query(
     # SQL generation
     sql = ""
     gen_error = None
+    history = [{"role": m.role, "content": m.content} for m in req.conversation_history]
     try:
         from models.base import FewShotExample
-        from pathlib import Path
-        few_shot_path = Path("configs/few_shot_examples.yaml")
+        from utils.config import get_project_root
+        few_shot_path = get_project_root() / "configs" / "few_shot_examples.yaml"
         few_shot = FewShotExample.load_from_yaml(few_shot_path) if few_shot_path.exists() else []
-        sql = adapter.generate_sql(req.question, schema_ctx, few_shot)
-    except NotImplementedError:
-        gen_error = "No rule-based template matched. Try a different phrasing or enable LLM_PROVIDER=openai."
+        sql = adapter.generate_sql(req.question, schema_ctx, few_shot, history)
+    except (NotImplementedError, RuntimeError) as exc:
+        gen_error = str(exc)
         sql = "-- No SQL generated"
-
-    # Validation
-    vresult = validate_sql(sql, strict=True)
-    safety_issues = [vresult.reason] if not vresult.is_safe and vresult.reason else []
 
     if gen_error:
         return NLQueryResponse(
@@ -67,7 +66,29 @@ def natural_language_query(
             is_safe=False,
             safety_issues=[gen_error],
             error=gen_error,
+            adapter=adapter.adapter_name,
         )
+
+    # Validation — with one auto-correction retry for LLM adapters
+    vresult = validate_sql(sql, strict=True)
+    if not vresult.is_safe and settings.llm_provider in ("llama_cpp", "openai"):
+        try:
+            correction_question = (
+                f"{req.question}\n\n"
+                f"[Previous SQL was rejected: {vresult.reason}. "
+                "Fix the query — max subquery depth is 3, use only SELECT statements, "
+                "avoid SELECT *, use only whitelisted tables.]"
+            )
+            sql_retry = adapter.generate_sql(correction_question, schema_ctx, few_shot, history)
+            vresult_retry = validate_sql(sql_retry, strict=True)
+            if vresult_retry.is_safe:
+                sql = sql_retry
+                vresult = vresult_retry
+                log.info("SQL auto-corrected successfully on retry")
+        except Exception as retry_exc:
+            log.debug(f"SQL auto-correction failed: {retry_exc}")
+
+    safety_issues = [vresult.reason] if not vresult.is_safe and vresult.reason else []
 
     if not vresult.is_safe:
         return NLQueryResponse(
@@ -76,6 +97,7 @@ def natural_language_query(
             is_safe=False,
             safety_issues=safety_issues,
             error=vresult.reason,
+            adapter=adapter.adapter_name,
         )
 
     # Execution
@@ -88,6 +110,7 @@ def natural_language_query(
             is_safe=True,
             safety_issues=[],
             error=result.message,
+            adapter=adapter.adapter_name,
         )
 
     # Chart recommendation
@@ -99,11 +122,12 @@ def natural_language_query(
         sql=sql,
         is_safe=True,
         safety_issues=[],
-        rows=_rows_to_dicts(result.columns, result.rows),
+        rows=result.rows,
         row_count=result.row_count,
         columns=result.columns,
         execution_time_ms=result.execution_time_ms,
         chart_recommendation=ChartRecommendation(**chart.to_dict()),
+        adapter=adapter.adapter_name,
     )
 
 
@@ -138,14 +162,89 @@ def execute_sql_endpoint(
     if isinstance(result, QueryError):
         return SQLExecuteResponse(sql=req.sql, error=result.message)
 
-    rows_as_dicts = _rows_to_dicts(result.columns, result.rows)
     return SQLExecuteResponse(
         sql=req.sql,
-        rows=rows_as_dicts,
+        rows=result.rows,
         row_count=result.row_count,
         columns=result.columns,
         execution_time_ms=result.execution_time_ms,
     )
+
+
+@router.get("/freshness", response_model=DataFreshnessResponse)
+def data_freshness(db=Depends(get_db)):
+    """Return the most recent data timestamp for each warehouse table."""
+    import datetime
+
+    TABLE_DATE_COLS = {
+        "orders": "order_date",
+        "order_items": None,
+        "customers": "signup_date",
+        "products": None,
+        "payments": "paid_at",
+        "reviews": "created_at",
+        "daily_sales": "date",
+        "query_history": "timestamp",
+    }
+    results: dict[str, str | None] = {}
+    try:
+        for table, date_col in TABLE_DATE_COLS.items():
+            if date_col is None:
+                results[table] = None
+                continue
+            try:
+                row = db.execute(
+                    f"SELECT MAX({date_col})::VARCHAR FROM {table}"
+                ).fetchone()
+                results[table] = row[0] if row and row[0] else None
+            except Exception as e:
+                log.debug(f"Freshness query skipped for {table}.{date_col}: {e}")
+                results[table] = None
+    except Exception as exc:
+        log.exception(f"Freshness endpoint failed: {exc}")
+        raise
+
+    return DataFreshnessResponse(
+        tables=results,
+        generated_at=datetime.datetime.utcnow().isoformat() + "Z",
+    )
+
+
+@router.post("/few-shot/add", response_model=FewShotAddResponse)
+def add_few_shot_example(req: FewShotAddRequest):
+    """Append a validated (question, SQL) pair to the few-shot examples YAML."""
+    from pathlib import Path
+    import yaml
+    from utils.config import get_project_root
+
+    few_shot_path = get_project_root() / "configs" / "few_shot_examples.yaml"
+    try:
+        existing = []
+        if few_shot_path.exists():
+            with open(few_shot_path) as f:
+                existing = yaml.safe_load(f) or []
+
+        # Deduplicate by question (case-insensitive)
+        q_lower = req.question.strip().lower()
+        for ex in existing:
+            if ex.get("question", "").strip().lower() == q_lower:
+                return FewShotAddResponse(
+                    success=False,
+                    total_examples=len(existing),
+                    message="Example with identical question already exists.",
+                )
+
+        new_entry: dict = {"question": req.question.strip(), "sql": req.sql.strip()}
+        if req.notes:
+            new_entry["notes"] = req.notes
+        existing.append(new_entry)
+
+        with open(few_shot_path, "w") as f:
+            yaml.dump(existing, f, allow_unicode=True, default_flow_style=False, sort_keys=False)
+
+        return FewShotAddResponse(success=True, total_examples=len(existing), message="Added.")
+    except Exception as exc:
+        return FewShotAddResponse(success=False, total_examples=0, message=str(exc))
 
 
 @router.get("/history", response_model=QueryHistoryResponse)

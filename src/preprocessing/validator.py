@@ -75,8 +75,19 @@ _FROM_JOIN_RE = re.compile(
     re.IGNORECASE,
 )
 
-# CTE name extraction (WITH <name> AS (...))
-_CTE_NAME_RE = re.compile(r"\bWITH\b.*?(\b[a-zA-Z_][a-zA-Z0-9_]*\b)\s+AS\s*\(", re.IGNORECASE)
+# CTE name extraction — captures ALL CTE names: `name AS (`
+_CTE_NAME_RE = re.compile(r'\b([a-zA-Z_][a-zA-Z0-9_]*)\s+AS\s*\(', re.IGNORECASE)
+
+# SQL keywords / function names / date parts that can appear after FROM inside
+# function calls (e.g. EXTRACT(DOW FROM timestamp)) — not real table names
+_SQL_NON_TABLE_WORDS = frozenset({
+    'cast', 'extract', 'coalesce', 'nullif', 'ifnull', 'isnull',
+    'timestamp', 'date', 'time', 'interval', 'epoch',
+    'year', 'month', 'day', 'hour', 'minute', 'second',
+    'dow', 'doy', 'week', 'quarter', 'isodow',
+    'null', 'true', 'false',
+    'current_date', 'current_time', 'current_timestamp',
+})
 
 
 # ── Pass 2: sqlparse AST helpers ───────────────────────────────────────────
@@ -108,8 +119,15 @@ def _check_comment_tokens(sql: str) -> str | None:
 def _check_unbounded_star(sql: str) -> str | None:
     stmt = sqlparse.parse(sql)[0]
     has_star = has_where = has_limit = False
+    paren_depth = 0
     for tok in stmt.flatten():
-        if tok.ttype == T.Wildcard:
+        if tok.ttype is T.Punctuation:
+            if tok.value == '(':
+                paren_depth += 1
+            elif tok.value == ')':
+                paren_depth -= 1
+        # Only flag top-level wildcard (not COUNT(*) or similar)
+        if tok.ttype == T.Wildcard and paren_depth == 0:
             has_star = True
         kw = tok.normalized.upper() if tok.ttype in (T.Keyword, T.Keyword.DML) else ""
         if kw == "WHERE":
@@ -149,10 +167,25 @@ def _extract_tables_regex(sql: str) -> set[str]:
 
 
 def _extract_tables_ast(parsed) -> set[str]:
-    """Walk sqlparse AST to extract table names from Identifier nodes."""
+    """Walk sqlparse AST to extract table names from Identifier nodes.
+
+    Tracks parenthesis depth so that FROM inside function calls
+    (e.g. EXTRACT(DOW FROM timestamp)) is not mistaken for a table reference.
+    """
     tables: set[str] = set()
     from_seen = False
+    paren_depth = 0
     for tok in parsed.flatten():
+        if tok.ttype is T.Punctuation:
+            if tok.value == '(':
+                paren_depth += 1
+                from_seen = False  # FROM inside () belongs to a function call
+            elif tok.value == ')':
+                paren_depth = max(0, paren_depth - 1)
+            continue
+        # Only track table references at the top statement level
+        if paren_depth > 0:
+            continue
         kw = tok.normalized.upper() if tok.ttype in (T.Keyword, T.Keyword.DML) else ""
         if kw in ("FROM", "JOIN", "INNER JOIN", "LEFT JOIN", "RIGHT JOIN",
                   "FULL JOIN", "CROSS JOIN", "NATURAL JOIN"):
@@ -175,11 +208,13 @@ def _extract_cte_names(sql: str) -> set[str]:
 
 def _check_table_whitelist(sql: str, allowed: frozenset[str]) -> str | None:
     found = _extract_tables_regex(sql) | _extract_tables_ast(sqlparse.parse(sql)[0])
-    # Filter out obvious aliases (single letters, numeric)
+    # Filter out single-char aliases and pure numbers
     found = {t for t in found if len(t) > 1 and not t.isdigit()}
-    # Exclude CTE names (they are virtual tables defined within the query)
-    cte_names = _extract_cte_names(sql)
-    found -= cte_names
+    # Exclude CTE names (virtual tables defined within the query)
+    found -= _extract_cte_names(sql)
+    # Exclude SQL keywords / function names / date parts that appear after FROM
+    # inside function calls (e.g. EXTRACT(DOW FROM timestamp))
+    found -= _SQL_NON_TABLE_WORDS
     illegal = found - allowed
     if illegal:
         return f"Non-whitelisted table(s): {sorted(illegal)} — only {sorted(allowed)} are allowed"

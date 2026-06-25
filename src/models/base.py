@@ -50,6 +50,7 @@ class Text2SQLAdapter(ABC):
         question: str,
         schema_context: str,
         few_shot_examples: list[FewShotExample],
+        conversation_history: list[dict] | None = None,
     ) -> str:
         """Generate SQL from a natural language question.
 

@@ -1,4 +1,4 @@
-.PHONY: install sample-data etl evaluate api app test lint format docker-up docker-down clean help
+.PHONY: install sample-data etl evaluate api app frontend-install frontend-dev frontend-build test lint format docker-up docker-down clean help
 
 PYTHON := uv run python
 PYTEST  := uv run pytest
@@ -23,8 +23,17 @@ evaluate:          ## Run Text2SQL benchmark and print metrics
 api:               ## Start FastAPI backend on :8000
 	PYTHONPATH=src uv run uvicorn api.main:app --host 0.0.0.0 --port 8000 --reload
 
-app:               ## Start Streamlit frontend on :8501
-	PYTHONPATH=src uv run streamlit run src/app/streamlit_app.py --server.port 8501
+app:               ## Start React frontend dev server on :5173 (alias for frontend-dev)
+	cd frontend && npm run dev
+
+frontend-install:  ## Install React frontend npm dependencies
+	cd frontend && npm install
+
+frontend-dev:      ## Start React frontend dev server on :5173 (requires API on :8000)
+	cd frontend && npm run dev
+
+frontend-build:    ## Build React frontend for production into frontend/dist/
+	cd frontend && npm run build
 
 test:              ## Run pytest test suite
 	$(PYTEST) -v --tb=short
