@@ -70,10 +70,10 @@ jobs:
             cd ~/justin-portfolio
             npm ci 2>/dev/null || npm install
             npm run build 2>&1 | grep -iE "agentic|89|90|91|Saved|Error|live|link|warn|invalid|strip|override|skip"
-            echo "--- find sync-catalog ---"
-            find ~/justin-portfolio -name "sync-catalog*" 2>/dev/null
-            echo "--- find scripts with link/live ---"
-            grep -rl "live\|liveUrl" ~/justin-portfolio/scripts/ ~/justin-portfolio/src/scripts/ ~/justin-portfolio/src/lib/ 2>/dev/null | head -5
+            echo "--- project-filters.ts live section ---"
+            grep -n "live\|link\|url\|filter\|/p/" ~/justin-portfolio/src/lib/project-filters.ts 2>/dev/null | head -20
+            echo "--- sync-catalog live/link section ---"
+            grep -n "live\|link\|liveUrl\|project.*url\|url.*project" ~/justin-portfolio/scripts/catalog/sync-catalog.ts 2>/dev/null | head -20
             echo "--- npm build agentic-bi output ---"
             docker-compose build web
             docker-compose up -d web
