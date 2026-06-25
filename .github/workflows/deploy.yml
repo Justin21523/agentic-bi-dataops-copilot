@@ -35,11 +35,11 @@ jobs:
             echo "=== [3/7] Stopping old containers ==="
             docker-compose down 2>/dev/null || true
 
-            echo "=== [4/7] Building API image ==="
-            docker-compose build api
+            echo "=== [4/7] Building API image (no-cache) ==="
+            docker-compose build --no-cache api
 
-            echo "=== [5/7] Building Frontend image ==="
-            docker-compose build frontend
+            echo "=== [5/7] Building Frontend image (no-cache) ==="
+            docker-compose build --no-cache frontend
 
             echo "=== [6/7] Starting services ==="
             API_PORT=8003 docker-compose up -d api
