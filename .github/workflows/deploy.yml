@@ -65,6 +65,29 @@ jobs:
             cp ~/agentic-bi-dataops-copilot/portfolio-content/screenshots/*.webp "$PUBDIR/screenshots/" 2>&1 && echo "screenshots copied" || echo "screenshot copy FAIL"
             cp ~/agentic-bi-dataops-copilot/portfolio-content/screenshots/cover.webp "$PUBDIR/cover.webp" 2>&1 && echo "cover.webp copied" || echo "cover copy FAIL"
             ls "$PUBDIR/screenshots/" 2>/dev/null | head -5
+            echo "--- check our project links in catalog ---"
+            python3 -c "
+import json
+with open('/home/neojustin/justin-portfolio/src/generated/project-catalog.json') as f:
+    cat = json.load(f)
+for p in cat.get('projects', cat if isinstance(cat, list) else []):
+    slug = p.get('slug','') or p.get('id','')
+    if 'agentic-bi' in slug:
+        print('links:', json.dumps(p.get('links', []), ensure_ascii=False))
+        break
+" 2>&1 || echo "catalog check failed"
+            echo "--- check link kinds in another project with live link ---"
+            python3 -c "
+import json
+with open('/home/neojustin/justin-portfolio/src/generated/project-catalog.json') as f:
+    cat = json.load(f)
+projects = cat.get('projects', cat if isinstance(cat, list) else [])
+for p in projects:
+    links = p.get('links',[])
+    for l in links:
+        if 'neojustin.dothost' in (l.get('url','') or ''):
+            print(p.get('slug','?'), '->', json.dumps(l, ensure_ascii=False))
+" 2>&1 | head -10 || echo "no live links found"
             echo "--- inject into scan report ---"
             python3 ~/agentic-bi-dataops-copilot/portfolio-content/inject-scan-report.py 2>&1 && echo "scan inject OK" || echo "scan inject FAIL"
             cd ~/justin-portfolio
