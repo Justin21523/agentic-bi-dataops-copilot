@@ -19,18 +19,18 @@ jobs:
           command_timeout: 30m
           script_stop: false
           script: |
-            echo "=== PORTFOLIO EXPLORE ==="
-            echo "--- content/projects listing ---"
-            ls ~/justin-portfolio/content/projects/ 2>/dev/null | head -20
-            echo "--- sample project entry ---"
-            cat ~/justin-portfolio/content/projects/*.json 2>/dev/null | head -60 || \
-            cat ~/justin-portfolio/content/projects/*.md 2>/dev/null | head -60 || \
-            ls ~/justin-portfolio/content/projects/ 2>/dev/null
-            echo "--- docker-compose.yml snippet ---"
-            grep -A10 "agentic\|retailpulse\|fandom\|information-retrieval" ~/justin-portfolio/docker-compose.yml 2>/dev/null | head -80
-            echo "--- portfolio docker-compose services count ---"
-            grep "^\s*[a-z].*:" ~/justin-portfolio/docker-compose.yml 2>/dev/null | wc -l
-            echo "--- projects dir structure ---"
-            ls ~/justin-portfolio/projects/ 2>/dev/null | head -5
-            cat ~/justin-portfolio/projects/*.json 2>/dev/null | head -60
+            echo "=== PORTFOLIO DEEP EXPLORE ==="
+            echo "--- one project entry content ---"
+            ls ~/justin-portfolio/content/projects/amazon-review-intelligence/ 2>/dev/null
+            cat ~/justin-portfolio/content/projects/amazon-review-intelligence/*.json 2>/dev/null | head -80
+            cat ~/justin-portfolio/content/projects/amazon-review-intelligence/*.md 2>/dev/null | head -80
+            cat ~/justin-portfolio/content/projects/amazon-review-intelligence/index.json 2>/dev/null | head -80
+            echo "--- projects list all files in first dir ---"
+            find ~/justin-portfolio/content/projects/ -maxdepth 2 -name "*.json" 2>/dev/null | head -5
+            find ~/justin-portfolio/content/projects/ -maxdepth 2 -name "*.md" 2>/dev/null | head -5
+            echo "--- full project file sample ---"
+            FIRST_FILE=$(find ~/justin-portfolio/content/projects/ -maxdepth 2 \( -name "*.json" -o -name "*.md" \) 2>/dev/null | head -1)
+            cat "$FIRST_FILE" 2>/dev/null
+            echo "--- docker-compose full amazon section ---"
+            awk '/amazon-review-intelligence/{found=1} found{print; if(/^$/ && found>1) exit; found++}' ~/justin-portfolio/docker-compose.yml 2>/dev/null | head -30
             echo "=== DONE ==="
