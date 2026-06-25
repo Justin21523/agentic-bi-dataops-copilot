@@ -16,6 +16,7 @@ services:
       - .:/app
     environment:
       VITE_API_BASE_URL: ${VITE_API_BASE_URL:-/api/v1}
+      VITE_BASE_PATH: ${VITE_BASE_PATH:-/}
     command: sh -c "npm install && npm run build && npx serve -s dist -l 5173"
     ports:
       - "${FRONTEND_PORT:-5173}:5173"

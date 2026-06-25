@@ -3,6 +3,7 @@ import { defineConfig } from 'vite';
 
 export default defineConfig({
   plugins: [react()],
+  base: process.env.VITE_BASE_PATH ?? '/',
   test: {
     setupFiles: './src/tests/setup.ts',
     exclude: ['src/tests/e2e/**', 'node_modules/**', 'dist/**']
