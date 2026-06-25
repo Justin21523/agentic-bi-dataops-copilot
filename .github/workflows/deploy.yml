@@ -46,13 +46,14 @@ jobs:
             grep -c "agentic-bi-dataops-copilot" ~/justin-portfolio/docker/nginx.conf 2>/dev/null || echo "grep fail"
 
             echo "=== [4/6] Rebuild portfolio ==="
-            echo "--- inspect portfolio schema for screenshots ---"
-            grep -r "screenshot\|gallery\|media\|images" ~/justin-portfolio/src/lib/catalog/schema* 2>/dev/null | head -10 || echo "no schema match"
-            grep -r "screenshot\|gallery\|media" ~/justin-portfolio/content/projects/ 2>/dev/null --include="*.json" | head -5 || echo "no project with screenshots found"
+            echo "--- inspect screenshots format ---"
+            cat ~/justin-portfolio/content/projects/excel-python-data-analysis/project.override.json 2>/dev/null | python3 -c "import json,sys; d=json.load(sys.stdin); print(list(d.keys()))" || echo "no excel project"
             echo "--- copy screenshots to portfolio public ---"
-            mkdir -p ~/justin-portfolio/public/portfolio/projects/agentic-bi-dataops-copilot
-            cp ~/agentic-bi-dataops-copilot/portfolio-content/screenshots/*.webp ~/justin-portfolio/public/portfolio/projects/agentic-bi-dataops-copilot/ && echo "screenshots copied" || echo "screenshot copy FAIL"
-            ls ~/justin-portfolio/public/portfolio/projects/agentic-bi-dataops-copilot/ 2>/dev/null
+            PUBDIR=~/justin-portfolio/public/portfolio/projects/agentic-bi-dataops-copilot
+            mkdir -p "$PUBDIR/screenshots"
+            cp ~/agentic-bi-dataops-copilot/portfolio-content/screenshots/*.webp "$PUBDIR/screenshots/" && echo "screenshots copied to screenshots/" || echo "screenshot copy FAIL"
+            cp ~/agentic-bi-dataops-copilot/portfolio-content/screenshots/cover.webp "$PUBDIR/cover.webp" && echo "cover.webp copied" || echo "cover copy FAIL"
+            ls "$PUBDIR/" 2>/dev/null
             echo "--- inject into scan report ---"
             python3 ~/agentic-bi-dataops-copilot/portfolio-content/inject-scan-report.py 2>&1 && echo "scan inject OK" || echo "scan inject FAIL"
             cd ~/justin-portfolio
