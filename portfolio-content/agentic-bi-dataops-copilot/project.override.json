@@ -88,23 +88,6 @@
       }
     },
     {
-      "id": "nl-query-screenshot",
-      "type": "image",
-      "src": "/portfolio/projects/agentic-bi-dataops-copilot/screenshots/nl-query.webp",
-      "alt": {
-        "zh-TW": "自然語言查詢介面，支援中文提問並自動轉換為 SQL。",
-        "en": "Natural Language Query interface — ask questions in plain language and get SQL results."
-      },
-      "title": {
-        "zh-TW": "自然語言查詢",
-        "en": "Natural Language Query"
-      },
-      "caption": {
-        "zh-TW": "輸入中文問題，AI 自動生成 SQL 並查詢 DuckDB 倉儲。",
-        "en": "Type a question in plain language; the AI generates SQL and queries the DuckDB warehouse."
-      }
-    },
-    {
       "id": "guardrails-screenshot",
       "type": "image",
       "src": "/portfolio/projects/agentic-bi-dataops-copilot/screenshots/guardrails.webp",
@@ -185,8 +168,25 @@
         "en": "SQL Playground"
       },
       "caption": {
-        "zh-TW": "自由撰寫 SQL，即時查詢 DuckDB 並檢視結果表格。",
-        "en": "Write raw SQL queries and view results from the DuckDB warehouse in real time."
+        "zh-TW": "月度收入查詢：12 行結果，MONTH / REVENUE / TRANSACTIONS，3.5ms 執行時間。",
+        "en": "Monthly revenue query: 12 rows returned with MONTH / REVENUE / TRANSACTIONS in 3.5ms."
+      }
+    },
+    {
+      "id": "products-screenshot",
+      "type": "image",
+      "src": "/portfolio/projects/agentic-bi-dataops-copilot/screenshots/products.webp",
+      "alt": {
+        "zh-TW": "產品績效矩陣，顯示 BCG 矩陣、品類 Treemap 與折扣 vs 毛利分析。",
+        "en": "Product Performance Matrix with BCG scatter plot, category treemap, and discount vs margin analysis."
+      },
+      "title": {
+        "zh-TW": "產品績效矩陣",
+        "en": "Product Performance Matrix"
+      },
+      "caption": {
+        "zh-TW": "99 項產品的 BCG 矩陣（銷售量 vs 平均評分）、品類收入 Treemap 與毛利趨勢分析。",
+        "en": "BCG matrix (sales vs avg rating), category revenue treemap, and margin trend for 99 products."
       }
     },
     {
