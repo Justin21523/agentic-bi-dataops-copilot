@@ -19,18 +19,27 @@ jobs:
           command_timeout: 30m
           script_stop: false
           script: |
-            echo "=== PORTFOLIO DEEP EXPLORE ==="
-            echo "--- one project entry content ---"
-            ls ~/justin-portfolio/content/projects/amazon-review-intelligence/ 2>/dev/null
-            cat ~/justin-portfolio/content/projects/amazon-review-intelligence/*.json 2>/dev/null | head -80
-            cat ~/justin-portfolio/content/projects/amazon-review-intelligence/*.md 2>/dev/null | head -80
-            cat ~/justin-portfolio/content/projects/amazon-review-intelligence/index.json 2>/dev/null | head -80
-            echo "--- projects list all files in first dir ---"
-            find ~/justin-portfolio/content/projects/ -maxdepth 2 -name "*.json" 2>/dev/null | head -5
-            find ~/justin-portfolio/content/projects/ -maxdepth 2 -name "*.md" 2>/dev/null | head -5
-            echo "--- full project file sample ---"
-            FIRST_FILE=$(find ~/justin-portfolio/content/projects/ -maxdepth 2 \( -name "*.json" -o -name "*.md" \) 2>/dev/null | head -1)
-            cat "$FIRST_FILE" 2>/dev/null
-            echo "--- docker-compose full amazon section ---"
-            awk '/amazon-review-intelligence/{found=1} found{print; if(/^$/ && found>1) exit; found++}' ~/justin-portfolio/docker-compose.yml 2>/dev/null | head -30
+            echo "=== PORTFOLIO STRUCTURE ==="
+            echo "--- docker-compose: ai-gen-hub section (has backend) ---"
+            python3 -c "
+import re, sys
+txt = open('/root/justin-portfolio/docker-compose.yml').read()
+# find ai-gen-hub section
+m = re.search(r'(  ai-gen-hub.*?)(?=\n  [a-z])', txt, re.DOTALL)
+if m: print(m.group(1))
+" 2>/dev/null || \
+            grep -A 25 "ai-gen-hub:" ~/justin-portfolio/docker-compose.yml 2>/dev/null || \
+            grep -A 25 "ai-gen-hub:" /root/justin-portfolio/docker-compose.yml 2>/dev/null
+            echo "--- docker-compose: ai-gen-hub-backend section ---"
+            grep -A 15 "ai-gen-hub-backend:" ~/justin-portfolio/docker-compose.yml 2>/dev/null
+            echo "--- docker-compose top lines (services structure) ---"
+            head -30 ~/justin-portfolio/docker-compose.yml 2>/dev/null
+            echo "--- portfolio Next.js rewrites or proxy config ---"
+            cat ~/justin-portfolio/next.config.js 2>/dev/null | head -60
+            cat ~/justin-portfolio/next.config.ts 2>/dev/null | head -60
+            echo "--- neojustin.dothost.net nginx / traefik config ---"
+            find /etc -name "*.conf" 2>/dev/null | xargs grep -l "neojustin\|3000\|5173" 2>/dev/null | head -5
+            cat /etc/nginx/nginx.conf 2>/dev/null | head -30
+            echo "--- justin-portfolio content/projects full list ---"
+            ls ~/justin-portfolio/content/projects/ 2>/dev/null
             echo "=== DONE ==="
