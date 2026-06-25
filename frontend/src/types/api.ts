@@ -5,6 +5,8 @@ export interface HealthResponse {
   version: string
   db_status: string
   timestamp: string
+  llm_provider: string
+  llm_reachable: boolean
 }
 
 export interface TableSummary {

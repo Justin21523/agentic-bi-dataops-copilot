@@ -168,13 +168,20 @@ class LlamaCppAdapter(Text2SQLAdapter):
             raw = resp.json()["choices"][0]["message"]["content"].strip()
             m = _FENCE_RE.search(raw)
             return m.group(1).strip() if m else raw
-        except _requests.exceptions.ConnectionError:
-            raise RuntimeError(
-                f"llama.cpp server not reachable at {base_url}. "
-                "Start with: systemctl --user start llama-server"
+        except (_requests.exceptions.ConnectionError, _requests.exceptions.Timeout):
+            from utils.log import get_logger
+            get_logger(__name__).warning(
+                "llama.cpp unreachable at %s — falling back to rule_based", base_url
             )
+            from models.rule_based import RuleBasedAdapter
+            return RuleBasedAdapter().generate_sql(question, schema_context, few_shot_examples)
         except Exception as exc:
-            raise RuntimeError(f"llama.cpp error: {exc}") from exc
+            from utils.log import get_logger
+            get_logger(__name__).warning(
+                "llama.cpp error (%s) — falling back to rule_based", exc
+            )
+            from models.rule_based import RuleBasedAdapter
+            return RuleBasedAdapter().generate_sql(question, schema_context, few_shot_examples)
 
     @property
     def adapter_name(self) -> str:

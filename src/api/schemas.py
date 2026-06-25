@@ -100,6 +100,8 @@ class HealthResponse(BaseModel):
     version: str
     db_status: str
     timestamp: str
+    llm_provider: str = "unknown"
+    llm_reachable: bool = False
 
 
 class TableSummary(BaseModel):

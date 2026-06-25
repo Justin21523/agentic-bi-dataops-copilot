@@ -1,4 +1,4 @@
-import { useState, useRef, useCallback } from 'react'
+import { useState, useRef, useCallback, useEffect } from 'react'
 import {
   Send, Loader2, BarChart2, Table, AlertCircle, Lightbulb,
   Cpu, ServerCrash, MessageSquare, PinIcon, PinOff, Download,
@@ -10,7 +10,7 @@ import SafetyBadge from '../components/SafetyBadge'
 import DataTable from '../components/DataTable'
 import ChartRenderer from '../components/ChartRenderer'
 import MetricCard from '../components/MetricCard'
-import { runNLQuery, addFewShotExample } from '../api/client'
+import { runNLQuery, addFewShotExample, getHealth } from '../api/client'
 import type { NLQueryResponse, ConversationMessage, PinnedQuery } from '../types/api'
 
 type View = 'chart' | 'table'
@@ -40,8 +40,17 @@ export default function NLQuery() {
   const [showPinned, setShowPinned] = useState(false)
   const [exportingPdf, setExportingPdf] = useState(false)
   const [fewShotStatus, setFewShotStatus] = useState<string | null>(null)
+  const [llmOnline, setLlmOnline] = useState<boolean | null>(null)
+  const [llmProvider, setLlmProvider] = useState<string>('unknown')
   const textareaRef = useRef<HTMLTextAreaElement>(null)
   const resultsRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    getHealth().then(h => {
+      setLlmProvider(h.llm_provider)
+      setLlmOnline(h.llm_reachable)
+    }).catch(() => setLlmOnline(false))
+  }, [])
 
   // Build conversation history from prior turns for multi-turn
   const buildHistory = (): ConversationMessage[] => {
@@ -205,6 +214,22 @@ export default function NLQuery() {
           </button>
         </div>
       </div>
+
+      {/* LLM status banner */}
+      {llmOnline !== null && (
+        <div className={`flex items-center gap-2 px-3 py-2 rounded-lg text-xs border ${
+          llmOnline && llmProvider === 'llama_cpp'
+            ? 'bg-blue-50 text-blue-700 border-blue-200'
+            : 'bg-amber-50 text-amber-700 border-amber-200'
+        }`}>
+          <span className={`w-2 h-2 rounded-full flex-shrink-0 ${
+            llmOnline && llmProvider === 'llama_cpp' ? 'bg-blue-500' : 'bg-amber-400'
+          }`} />
+          {llmOnline && llmProvider === 'llama_cpp'
+            ? 'Qwen2.5-7B 已連線 — 完整自然語言查詢支援，可輸入任意問題'
+            : 'LLM 目前離線 — 使用關鍵字模板模式，請參考下方範例查詢'}
+        </div>
+      )}
 
       <div className="grid grid-cols-1 xl:grid-cols-4 gap-4">
         {/* Main conversation area */}
