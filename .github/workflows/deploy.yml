@@ -70,10 +70,9 @@ jobs:
             cd ~/justin-portfolio
             npm ci 2>/dev/null || npm install
             npm run build 2>&1 | grep -iE "agentic|89|90|91|Saved|Error|live|link|warn|invalid|strip|override|skip"
-            echo "--- schema lines 50-80 ---"
-            sed -n '50,80p' ~/justin-portfolio/src/lib/catalog/schema.ts 2>/dev/null
-            echo "--- sync-catalog lines with live/link/override ---"
-            grep -n "live\|link\|override\|liveUrl\|externalUrl\|siteUrl" ~/justin-portfolio/scripts/sync-catalog.ts 2>/dev/null | head -20
+            echo "--- sync-catalog wc/head ---"
+            wc -l ~/justin-portfolio/scripts/sync-catalog.ts 2>/dev/null
+            sed -n '1,40p' ~/justin-portfolio/scripts/sync-catalog.ts 2>/dev/null
             echo "--- npm build agentic-bi output ---"
             docker-compose build web
             docker-compose up -d web
