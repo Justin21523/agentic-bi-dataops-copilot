@@ -70,10 +70,10 @@ jobs:
             cd ~/justin-portfolio
             npm ci 2>/dev/null || npm install
             npm run build 2>&1 | grep -E "agentic|89|90|91|projects|Error|Saved|warn|invalid|link|Live|strip"
-            echo "--- sync-catalog link validation ---"
-            grep -n "live\|url\|filter\|valid\|strip\|reject\|warn" ~/justin-portfolio/scripts/sync-catalog.ts 2>/dev/null | grep -i "live\|url.*live\|live.*url\|link\|filter" | head -15
-            echo "--- link schema ---"
-            grep -A5 "live\|ProjectLinkKind" ~/justin-portfolio/src/lib/catalog/schema.ts 2>/dev/null | head -20
+            echo "--- our entry in scan report ---"
+            python3 -c "import json; d=json.load(open('/home/neojustin/justin-portfolio/data/generated/project-scan-report.json')); [print(json.dumps({k:v for k,v in p.items() if k in ['slug','id','links','externalLinks']},ensure_ascii=False)) for p in (d if isinstance(d,list) else d.values()) if 'agentic-bi' in str(p)]" 2>&1 | head -5
+            echo "--- sync-catalog override merge logic ---"
+            grep -n "override\|merge\|link\|live" ~/justin-portfolio/scripts/sync-catalog.ts 2>/dev/null | grep -i "override\|merge\|link" | head -10
             docker-compose build web
             docker-compose up -d web
             echo "Portfolio rebuilt."
