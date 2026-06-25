@@ -46,6 +46,13 @@ jobs:
             grep -c "agentic-bi-dataops-copilot" ~/justin-portfolio/docker/nginx.conf 2>/dev/null || echo "grep fail"
 
             echo "=== [4/6] Rebuild portfolio ==="
+            echo "--- inspect portfolio schema for screenshots ---"
+            grep -r "screenshot\|gallery\|media\|images" ~/justin-portfolio/src/lib/catalog/schema* 2>/dev/null | head -10 || echo "no schema match"
+            grep -r "screenshot\|gallery\|media" ~/justin-portfolio/content/projects/ 2>/dev/null --include="*.json" | head -5 || echo "no project with screenshots found"
+            echo "--- copy screenshots to portfolio public ---"
+            mkdir -p ~/justin-portfolio/public/portfolio/projects/agentic-bi-dataops-copilot
+            cp ~/agentic-bi-dataops-copilot/portfolio-content/screenshots/*.webp ~/justin-portfolio/public/portfolio/projects/agentic-bi-dataops-copilot/ && echo "screenshots copied" || echo "screenshot copy FAIL"
+            ls ~/justin-portfolio/public/portfolio/projects/agentic-bi-dataops-copilot/ 2>/dev/null
             echo "--- inject into scan report ---"
             python3 ~/agentic-bi-dataops-copilot/portfolio-content/inject-scan-report.py 2>&1 && echo "scan inject OK" || echo "scan inject FAIL"
             cd ~/justin-portfolio
