@@ -66,6 +66,9 @@ jobs:
             API_PORT=8003 docker-compose up -d api
             echo "Waiting 30s for API startup..."
             sleep 30
+            echo "--- Run ETL to populate DuckDB warehouse ---"
+            docker exec agentic-bi-dataops-copilot-api-1 uv run python scripts/generate_sample_data.py 2>&1 && echo "sample data OK" || echo "sample data FAIL"
+            docker exec agentic-bi-dataops-copilot-api-1 uv run python scripts/run_etl.py 2>&1 && echo "ETL OK" || echo "ETL FAIL"
             API_PORT=8003 docker-compose up -d frontend
 
             echo "=== [6/6] Status check ==="
