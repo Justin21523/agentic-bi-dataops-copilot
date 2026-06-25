@@ -46,15 +46,11 @@ jobs:
             grep -c "agentic-bi-dataops-copilot" ~/justin-portfolio/docker/nginx.conf 2>/dev/null || echo "grep fail"
 
             echo "=== [4/6] Rebuild portfolio ==="
-            echo "--- catalog sync script source ---"
-            head -60 ~/justin-portfolio/scripts/catalog/sync-catalog.ts 2>/dev/null || echo "script not found"
-            echo "--- catalog data sources ---"
-            ls ~/justin-portfolio/src/data/ 2>/dev/null || echo "no src/data"
-            ls ~/justin-portfolio/data/ 2>/dev/null || echo "no data"
-            head -5 ~/justin-portfolio/src/data/*.ts 2>/dev/null || head -5 ~/justin-portfolio/src/data/*.json 2>/dev/null || true
+            echo "--- inject into scan report ---"
+            python3 ~/agentic-bi-dataops-copilot/portfolio-content/inject-scan-report.py 2>&1 && echo "scan inject OK" || echo "scan inject FAIL"
             cd ~/justin-portfolio
             npm ci 2>/dev/null || npm install
-            npm run build 2>&1 | tail -20
+            npm run build 2>&1 | grep -E "agentic|89|90|91|projects|Error|Saved"
             docker-compose build --no-cache web
             docker-compose up -d web
             echo "Portfolio rebuilt."
