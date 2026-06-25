@@ -1,0 +1,91 @@
+{
+  "visibility": "public",
+  "featured": true,
+  "category": "ai-data",
+  "status": "completed",
+  "year": 2026,
+  "technologies": [
+    "Python",
+    "FastAPI",
+    "React",
+    "TypeScript",
+    "Vite",
+    "DuckDB",
+    "Playwright",
+    "Docker"
+  ],
+  "coverImage": "/portfolio/projects/agentic-bi-dataops-copilot/cover.webp",
+  "links": [
+    {
+      "kind": "live",
+      "url": "https://neojustin.dothost.net/p/agentic-bi-dataops-copilot/",
+      "label": {
+        "zh-TW": "線上展示",
+        "en": "Live Demo"
+      },
+      "primary": true
+    },
+    {
+      "kind": "github",
+      "url": "https://github.com/Justin21523/agentic-bi-dataops-copilot",
+      "label": {
+        "zh-TW": "查看 GitHub",
+        "en": "View GitHub"
+      }
+    }
+  ],
+  "metadata": {
+    "needsReview": false,
+    "missingFields": [],
+    "aliases": [
+      "Agentic BI Copilot",
+      "DataOps Copilot"
+    ],
+    "secondaryCategories": [
+      "web",
+      "data-engineering"
+    ],
+    "projectType": "AI data product",
+    "domains": [
+      "Business Intelligence",
+      "Data Engineering",
+      "NLP",
+      "SQL Safety"
+    ],
+    "subjects": [
+      "Text2SQL",
+      "SQL Guardrails",
+      "DuckDB",
+      "Retail Analytics"
+    ],
+    "keywords": [
+      "text2sql",
+      "sql guardrails",
+      "duckdb",
+      "retail analytics",
+      "data journey"
+    ],
+    "audiences": [
+      "Data engineers",
+      "BI analysts",
+      "ML engineers"
+    ],
+    "contentTypes": [
+      "Dashboard",
+      "API",
+      "Interactive tour"
+    ],
+    "dataTypes": [
+      "Retail transactions",
+      "SQL queries",
+      "DuckDB warehouse"
+    ],
+    "platforms": [
+      "Web"
+    ],
+    "languages": [
+      "Python",
+      "TypeScript"
+    ]
+  }
+}
