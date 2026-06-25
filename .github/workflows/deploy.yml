@@ -70,10 +70,10 @@ jobs:
             cd ~/justin-portfolio
             npm ci 2>/dev/null || npm install
             npm run build 2>&1 | grep -iE "agentic|89|90|91|Saved|Error|live|link|warn|invalid|strip|override|skip"
-            echo "--- project-filters.ts live section ---"
-            grep -n "live\|link\|url\|filter\|/p/" ~/justin-portfolio/src/lib/project-filters.ts 2>/dev/null | head -20
-            echo "--- sync-catalog live/link section ---"
-            grep -n "live\|link\|liveUrl\|project.*url\|url.*project" ~/justin-portfolio/scripts/catalog/sync-catalog.ts 2>/dev/null | head -20
+            echo "--- fix: update isUnverifiedAutoDemoLink to allow known verified apps ---"
+            sed -n '135,150p' ~/justin-portfolio/scripts/catalog/sync-catalog.ts 2>/dev/null
+            echo "--- full link kind enum ---"
+            sed -n '50,65p' ~/justin-portfolio/src/lib/catalog/schema.ts 2>/dev/null
             echo "--- npm build agentic-bi output ---"
             docker-compose build web
             docker-compose up -d web
