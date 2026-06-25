@@ -1,0 +1,56 @@
+@import './tokens.css';
+@import './layout.css';
+@import './components.css';
+@import './charts.css';
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  background: var(--color-page);
+}
+
+body {
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  line-height: 1.4;
+  margin: 0;
+  min-width: 320px;
+}
+
+button,
+input,
+select {
+  font: inherit;
+}
+
+a {
+  color: var(--color-blue-dark);
+}
+
+.active-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.search-row input {
+  min-width: min(420px, 100%);
+}
+
+tr.selected,
+.selected-row {
+  background: var(--color-sky);
+  outline: 2px solid rgba(22, 150, 210, 0.35);
+}
+
+.skeleton {
+  animation: pulse 1.4s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  50% {
+    opacity: 0.55;
+  }
+}

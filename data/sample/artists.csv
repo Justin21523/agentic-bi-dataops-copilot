@@ -1,0 +1,37 @@
+artist_id,artist_name,country,active_start_year,active_end_year,region
+artist_001,Sample Artist 1,TW,2005,2009,East Asia
+artist_002,Sample Artist 2,CA,1989,1995,North America
+artist_003,Sample Artist 3,TW,2017,2023,East Asia
+artist_004,Sample Artist 4,US,2011,2022,North America
+artist_005,Sample Artist 5,US,2012,,North America
+artist_006,Sample Artist 6,TW,1992,2013,East Asia
+artist_007,Sample Artist 7,CA,1988,1994,North America
+artist_008,Sample Artist 8,US,1999,2006,North America
+artist_009,Sample Artist 9,JP,2003,2009,East Asia
+artist_010,Sample Artist 10,CA,2004,,North America
+artist_011,Sample Artist 11,US,1996,2019,North America
+artist_012,Sample Artist 12,UK,1997,2022,Europe
+artist_013,Sample Artist 13,CA,1989,2005,North America
+artist_014,Sample Artist 14,CA,2016,2021,North America
+artist_015,Sample Artist 15,CA,2014,,North America
+artist_016,Sample Artist 16,UK,2008,2013,Europe
+artist_017,Sample Artist 17,US,2000,2019,North America
+artist_018,Sample Artist 18,UK,2016,,Europe
+artist_019,Sample Artist 19,CA,2003,,North America
+artist_020,Sample Artist 20,CA,1992,2019,North America
+artist_021,Sample Artist 21,TW,2006,,East Asia
+artist_022,Sample Artist 22,US,2011,,North America
+artist_023,Sample Artist 23,CA,1989,2012,North America
+artist_024,Sample Artist 24,UK,2006,2023,Europe
+artist_025,Sample Artist 25,US,1989,,North America
+artist_026,Sample Artist 26,US,2015,2022,North America
+artist_027,Sample Artist 27,UK,2013,,Europe
+artist_028,Sample Artist 28,US,2007,,North America
+artist_029,Sample Artist 29,TW,2007,2025,East Asia
+artist_030,Sample Artist 30,TW,1988,,East Asia
+artist_031,Sample Artist 31,TW,1993,2025,East Asia
+artist_032,Sample Artist 32,US,2016,2022,North America
+artist_033,Sample Artist 33,TW,2002,,East Asia
+artist_034,Sample Artist 34,JP,2002,,East Asia
+artist_035,Sample Artist 35,TW,2009,2014,East Asia
+artist_036,Sample Artist 36,TW,1994,1997,East Asia

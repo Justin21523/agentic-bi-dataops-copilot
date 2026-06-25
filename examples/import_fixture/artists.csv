@@ -1,0 +1,6 @@
+id_artist,name,country,start_year,end_year
+fixture_artist_001,Fixture Artist One,US,2001,
+fixture_artist_002,Fixture Artist Two,TW,2008,
+fixture_artist_003,Fixture Artist Three,UK,1998,
+fixture_artist_004,Fixture Artist Four,JP,2012,
+fixture_artist_005,Fixture Artist Five,CA,2005,

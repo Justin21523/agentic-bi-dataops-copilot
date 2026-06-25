@@ -1,0 +1,19 @@
+services:
+  backend:
+    image: python:3.12-slim
+    working_dir: /app
+    volumes:
+      - .:/app
+    command: sh -c "pip install -e 'backend[dev]' && python -m lyrics_lab.ingestion.prepare_data && python -m uvicorn lyrics_lab.api.main:app --app-dir backend/src --host 0.0.0.0 --port 8000"
+    ports:
+      - "8000:8000"
+  frontend:
+    image: node:22-alpine
+    working_dir: /app/frontend
+    volumes:
+      - .:/app
+    command: sh -c "npm install && npm run build && npx serve -s dist -l 5173"
+    ports:
+      - "5173:5173"
+    depends_on:
+      - backend

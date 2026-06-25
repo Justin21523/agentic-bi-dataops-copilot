@@ -1,0 +1,62 @@
+{
+  "status": "pass",
+  "tables": {
+    "artists": {
+      "rows": 36,
+      "columns": [
+        "artist_id",
+        "artist_name",
+        "country",
+        "active_start_year",
+        "active_end_year",
+        "region"
+      ]
+    },
+    "songs": {
+      "rows": 300,
+      "columns": [
+        "song_id",
+        "title",
+        "artist_id",
+        "album",
+        "year",
+        "decade",
+        "language",
+        "language_family",
+        "genre"
+      ]
+    },
+    "lyric_bow_features": {
+      "rows": 5400,
+      "columns": [
+        "song_id",
+        "term",
+        "weight",
+        "source"
+      ]
+    }
+  },
+  "issues": [],
+  "safety": {
+    "no_raw_lyrics": true
+  },
+  "coverage": {
+    "year_from": 1990,
+    "year_to": 2025,
+    "genres": [
+      "electronic",
+      "folk",
+      "hip-hop",
+      "latin",
+      "pop",
+      "r-and-b",
+      "rock"
+    ],
+    "languages": [
+      "en",
+      "es",
+      "ja",
+      "zh"
+    ]
+  }
+}

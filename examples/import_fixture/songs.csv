@@ -1,0 +1,9 @@
+mxm_track_id,song_title,artist_mbid,album,release_year,language_code,main_genre
+fixture_song_001,Safe Feature Track One,fixture_artist_001,Fixture Album A,2018,en,pop
+fixture_song_002,Safe Feature Track Two,fixture_artist_001,Fixture Album A,2020,en,pop
+fixture_song_003,Safe Feature Track Three,fixture_artist_002,Fixture Album B,2021,zh,electronic
+fixture_song_004,Safe Feature Track Four,fixture_artist_003,Fixture Album C,2009,en,rock
+fixture_song_005,Safe Feature Track Five,fixture_artist_004,Fixture Album D,2022,ja,electronic
+fixture_song_006,Safe Feature Track Six,fixture_artist_005,Fixture Album E,2015,en,folk
+fixture_song_007,Safe Feature Track Seven,fixture_artist_002,Fixture Album B,2019,zh,hip-hop
+fixture_song_008,Safe Feature Track Eight,fixture_artist_003,Fixture Album C,2005,en,rock
