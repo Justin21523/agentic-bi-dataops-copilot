@@ -10,7 +10,7 @@ RUN pip install --no-cache-dir uv
 
 COPY pyproject.toml ./
 
-RUN uv sync --no-group dev
+RUN uv sync --no-group dev --no-install-project
 
 COPY src/ ./src/
 COPY configs/ ./configs/
