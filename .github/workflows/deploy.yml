@@ -46,9 +46,10 @@ jobs:
 
             echo "=== [4/6] Rebuild portfolio ==="
             PUBDIR=~/justin-portfolio/public/portfolio/projects/agentic-bi-dataops-copilot
-            mkdir -p "$PUBDIR/screenshots"
+            mkdir -p "$PUBDIR/screenshots" "$PUBDIR/demo"
             cp ~/agentic-bi-dataops-copilot/portfolio-content/screenshots/*.webp "$PUBDIR/screenshots/" && echo "screenshots copied" || echo "screenshot copy FAIL"
             cp ~/agentic-bi-dataops-copilot/portfolio-content/screenshots/cover.webp "$PUBDIR/cover.webp" && echo "cover.webp copied" || echo "cover copy FAIL"
+            cp ~/agentic-bi-dataops-copilot/portfolio-content/demo/demo-tour.webm "$PUBDIR/demo/" && echo "demo-tour.webm copied" || echo "demo copy FAIL"
             python3 ~/agentic-bi-dataops-copilot/portfolio-content/inject-scan-report.py 2>&1
             python3 -c "f=open('/home/neojustin/justin-portfolio/scripts/catalog/sync-catalog.ts','r+'); c=f.read(); old='link.url.includes(\"neojustin.dothost.net/p/\")'; new='link.url.includes(\"neojustin.dothost.net/p/\") && !link.url.includes(\"agentic-bi-dataops-copilot\")'; nc=c.replace(old,new); f.seek(0); f.write(nc); f.truncate(); f.close(); print('patched' if nc!=c else 'already patched')" 2>&1
             cd ~/justin-portfolio

@@ -32,6 +32,22 @@
         "zh-TW": "查看 GitHub",
         "en": "View GitHub"
       }
+    },
+    {
+      "kind": "video",
+      "url": "https://neojustin.dothost.net/portfolio/projects/agentic-bi-dataops-copilot/demo/demo-tour.webm",
+      "label": {
+        "zh-TW": "查看 Demo 影片",
+        "en": "Demo Recording"
+      }
+    },
+    {
+      "kind": "documentation",
+      "url": "https://github.com/Justin21523/agentic-bi-dataops-copilot#readme",
+      "label": {
+        "zh-TW": "查看 README",
+        "en": "View README"
+      }
     }
   ],
   "media": [
