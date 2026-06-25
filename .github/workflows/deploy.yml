@@ -33,13 +33,13 @@ jobs:
 
             echo "=== [2/6] Portfolio content entry ==="
             echo "HOME=$HOME"
-            echo "Source dir:"
-            ls ~/agentic-bi-dataops-copilot/portfolio-content/ 2>&1 || echo "SOURCE MISSING"
+            echo "Source subdir:"
+            ls ~/agentic-bi-dataops-copilot/portfolio-content/agentic-bi-dataops-copilot/ 2>&1 || echo "SUBDIR MISSING"
             CONTENT_DIR=~/justin-portfolio/content/projects/agentic-bi-dataops-copilot
             mkdir -p "$CONTENT_DIR" && echo "mkdir OK: $CONTENT_DIR"
-            cp ~/agentic-bi-dataops-copilot/portfolio-content/agentic-bi-dataops-copilot/project.override.json "$CONTENT_DIR/" && echo "json OK" || echo "json FAIL"
-            cp ~/agentic-bi-dataops-copilot/portfolio-content/agentic-bi-dataops-copilot/en.md "$CONTENT_DIR/" && echo "en.md OK" || echo "en.md FAIL"
-            cp ~/agentic-bi-dataops-copilot/portfolio-content/agentic-bi-dataops-copilot/zh-TW.md "$CONTENT_DIR/" && echo "zh-TW.md OK" || echo "zh-TW.md FAIL"
+            cp ~/agentic-bi-dataops-copilot/portfolio-content/agentic-bi-dataops-copilot/project.override.json "$CONTENT_DIR/" 2>&1 && echo "json OK" || echo "json FAIL"
+            cp ~/agentic-bi-dataops-copilot/portfolio-content/agentic-bi-dataops-copilot/en.md "$CONTENT_DIR/" 2>&1 && echo "en.md OK" || echo "en.md FAIL"
+            cp ~/agentic-bi-dataops-copilot/portfolio-content/agentic-bi-dataops-copilot/zh-TW.md "$CONTENT_DIR/" 2>&1 && echo "zh-TW.md OK" || echo "zh-TW.md FAIL"
 
             echo "=== [3/6] Portfolio nginx proxy ==="
             python3 ~/agentic-bi-dataops-copilot/portfolio-content/inject-nginx.py 2>&1 && echo "inject OK" || echo "inject FAIL"
@@ -51,9 +51,10 @@ jobs:
             echo "--- copy screenshots to portfolio public ---"
             PUBDIR=~/justin-portfolio/public/portfolio/projects/agentic-bi-dataops-copilot
             mkdir -p "$PUBDIR/screenshots"
-            cp ~/agentic-bi-dataops-copilot/portfolio-content/screenshots/*.webp "$PUBDIR/screenshots/" && echo "screenshots copied to screenshots/" || echo "screenshot copy FAIL"
-            cp ~/agentic-bi-dataops-copilot/portfolio-content/screenshots/cover.webp "$PUBDIR/cover.webp" && echo "cover.webp copied" || echo "cover copy FAIL"
-            ls "$PUBDIR/" 2>/dev/null
+            ls ~/agentic-bi-dataops-copilot/portfolio-content/screenshots/ 2>&1 || echo "screenshots src missing"
+            cp ~/agentic-bi-dataops-copilot/portfolio-content/screenshots/*.webp "$PUBDIR/screenshots/" 2>&1 && echo "screenshots copied" || echo "screenshot copy FAIL"
+            cp ~/agentic-bi-dataops-copilot/portfolio-content/screenshots/cover.webp "$PUBDIR/cover.webp" 2>&1 && echo "cover.webp copied" || echo "cover copy FAIL"
+            ls "$PUBDIR/screenshots/" 2>/dev/null | head -5
             echo "--- inject into scan report ---"
             python3 ~/agentic-bi-dataops-copilot/portfolio-content/inject-scan-report.py 2>&1 && echo "scan inject OK" || echo "scan inject FAIL"
             cd ~/justin-portfolio
