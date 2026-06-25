@@ -41,6 +41,11 @@ jobs:
             cp ~/agentic-bi-dataops-copilot/portfolio-content/agentic-bi-dataops-copilot/en.md "$CONTENT_DIR/" 2>&1 && echo "en.md OK" || echo "en.md FAIL"
             cp ~/agentic-bi-dataops-copilot/portfolio-content/agentic-bi-dataops-copilot/zh-TW.md "$CONTENT_DIR/" 2>&1 && echo "zh-TW.md OK" || echo "zh-TW.md FAIL"
 
+            echo "--- free disk space ---"
+            df -h / 2>/dev/null | tail -1
+            docker system prune -f 2>&1 | grep -E "reclaimed|Total|space"
+            df -h / 2>/dev/null | tail -1
+
             echo "=== [3/6] Portfolio nginx proxy ==="
             python3 ~/agentic-bi-dataops-copilot/portfolio-content/inject-nginx.py 2>&1 && echo "inject OK" || echo "inject FAIL"
             grep -c "agentic-bi-dataops-copilot" ~/justin-portfolio/docker/nginx.conf 2>/dev/null || echo "grep fail"
@@ -60,15 +65,20 @@ jobs:
             cd ~/justin-portfolio
             npm ci 2>/dev/null || npm install
             npm run build 2>&1 | grep -E "agentic|89|90|91|projects|Error|Saved"
-            docker-compose build --no-cache web
+            docker-compose build web
             docker-compose up -d web
             echo "Portfolio rebuilt."
 
             echo "=== [5/6] Build and start BI Copilot services ==="
+            echo "--- disk usage before prune ---"
+            df -h / 2>/dev/null | tail -1
+            docker system prune -f 2>&1 | tail -3
+            echo "--- disk usage after prune ---"
+            df -h / 2>/dev/null | tail -1
             cd ~/agentic-bi-dataops-copilot
             docker-compose down 2>/dev/null || true
-            docker-compose build --no-cache api
-            docker-compose build --no-cache frontend
+            docker-compose build api
+            docker-compose build frontend
             API_PORT=8003 docker-compose up -d api
             echo "Waiting 30s for API startup..."
             sleep 30
