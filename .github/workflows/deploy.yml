@@ -60,9 +60,23 @@ jobs:
             docker-compose down 2>/dev/null || true
             docker-compose build --no-cache api
             docker-compose build --no-cache frontend
-            API_PORT=8003 docker-compose up -d api
-            sleep 8
-            API_PORT=8003 docker-compose up -d frontend
+            docker-compose up -d api
+            echo "Waiting for API to be healthy (up to 90s)..."
+            for i in $(seq 1 18); do
+              sleep 5
+              STATUS=$(docker inspect --format='{{.State.Health.Status}}' agentic-bi-dataops-copilot-api-1 2>/dev/null || echo "no-container")
+              echo "  API health ($((i*5))s): $STATUS"
+              if [ "$STATUS" = "healthy" ]; then break; fi
+              if [ "$STATUS" = "unhealthy" ]; then
+                echo "--- API crash logs ---"
+                docker logs --tail 30 agentic-bi-dataops-copilot-api-1 2>&1 || true
+                echo "--- Restarting API ---"
+                docker-compose restart api
+                sleep 15
+                break
+              fi
+            done
+            docker-compose up -d frontend
 
             echo "=== [6/6] Status check ==="
             docker ps --format "table {{.Names}}\t{{.Status}}\t{{.Ports}}" | grep -E "agentic|portfolio-web|NAMES" || true
