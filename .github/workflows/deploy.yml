@@ -20,26 +20,17 @@ jobs:
           script_stop: false
           script: |
             echo "=== PORTFOLIO STRUCTURE ==="
-            echo "--- docker-compose: ai-gen-hub section (has backend) ---"
-            python3 -c "
-import re, sys
-txt = open('/root/justin-portfolio/docker-compose.yml').read()
-# find ai-gen-hub section
-m = re.search(r'(  ai-gen-hub.*?)(?=\n  [a-z])', txt, re.DOTALL)
-if m: print(m.group(1))
-" 2>/dev/null || \
-            grep -A 25 "ai-gen-hub:" ~/justin-portfolio/docker-compose.yml 2>/dev/null || \
-            grep -A 25 "ai-gen-hub:" /root/justin-portfolio/docker-compose.yml 2>/dev/null
-            echo "--- docker-compose: ai-gen-hub-backend section ---"
+            echo "--- docker-compose ai-gen-hub section ---"
+            grep -A 25 "ai-gen-hub:" ~/justin-portfolio/docker-compose.yml 2>/dev/null
+            echo "--- docker-compose ai-gen-hub-backend section ---"
             grep -A 15 "ai-gen-hub-backend:" ~/justin-portfolio/docker-compose.yml 2>/dev/null
-            echo "--- docker-compose top lines (services structure) ---"
+            echo "--- docker-compose first 30 lines ---"
             head -30 ~/justin-portfolio/docker-compose.yml 2>/dev/null
-            echo "--- portfolio Next.js rewrites or proxy config ---"
+            echo "--- next.config ---"
             cat ~/justin-portfolio/next.config.js 2>/dev/null | head -60
             cat ~/justin-portfolio/next.config.ts 2>/dev/null | head -60
-            echo "--- neojustin.dothost.net nginx / traefik config ---"
-            find /etc -name "*.conf" 2>/dev/null | xargs grep -l "neojustin\|3000\|5173" 2>/dev/null | head -5
-            cat /etc/nginx/nginx.conf 2>/dev/null | head -30
-            echo "--- justin-portfolio content/projects full list ---"
+            echo "--- nginx check ---"
+            find /etc -name "*.conf" 2>/dev/null | xargs grep -l "3000" 2>/dev/null | head -5
+            echo "--- content/projects full list ---"
             ls ~/justin-portfolio/content/projects/ 2>/dev/null
             echo "=== DONE ==="
