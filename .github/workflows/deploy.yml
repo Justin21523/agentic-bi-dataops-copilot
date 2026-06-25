@@ -70,10 +70,8 @@ jobs:
             cd ~/justin-portfolio
             npm ci 2>/dev/null || npm install
             npm run build 2>&1 | grep -iE "agentic|89|90|91|Saved|Error|live|link|warn|invalid|strip|override|skip"
-            echo "--- full link kind enum ---"
-            grep -A30 "ProjectLinkKind\|LinkKind" ~/justin-portfolio/src/lib/catalog/schema.ts 2>/dev/null | head -30
-            echo "--- sync-catalog live URL filter ---"
-            grep -n "/projects/\|pathname\|path\|host\|filter\|startsWith\|includes" ~/justin-portfolio/scripts/sync-catalog.ts 2>/dev/null | head -15
+            echo "--- link schema full ---"
+            grep -n "link\|Link\|url\|URL\|refine\|regex\|pattern\|projects" ~/justin-portfolio/src/lib/catalog/schema.ts 2>/dev/null | head -25
             echo "--- npm build agentic-bi output ---"
             docker-compose build web
             docker-compose up -d web
