@@ -23,7 +23,7 @@ import JourneyOverlayLayer from './components/journey/JourneyOverlayLayer'
 
 export default function App() {
   return (
-    <BrowserRouter>
+    <BrowserRouter basename={import.meta.env.BASE_URL}>
       <LangProvider>
       <JourneyProvider>
         <Layout>
