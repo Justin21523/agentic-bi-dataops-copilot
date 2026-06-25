@@ -22,7 +22,6 @@ jobs:
           script_stop: false
           script: |
             echo "--- prune docker to free disk space ---"
-            df -h / 2>/dev/null | tail -1
             docker system prune -f 2>&1 | grep -E "reclaimed|Total"
             df -h / 2>/dev/null | tail -1
 
@@ -31,43 +30,26 @@ jobs:
               cd ~/agentic-bi-dataops-copilot && git pull origin main
             else
               git clone https://github.com/Justin21523/agentic-bi-dataops-copilot.git ~/agentic-bi-dataops-copilot
-              cd ~/agentic-bi-dataops-copilot
             fi
             cd ~/agentic-bi-dataops-copilot
             cp .env.example .env 2>/dev/null || true
 
             echo "=== [2/6] Portfolio content entry ==="
-            echo "HOME=$HOME"
-            echo "Source subdir:"
-            ls ~/agentic-bi-dataops-copilot/portfolio-content/agentic-bi-dataops-copilot/ 2>&1 || echo "SUBDIR MISSING"
             CONTENT_DIR=~/justin-portfolio/content/projects/agentic-bi-dataops-copilot
-            mkdir -p "$CONTENT_DIR" && echo "mkdir OK: $CONTENT_DIR"
-            cp ~/agentic-bi-dataops-copilot/portfolio-content/agentic-bi-dataops-copilot/project.override.json "$CONTENT_DIR/" 2>&1 && echo "json OK" || echo "json FAIL"
-            cp ~/agentic-bi-dataops-copilot/portfolio-content/agentic-bi-dataops-copilot/en.md "$CONTENT_DIR/" 2>&1 && echo "en.md OK" || echo "en.md FAIL"
-            cp ~/agentic-bi-dataops-copilot/portfolio-content/agentic-bi-dataops-copilot/zh-TW.md "$CONTENT_DIR/" 2>&1 && echo "zh-TW.md OK" || echo "zh-TW.md FAIL"
-
-            echo "--- free disk space ---"
-            df -h / 2>/dev/null | tail -1
-            docker system prune -f 2>&1 | grep -E "reclaimed|Total|space"
-            df -h / 2>/dev/null | tail -1
+            mkdir -p "$CONTENT_DIR"
+            cp ~/agentic-bi-dataops-copilot/portfolio-content/agentic-bi-dataops-copilot/project.override.json "$CONTENT_DIR/" && echo "json OK" || echo "json FAIL"
+            cp ~/agentic-bi-dataops-copilot/portfolio-content/agentic-bi-dataops-copilot/en.md "$CONTENT_DIR/" && echo "en.md OK" || echo "en.md FAIL"
+            cp ~/agentic-bi-dataops-copilot/portfolio-content/agentic-bi-dataops-copilot/zh-TW.md "$CONTENT_DIR/" && echo "zh-TW.md OK" || echo "zh-TW.md FAIL"
 
             echo "=== [3/6] Portfolio nginx proxy ==="
             python3 ~/agentic-bi-dataops-copilot/portfolio-content/inject-nginx.py 2>&1 && echo "inject OK" || echo "inject FAIL"
-            grep -c "agentic-bi-dataops-copilot" ~/justin-portfolio/docker/nginx.conf 2>/dev/null || echo "grep fail"
 
             echo "=== [4/6] Rebuild portfolio ==="
-            echo "--- inspect media format ---"
-            cat ~/justin-portfolio/content/projects/excel-python-data-analysis/project.override.json 2>/dev/null | python3 -c "import json,sys; d=json.load(sys.stdin); print(json.dumps(d.get('media',[])[0], indent=2, ensure_ascii=False))" || echo "no excel project"
-            echo "--- copy screenshots to portfolio public ---"
             PUBDIR=~/justin-portfolio/public/portfolio/projects/agentic-bi-dataops-copilot
             mkdir -p "$PUBDIR/screenshots"
-            ls ~/agentic-bi-dataops-copilot/portfolio-content/screenshots/ 2>&1 || echo "screenshots src missing"
-            cp ~/agentic-bi-dataops-copilot/portfolio-content/screenshots/*.webp "$PUBDIR/screenshots/" 2>&1 && echo "screenshots copied" || echo "screenshot copy FAIL"
-            cp ~/agentic-bi-dataops-copilot/portfolio-content/screenshots/cover.webp "$PUBDIR/cover.webp" 2>&1 && echo "cover.webp copied" || echo "cover copy FAIL"
-            ls "$PUBDIR/screenshots/" 2>/dev/null | head -5
-            echo "--- inject into scan report ---"
-            python3 ~/agentic-bi-dataops-copilot/portfolio-content/inject-scan-report.py 2>&1 && echo "scan inject OK" || echo "scan inject FAIL"
-            echo "--- patch sync-catalog to allow verified /p/ demo links ---"
+            cp ~/agentic-bi-dataops-copilot/portfolio-content/screenshots/*.webp "$PUBDIR/screenshots/" && echo "screenshots copied" || echo "screenshot copy FAIL"
+            cp ~/agentic-bi-dataops-copilot/portfolio-content/screenshots/cover.webp "$PUBDIR/cover.webp" && echo "cover.webp copied" || echo "cover copy FAIL"
+            python3 ~/agentic-bi-dataops-copilot/portfolio-content/inject-scan-report.py 2>&1
             python3 -c "f=open('/home/neojustin/justin-portfolio/scripts/catalog/sync-catalog.ts','r+'); c=f.read(); old='link.url.includes(\"neojustin.dothost.net/p/\")'; new='link.url.includes(\"neojustin.dothost.net/p/\") && !link.url.includes(\"agentic-bi-dataops-copilot\")'; nc=c.replace(old,new); f.seek(0); f.write(nc); f.truncate(); f.close(); print('patched' if nc!=c else 'already patched')" 2>&1
             cd ~/justin-portfolio
             npm ci 2>/dev/null || npm install
@@ -84,24 +66,11 @@ jobs:
             API_PORT=8003 docker-compose up -d api
             echo "Waiting 30s for API startup..."
             sleep 30
-            echo "--- API container status ---"
-            docker ps -a --filter name=agentic-bi --format "table {{.Names}}\t{{.Status}}\t{{.Ports}}" 2>&1
-            echo "--- API startup logs ---"
-            docker logs --tail 40 agentic-bi-dataops-copilot-api-1 2>&1 || docker logs --tail 40 agentic-bi-dataops-copilot_api_1 2>&1 || echo "no logs found"
-            echo "--- Local API health check ---"
-            curl -s --max-time 10 http://localhost:8003/health 2>&1 || echo "API not reachable on 8003"
             API_PORT=8003 docker-compose up -d frontend
 
             echo "=== [6/6] Status check ==="
             docker ps --format "table {{.Names}}\t{{.Status}}\t{{.Ports}}" | grep -E "agentic|portfolio-web|NAMES" || true
             curl -s --max-time 10 http://localhost:8003/health && echo " - API healthy" || echo " - API starting..."
-            echo "--- nginx proxy check ---"
-            grep -c "agentic-bi-dataops-copilot" ~/justin-portfolio/docker/nginx.conf 2>/dev/null && echo "nginx has proxy rules" || echo "nginx missing proxy rules"
-            echo "--- portfolio content check ---"
-            ls ~/justin-portfolio/content/projects/agentic-bi-dataops-copilot/ 2>/dev/null || echo "content dir missing"
-            echo "--- portfolio catalog check ---"
             grep -l "agentic-bi-dataops-copilot" ~/justin-portfolio/src/generated/*.json 2>/dev/null && echo "PROJECT IN CATALOG" || echo "not in catalog"
-            echo "--- frontend proxy test ---"
-            curl -s -o /dev/null -w "frontend status: %{http_code}" http://localhost:5173/ 2>/dev/null || echo "frontend unreachable"
             echo "Live at: https://neojustin.dothost.net/p/agentic-bi-dataops-copilot/"
             echo "=== Deployment complete ==="
