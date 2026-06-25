@@ -16,11 +16,10 @@ jobs:
           username: neojustin
           password: ${{ secrets.SSH_PASSWORD }}
           port: 2965
-          command_timeout: 20m
+          command_timeout: 30m
           script_stop: false
           script: |
-            echo "=== Starting deployment ==="
-            # Clone or pull
+            echo "=== [1/7] Checking project directory ==="
             if [ -d ~/agentic-bi-dataops-copilot ]; then
               cd ~/agentic-bi-dataops-copilot
               git pull origin main
@@ -28,19 +27,26 @@ jobs:
               git clone https://github.com/Justin21523/agentic-bi-dataops-copilot.git ~/agentic-bi-dataops-copilot
               cd ~/agentic-bi-dataops-copilot
             fi
-            echo "=== Code updated ==="
+            echo "=== [2/7] Code updated ==="
 
-            # Stop old containers
+            cd ~/agentic-bi-dataops-copilot
+            cp .env.example .env 2>/dev/null || true
+
+            echo "=== [3/7] Stopping old containers ==="
             docker-compose down 2>/dev/null || true
-            echo "=== Old containers stopped ==="
 
-            # Build and start
-            docker-compose build
-            docker-compose up -d
-            echo "=== Services started ==="
+            echo "=== [4/7] Building API image ==="
+            docker-compose build api
 
-            # Health check
+            echo "=== [5/7] Building Frontend image ==="
+            docker-compose build frontend
+
+            echo "=== [6/7] Starting services ==="
+            API_PORT=8003 docker-compose up -d api
             sleep 5
-            docker ps --format "table {{.Names}}\t{{.Status}}"
-            curl -s http://localhost:8003/health || echo "Backend starting up..."
+            API_PORT=8003 docker-compose up -d frontend
+
+            echo "=== [7/7] Status check ==="
+            docker ps --format "table {{.Names}}\t{{.Status}}\t{{.Ports}}" | grep -E "agentic|NAMES" || docker ps --format "table {{.Names}}\t{{.Status}}\t{{.Ports}}"
+            curl -s --max-time 10 http://localhost:8003/health && echo " - API healthy" || echo " - API starting up..."
             echo "=== Deployment complete ==="

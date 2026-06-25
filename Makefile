@@ -1,75 +1,61 @@
-PYTHON ?= python3.12
-VENV := backend/.venv
-PIP := $(VENV)/bin/pip
-PY := $(VENV)/bin/python
+.PHONY: install sample-data etl evaluate api app frontend-install frontend-dev frontend-build test lint format docker-up docker-down clean help
 
-.PHONY: install install-backend install-frontend sample-data etl train evaluate api frontend dev test test-backend test-frontend test-e2e import-data import-fixture docker-up docker-down
+PYTHON := uv run python
+PYTEST  := uv run pytest
 
-install: install-backend install-frontend
+help:
+	@echo "Agentic BI / DataOps Copilot — Make Targets"
+	@echo "============================================="
+	@awk 'BEGIN{FS=":.*##"} /^[a-zA-Z_-]+:.*##/{printf "  \033[36m%-14s\033[0m %s\n", $$1, $$2}' $(MAKEFILE_LIST)
 
-install-backend:
-	$(PYTHON) -m venv $(VENV)
-	$(PIP) install -U pip
-	$(PIP) install -e "backend[dev]"
+install:           ## Install all dependencies
+	uv sync
 
-install-frontend:
-	cd frontend && npm install
+sample-data:       ## Generate synthetic retail CSV files in data/sample/
+	$(PYTHON) scripts/generate_sample_data.py
 
-sample-data:
-	$(PY) -m lyrics_lab.ingestion.generate_sample_data
+etl:               ## Load CSV data into DuckDB warehouse
+	$(PYTHON) scripts/run_etl.py
 
-validate-data:
-	$(PY) -m lyrics_lab.ingestion.validate_safe_data --input-dir data/sample
+evaluate:          ## Run Text2SQL benchmark and print metrics
+	PYTHONPATH=src $(PYTHON) -m evaluation.evaluator
 
-data-ready:
-	$(PY) -m lyrics_lab.ingestion.prepare_data
+api:               ## Start FastAPI backend on :8000
+	PYTHONPATH=src uv run uvicorn api.main:app --host 0.0.0.0 --port 8000 --reload
 
-import-data:
-	@if [ -z "$(INPUT)" ]; then echo "Usage: make import-data INPUT=/path/to/safe-derived-csv"; exit 2; fi
-	$(PY) -m lyrics_lab.ingestion.import_data --input-dir "$(INPUT)"
-
-import-fixture:
-	rm -rf data/import_fixture_work
-	mkdir -p data/import_fixture_work
-	cp examples/import_fixture/*.csv data/import_fixture_work/
-	$(PY) -m lyrics_lab.ingestion.import_data --input-dir data/import_fixture_work
-
-etl:
-	$(PY) -m lyrics_lab.ingestion.etl
-
-train:
-	$(PY) -m lyrics_lab.models.train
-	$(PY) -m lyrics_lab.ingestion.etl
-
-evaluate:
-	$(PY) -m lyrics_lab.evaluation.run_evaluation
-
-api:
-	$(PY) -m uvicorn lyrics_lab.api.main:app --app-dir backend/src --reload --host 0.0.0.0 --port 8000
-
-frontend:
+app:               ## Start React frontend dev server on :5173 (alias for frontend-dev)
 	cd frontend && npm run dev
 
-dev:
-	$(MAKE) sample-data
-	$(MAKE) train
-	$(MAKE) evaluate
-	$(MAKE) etl
-	$(MAKE) -j2 api frontend
+frontend-install:  ## Install React frontend npm dependencies
+	cd frontend && npm install
 
-test: test-backend test-frontend
+frontend-dev:      ## Start React frontend dev server on :5173 (requires API on :8000)
+	cd frontend && npm run dev
 
-test-backend:
-	cd backend && .venv/bin/pytest
+frontend-build:    ## Build React frontend for production into frontend/dist/
+	cd frontend && npm run build
 
-test-frontend:
-	cd frontend && npm test
+test:              ## Run pytest test suite
+	$(PYTEST) -v --tb=short
 
-test-e2e:
-	cd frontend && npm run test:e2e
+test-cov:          ## Run tests with coverage report
+	$(PYTEST) --cov=src --cov-report=term-missing --cov-report=html
 
-docker-up:
-	docker compose up --build
+lint:              ## Lint with ruff
+	uv run ruff check src/ tests/ scripts/
 
-docker-down:
+format:            ## Format with ruff
+	uv run ruff format src/ tests/ scripts/
+
+docker-up:         ## Build and start all Docker services (api + app)
+	docker compose up --build -d
+	@echo "API:  http://localhost:8000/health"
+	@echo "App:  http://localhost:8501"
+
+docker-down:       ## Stop all Docker services
 	docker compose down
+
+clean:             ## Remove generated files and caches
+	rm -rf data/sample/*.csv data/warehouse.duckdb reports/
+	find . -type d -name __pycache__ -exec rm -rf {} + 2>/dev/null || true
+	find . -type f -name "*.pyc" -delete 2>/dev/null || true
