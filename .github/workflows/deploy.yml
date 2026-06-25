@@ -70,10 +70,10 @@ jobs:
             cd ~/justin-portfolio
             npm ci 2>/dev/null || npm install
             npm run build 2>&1 | grep -E "agentic|89|90|91|projects|Error|Saved|warn|invalid"
-            echo "--- catalog structure ---"
-            python3 -c "import json; cat=json.load(open('/home/neojustin/justin-portfolio/src/generated/project-catalog.json')); print(type(cat).__name__, list(cat.keys())[:5] if isinstance(cat,dict) else len(cat))" 2>&1
-            echo "--- our project in catalog ---"
-            python3 -c "import json; cat=json.load(open('/home/neojustin/justin-portfolio/src/generated/project-catalog.json')); projects=list(cat.values())[0] if isinstance(cat,dict) else cat; matches=[p for p in projects if 'agentic-bi' in str(p.get('slug',''))]; print(json.dumps({k:v for k,v in matches[0].items() if k in ['slug','links','coverImage']}, ensure_ascii=False)) if matches else print('not found')" 2>&1
+            echo "--- all live/demo links in catalog ---"
+            python3 -c "import json; cat=json.load(open('/home/neojustin/justin-portfolio/src/generated/project-catalog.json')); [print(p.get('slug'),l.get('kind'),l.get('url','')[:60]) for p in cat for l in p.get('links',[]) if l.get('kind') not in ('github','npm')]" 2>&1 | head -10 || true
+            echo "--- our raw override.json ---"
+            cat ~/justin-portfolio/content/projects/agentic-bi-dataops-copilot/project.override.json 2>/dev/null | python3 -c "import json,sys; d=json.load(sys.stdin); print('links:',json.dumps(d.get('links',[]),ensure_ascii=False))"
             docker-compose build web
             docker-compose up -d web
             echo "Portfolio rebuilt."
