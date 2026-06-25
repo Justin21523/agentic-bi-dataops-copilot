@@ -70,8 +70,10 @@ jobs:
             cd ~/justin-portfolio
             npm ci 2>/dev/null || npm install
             npm run build 2>&1 | grep -E "agentic|89|90|91|projects|Error|Saved|warn|invalid"
-            echo "--- our project in catalog (after build) ---"
-            python3 -c "import json; cat=json.load(open('/home/neojustin/justin-portfolio/src/generated/project-catalog.json')); projects=cat.get('projects', cat if isinstance(cat,list) else []); [print(json.dumps({k:v for k,v in p.items() if k in ['slug','links','coverImage']}, ensure_ascii=False)) for p in projects if 'agentic-bi' in str(p.get('slug',''))]" 2>&1 || echo "catalog check failed"
+            echo "--- catalog structure ---"
+            python3 -c "import json; cat=json.load(open('/home/neojustin/justin-portfolio/src/generated/project-catalog.json')); print(type(cat).__name__, list(cat.keys())[:5] if isinstance(cat,dict) else len(cat))" 2>&1
+            echo "--- our project in catalog ---"
+            python3 -c "import json; cat=json.load(open('/home/neojustin/justin-portfolio/src/generated/project-catalog.json')); projects=list(cat.values())[0] if isinstance(cat,dict) else cat; matches=[p for p in projects if 'agentic-bi' in str(p.get('slug',''))]; print(json.dumps({k:v for k,v in matches[0].items() if k in ['slug','links','coverImage']}, ensure_ascii=False)) if matches else print('not found')" 2>&1
             docker-compose build web
             docker-compose up -d web
             echo "Portfolio rebuilt."
