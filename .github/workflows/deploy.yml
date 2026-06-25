@@ -19,34 +19,18 @@ jobs:
           command_timeout: 30m
           script_stop: false
           script: |
-            echo "=== [1/7] Checking project directory ==="
-            if [ -d ~/agentic-bi-dataops-copilot ]; then
-              cd ~/agentic-bi-dataops-copilot
-              git pull origin main
-            else
-              git clone https://github.com/Justin21523/agentic-bi-dataops-copilot.git ~/agentic-bi-dataops-copilot
-              cd ~/agentic-bi-dataops-copilot
-            fi
-            echo "=== [2/7] Code updated ==="
-
-            cd ~/agentic-bi-dataops-copilot
-            cp .env.example .env 2>/dev/null || true
-
-            echo "=== [3/7] Stopping old containers ==="
-            docker-compose down 2>/dev/null || true
-
-            echo "=== [4/7] Building API image (no-cache) ==="
-            docker-compose build --no-cache api
-
-            echo "=== [5/7] Building Frontend image (no-cache) ==="
-            docker-compose build --no-cache frontend
-
-            echo "=== [6/7] Starting services ==="
-            API_PORT=8003 docker-compose up -d api
-            sleep 5
-            API_PORT=8003 docker-compose up -d frontend
-
-            echo "=== [7/7] Status check ==="
-            docker ps --format "table {{.Names}}\t{{.Status}}\t{{.Ports}}" | grep -E "agentic|NAMES" || docker ps --format "table {{.Names}}\t{{.Status}}\t{{.Ports}}"
-            curl -s --max-time 10 http://localhost:8003/health && echo " - API healthy" || echo " - API starting up..."
-            echo "=== Deployment complete ==="
+            echo "=== SERVER EXPLORE ==="
+            echo "--- Home dir ---"
+            ls -la ~/
+            echo "--- /var/www or /srv ---"
+            ls /var/www/ 2>/dev/null || echo "no /var/www"
+            ls /srv/ 2>/dev/null || echo "no /srv"
+            echo "--- Docker containers ---"
+            docker ps --format "table {{.Names}}\t{{.Status}}\t{{.Ports}}"
+            echo "--- Nginx sites ---"
+            ls /etc/nginx/sites-enabled/ 2>/dev/null || ls /etc/nginx/conf.d/ 2>/dev/null || echo "no nginx config found"
+            echo "--- Nginx projects config sample ---"
+            cat /etc/nginx/sites-enabled/* 2>/dev/null | head -80 || cat /etc/nginx/conf.d/*.conf 2>/dev/null | head -80 || true
+            echo "--- /projects or portfolio dir ---"
+            find / -name "projects" -type d -maxdepth 6 2>/dev/null | head -10
+            echo "=== DONE ==="
