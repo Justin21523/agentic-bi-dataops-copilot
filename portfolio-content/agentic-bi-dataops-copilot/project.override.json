@@ -33,5 +33,144 @@
         "en": "View GitHub"
       }
     }
+  ],
+  "media": [
+    {
+      "id": "nl-query-screenshot",
+      "type": "image",
+      "src": "/portfolio/projects/agentic-bi-dataops-copilot/screenshots/nl-query.webp",
+      "alt": {
+        "zh-TW": "自然語言查詢介面，支援中文提問並自動轉換為 SQL。",
+        "en": "Natural Language Query interface — ask questions in plain language and get SQL results."
+      },
+      "title": {
+        "zh-TW": "自然語言查詢",
+        "en": "Natural Language Query"
+      },
+      "caption": {
+        "zh-TW": "輸入中文問題，AI 自動生成 SQL 並查詢 DuckDB 倉儲。",
+        "en": "Type a question in plain language; the AI generates SQL and queries the DuckDB warehouse."
+      },
+      "featured": true
+    },
+    {
+      "id": "dashboard-screenshot",
+      "type": "image",
+      "src": "/portfolio/projects/agentic-bi-dataops-copilot/screenshots/dashboard.webp",
+      "alt": {
+        "zh-TW": "系統儀表板，顯示資料倉儲狀態與核心指標。",
+        "en": "System dashboard showing warehouse status and core metrics."
+      },
+      "title": {
+        "zh-TW": "儀表板",
+        "en": "Dashboard"
+      },
+      "caption": {
+        "zh-TW": "一覽系統健康狀態、資料表統計與最近查詢記錄。",
+        "en": "Overview of system health, table statistics, and recent query history."
+      }
+    },
+    {
+      "id": "workflow-screenshot",
+      "type": "image",
+      "src": "/portfolio/projects/agentic-bi-dataops-copilot/screenshots/workflow.webp",
+      "alt": {
+        "zh-TW": "DataOps 工作流程圖，展示資料管道各個階段。",
+        "en": "DataOps workflow map showing all pipeline stages."
+      },
+      "title": {
+        "zh-TW": "工作流程圖",
+        "en": "Workflow Map"
+      },
+      "caption": {
+        "zh-TW": "互動式流程圖，點選任一節點即可跳轉到對應功能頁面。",
+        "en": "Interactive workflow diagram — click any node to jump to the corresponding feature page."
+      }
+    },
+    {
+      "id": "sql-playground-screenshot",
+      "type": "image",
+      "src": "/portfolio/projects/agentic-bi-dataops-copilot/screenshots/sql-playground.webp",
+      "alt": {
+        "zh-TW": "SQL 工作台，支援直接編寫並執行 SQL 查詢。",
+        "en": "SQL Playground for writing and executing queries directly."
+      },
+      "title": {
+        "zh-TW": "SQL 工作台",
+        "en": "SQL Playground"
+      },
+      "caption": {
+        "zh-TW": "自由撰寫 SQL，即時查詢 DuckDB 並檢視結果表格。",
+        "en": "Write raw SQL queries and view results from the DuckDB warehouse in real time."
+      }
+    },
+    {
+      "id": "schema-explorer-screenshot",
+      "type": "image",
+      "src": "/portfolio/projects/agentic-bi-dataops-copilot/screenshots/schema-explorer.webp",
+      "alt": {
+        "zh-TW": "Schema 探索器，顯示資料表結構與欄位說明。",
+        "en": "Schema Explorer showing table structures and column descriptions."
+      },
+      "title": {
+        "zh-TW": "Schema 探索器",
+        "en": "Schema Explorer"
+      },
+      "caption": {
+        "zh-TW": "瀏覽資料倉儲的所有資料表、欄位定義與業務語意描述。",
+        "en": "Browse all warehouse tables, column definitions, and business semantic descriptions."
+      }
+    },
+    {
+      "id": "guardrails-screenshot",
+      "type": "image",
+      "src": "/portfolio/projects/agentic-bi-dataops-copilot/screenshots/guardrails.webp",
+      "alt": {
+        "zh-TW": "護欄分析頁面，顯示 SQL 安全驗證統計。",
+        "en": "Guardrail Analytics page showing SQL safety validation statistics."
+      },
+      "title": {
+        "zh-TW": "護欄分析",
+        "en": "Guardrail Analytics"
+      },
+      "caption": {
+        "zh-TW": "SQL 安全強制執行 — 查詢驗證積核軌跡與封鎖率統計。",
+        "en": "SQL safety enforcement — query validation audit trail and block-rate statistics."
+      }
+    },
+    {
+      "id": "insights-screenshot",
+      "type": "image",
+      "src": "/portfolio/projects/agentic-bi-dataops-copilot/screenshots/insights.webp",
+      "alt": {
+        "zh-TW": "洞察卡片，自動生成業務分析建議。",
+        "en": "Insight Cards with auto-generated business analysis recommendations."
+      },
+      "title": {
+        "zh-TW": "洞察卡片",
+        "en": "Insight Cards"
+      },
+      "caption": {
+        "zh-TW": "AI 自動分析資料趨勢，生成可執行的業務洞察建議。",
+        "en": "AI-generated actionable business insights derived from warehouse data trends."
+      }
+    },
+    {
+      "id": "revenue-screenshot",
+      "type": "image",
+      "src": "/portfolio/projects/agentic-bi-dataops-copilot/screenshots/revenue.webp",
+      "alt": {
+        "zh-TW": "收入智慧分析頁面，顯示銷售趨勢與分析圖表。",
+        "en": "Revenue Intelligence page with sales trend charts and analytics."
+      },
+      "title": {
+        "zh-TW": "收入智慧",
+        "en": "Revenue Intelligence"
+      },
+      "caption": {
+        "zh-TW": "收入趨勢分析、客戶分群與銷售預測。",
+        "en": "Revenue trend analysis, customer segmentation, and sales forecasting."
+      }
+    }
   ]
 }

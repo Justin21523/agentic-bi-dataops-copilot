@@ -21,6 +21,11 @@ jobs:
           command_timeout: 30m
           script_stop: false
           script: |
+            echo "--- prune docker to free disk space ---"
+            df -h / 2>/dev/null | tail -1
+            docker system prune -f 2>&1 | grep -E "reclaimed|Total"
+            df -h / 2>/dev/null | tail -1
+
             echo "=== [1/6] Update project repo ==="
             if [ -d ~/agentic-bi-dataops-copilot ]; then
               cd ~/agentic-bi-dataops-copilot && git pull origin main
@@ -70,11 +75,6 @@ jobs:
             echo "Portfolio rebuilt."
 
             echo "=== [5/6] Build and start BI Copilot services ==="
-            echo "--- disk usage before prune ---"
-            df -h / 2>/dev/null | tail -1
-            docker system prune -f 2>&1 | tail -3
-            echo "--- disk usage after prune ---"
-            df -h / 2>/dev/null | tail -1
             cd ~/agentic-bi-dataops-copilot
             docker-compose down 2>/dev/null || true
             docker-compose build api
