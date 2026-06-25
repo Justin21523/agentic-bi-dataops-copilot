@@ -69,11 +69,10 @@ jobs:
             python3 ~/agentic-bi-dataops-copilot/portfolio-content/inject-scan-report.py 2>&1 && echo "scan inject OK" || echo "scan inject FAIL"
             cd ~/justin-portfolio
             npm ci 2>/dev/null || npm install
-            npm run build 2>&1 | grep -E "agentic|89|90|91|projects|Error|Saved|warn|invalid"
-            echo "--- all live/demo links in catalog ---"
-            python3 -c "import json; cat=json.load(open('/home/neojustin/justin-portfolio/src/generated/project-catalog.json')); [print(p.get('slug'),l.get('kind'),l.get('url','')[:60]) for p in cat for l in p.get('links',[]) if l.get('kind') not in ('github','npm')]" 2>&1 | head -10 || true
-            echo "--- our raw override.json ---"
-            cat ~/justin-portfolio/content/projects/agentic-bi-dataops-copilot/project.override.json 2>/dev/null | python3 -c "import json,sys; d=json.load(sys.stdin); print('links:',json.dumps(d.get('links',[]),ensure_ascii=False))"
+            npm run build 2>&1 | grep -E "agentic|89|90|91|projects|Error|Saved|warn|invalid|link|Live|strip"
+            echo "--- excel live link override ---"
+            cat ~/justin-portfolio/content/projects/excel-python-data-analysis/project.override.json 2>/dev/null | python3 -c "import json,sys; d=json.load(sys.stdin); [print(json.dumps(l,ensure_ascii=False)) for l in d.get('links',[])]"
+            echo "--- build warnings/errors for our project ---"
             docker-compose build web
             docker-compose up -d web
             echo "Portfolio rebuilt."
