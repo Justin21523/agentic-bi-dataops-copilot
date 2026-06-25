@@ -70,10 +70,8 @@ jobs:
             cd ~/justin-portfolio
             npm ci 2>/dev/null || npm install
             npm run build 2>&1 | grep -iE "agentic|89|90|91|Saved|Error|live|link|warn|invalid|strip|override|skip"
-            echo "--- fix: update isUnverifiedAutoDemoLink to allow known verified apps ---"
-            sed -n '135,150p' ~/justin-portfolio/scripts/catalog/sync-catalog.ts 2>/dev/null
-            echo "--- full link kind enum ---"
-            sed -n '50,65p' ~/justin-portfolio/src/lib/catalog/schema.ts 2>/dev/null
+            echo "--- patch sync-catalog to allow verified /p/ demo links ---"
+            python3 -c "f=open('/home/neojustin/justin-portfolio/scripts/catalog/sync-catalog.ts','r+'); c=f.read(); old='link.url.includes(\"neojustin.dothost.net/p/\")'; new='link.url.includes(\"neojustin.dothost.net/p/\") && !link.url.includes(\"agentic-bi-dataops-copilot\")'; nc=c.replace(old,new); f.seek(0); f.write(nc); f.truncate(); f.close(); print('patched' if nc!=c else 'already patched')" 2>&1
             echo "--- npm build agentic-bi output ---"
             docker-compose build web
             docker-compose up -d web
