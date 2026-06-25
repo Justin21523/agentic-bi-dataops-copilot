@@ -48,7 +48,9 @@ jobs:
             echo "=== [4/6] Rebuild portfolio ==="
             cd ~/justin-portfolio
             npm ci 2>/dev/null || npm install
-            npm run build
+            npm run catalog:validate 2>&1 | grep -E "agentic|Error|error|warn|89|90|project"
+            echo "--- full build ---"
+            npm run build 2>&1 | grep -E "agentic|89|90|projects|Error"
             docker-compose build --no-cache web
             docker-compose up -d web
             echo "Portfolio rebuilt."
