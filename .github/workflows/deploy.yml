@@ -1,0 +1,46 @@
+name: Deploy to Server
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy via SSH
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: live.dothost.net
+          username: neojustin
+          password: ${{ secrets.SSH_PASSWORD }}
+          port: 2965
+          command_timeout: 20m
+          script_stop: false
+          script: |
+            echo "=== Starting deployment ==="
+            # Clone or pull
+            if [ -d ~/agentic-bi-dataops-copilot ]; then
+              cd ~/agentic-bi-dataops-copilot
+              git pull origin main
+            else
+              git clone https://github.com/Justin21523/agentic-bi-dataops-copilot.git ~/agentic-bi-dataops-copilot
+              cd ~/agentic-bi-dataops-copilot
+            fi
+            echo "=== Code updated ==="
+
+            # Stop old containers
+            docker-compose down 2>/dev/null || true
+            echo "=== Old containers stopped ==="
+
+            # Build and start
+            docker-compose build
+            docker-compose up -d
+            echo "=== Services started ==="
+
+            # Health check
+            sleep 5
+            docker ps --format "table {{.Names}}\t{{.Status}}"
+            curl -s http://localhost:8003/health || echo "Backend starting up..."
+            echo "=== Deployment complete ==="
