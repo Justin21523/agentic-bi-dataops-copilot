@@ -67,12 +67,11 @@ jobs:
             ls "$PUBDIR/screenshots/" 2>/dev/null | head -5
             echo "--- inject into scan report ---"
             python3 ~/agentic-bi-dataops-copilot/portfolio-content/inject-scan-report.py 2>&1 && echo "scan inject OK" || echo "scan inject FAIL"
-            cd ~/justin-portfolio
-            npm ci 2>/dev/null || npm install
-            npm run build 2>&1 | grep -iE "agentic|89|90|91|Saved|Error|live|link|warn|invalid|strip|override|skip"
             echo "--- patch sync-catalog to allow verified /p/ demo links ---"
             python3 -c "f=open('/home/neojustin/justin-portfolio/scripts/catalog/sync-catalog.ts','r+'); c=f.read(); old='link.url.includes(\"neojustin.dothost.net/p/\")'; new='link.url.includes(\"neojustin.dothost.net/p/\") && !link.url.includes(\"agentic-bi-dataops-copilot\")'; nc=c.replace(old,new); f.seek(0); f.write(nc); f.truncate(); f.close(); print('patched' if nc!=c else 'already patched')" 2>&1
-            echo "--- npm build agentic-bi output ---"
+            cd ~/justin-portfolio
+            npm ci 2>/dev/null || npm install
+            npm run build 2>&1 | grep -iE "Saved|Error|agentic"
             docker-compose build web
             docker-compose up -d web
             echo "Portfolio rebuilt."
