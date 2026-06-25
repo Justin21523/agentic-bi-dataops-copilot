@@ -21,8 +21,7 @@ uv.lock
 data/warehouse.duckdb
 data/warehouse.duckdb.wal
 
-# Generated sample data (never commit raw data)
-data/sample/*.csv
+# Sample CSVs are committed (synthetic data, needed for deployment)
 data/sample/*.parquet
 
 # Evaluation reports

@@ -14,6 +14,7 @@ RUN uv sync --no-group dev --no-install-project
 
 COPY src/ ./src/
 COPY configs/ ./configs/
+COPY scripts/ ./scripts/
 
 RUN mkdir -p data/sample data/schemas data/metadata
 

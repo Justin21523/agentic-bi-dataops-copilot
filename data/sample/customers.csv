@@ -1,0 +1,301 @@
+customer_id,name,email,city,state,country,segment,signup_date,created_at
+CUST-0001,Grace Roberts,grace.roberts1@example.com,Phoenix,AZ,US,B2C,2023-06-25,2023-06-25T00:00:00
+CUST-0002,Nancy Mitchell,nancy.mitchell2@example.com,Miami,FL,US,B2C,2023-10-25,2023-10-25T00:00:00
+CUST-0003,Julia Harris,julia.harris3@example.com,Miami,FL,US,B2C,2024-01-28,2024-01-28T00:00:00
+CUST-0004,Zoe King,zoe.king4@example.com,New York,NY,US,B2C,2025-01-24,2025-01-24T00:00:00
+CUST-0005,Frank Lewis,frank.lewis5@example.com,Las Vegas,NV,US,B2C,2023-11-03,2023-11-03T00:00:00
+CUST-0006,Reid King,reid.king6@example.com,Los Angeles,CA,US,B2C,2023-07-30,2023-07-30T00:00:00
+CUST-0007,Fiona King,fiona.king7@example.com,Boston,MA,US,B2C,2025-03-08,2025-03-08T00:00:00
+CUST-0008,Nancy Thompson,nancy.thompson8@example.com,Portland,OR,US,B2C,2025-04-29,2025-04-29T00:00:00
+CUST-0009,Victor Stewart,victor.stewart9@example.com,Philadelphia,PA,US,B2C,2024-09-27,2024-09-27T00:00:00
+CUST-0010,Zara Turner,zara.turner10@example.com,New York,NY,US,SMB,2024-11-03,2024-11-03T00:00:00
+CUST-0011,Carol Turner,carol.turner11@example.com,San Diego,CA,US,B2C,2023-03-19,2023-03-19T00:00:00
+CUST-0012,Victor Green,victor.green12@example.com,Houston,TX,US,B2C,2024-01-27,2024-01-27T00:00:00
+CUST-0013,Nancy Stewart,nancy.stewart13@example.com,Las Vegas,NV,US,B2C,2024-06-04,2024-06-04T00:00:00
+CUST-0014,Uma Perez,uma.perez14@example.com,Dallas,TX,US,B2C,2024-12-31,2024-12-31T00:00:00
+CUST-0015,Bob Miller,bob.miller15@example.com,Chicago,IL,US,B2B,2023-07-24,2023-07-24T00:00:00
+CUST-0016,Ivan Walker,ivan.walker16@example.com,Memphis,TN,US,SMB,2025-01-05,2025-01-05T00:00:00
+CUST-0017,Zoe Evans,zoe.evans17@example.com,Houston,TX,US,B2B,2024-03-19,2024-03-19T00:00:00
+CUST-0018,Yara Lee,yara.lee18@example.com,Phoenix,AZ,US,B2C,2024-06-28,2024-06-28T00:00:00
+CUST-0019,Paul Adams,paul.adams19@example.com,Portland,OR,US,B2C,2023-12-14,2023-12-14T00:00:00
+CUST-0020,Will Davis,will.davis20@example.com,Dallas,TX,US,B2C,2025-02-12,2025-02-12T00:00:00
+CUST-0021,Xena Robinson,xena.robinson21@example.com,Cleveland,OH,US,B2B,2024-03-21,2024-03-21T00:00:00
+CUST-0022,Wendy Harris,wendy.harris22@example.com,Miami,FL,US,B2C,2023-02-02,2023-02-02T00:00:00
+CUST-0023,Mike Harris,mike.harris23@example.com,Memphis,TN,US,B2C,2023-07-09,2023-07-09T00:00:00
+CUST-0024,Kevin Harris,kevin.harris24@example.com,Los Angeles,CA,US,B2C,2025-03-03,2025-03-03T00:00:00
+CUST-0025,Una Wilson,una.wilson25@example.com,Seattle,WA,US,B2C,2023-09-21,2023-09-21T00:00:00
+CUST-0026,Kevin Thompson,kevin.thompson26@example.com,Minneapolis,MN,US,B2C,2024-01-08,2024-01-08T00:00:00
+CUST-0027,Iris Walker,iris.walker27@example.com,Raleigh,NC,US,B2B,2025-05-09,2025-05-09T00:00:00
+CUST-0028,Yara Baker,yara.baker28@example.com,Las Vegas,NV,US,B2C,2024-05-15,2024-05-15T00:00:00
+CUST-0029,Fiona Moore,fiona.moore29@example.com,Nashville,TN,US,B2B,2025-03-04,2025-03-04T00:00:00
+CUST-0030,Fiona Davis,fiona.davis30@example.com,Atlanta,GA,US,B2B,2024-05-29,2024-05-29T00:00:00
+CUST-0031,Carol Taylor,carol.taylor31@example.com,Denver,CO,US,B2C,2024-12-13,2024-12-13T00:00:00
+CUST-0032,Hannah Moore,hannah.moore32@example.com,Las Vegas,NV,US,B2C,2025-02-25,2025-02-25T00:00:00
+CUST-0033,Diana Mitchell,diana.mitchell33@example.com,Phoenix,AZ,US,SMB,2024-09-07,2024-09-07T00:00:00
+CUST-0034,Zara Wright,zara.wright34@example.com,Seattle,WA,US,B2B,2024-07-28,2024-07-28T00:00:00
+CUST-0035,Diana Martin,diana.martin35@example.com,New York,NY,US,SMB,2025-01-14,2025-01-14T00:00:00
+CUST-0036,Uma Hall,uma.hall36@example.com,Seattle,WA,US,B2C,2023-07-15,2023-07-15T00:00:00
+CUST-0037,Elena Harris,elena.harris37@example.com,Denver,CO,US,B2C,2023-10-20,2023-10-20T00:00:00
+CUST-0038,Wendy Evans,wendy.evans38@example.com,Phoenix,AZ,US,B2C,2024-01-14,2024-01-14T00:00:00
+CUST-0039,Xavier Perez,xavier.perez39@example.com,San Antonio,TX,US,B2C,2023-02-16,2023-02-16T00:00:00
+CUST-0040,Beth Young,beth.young40@example.com,Raleigh,NC,US,B2C,2024-05-09,2024-05-09T00:00:00
+CUST-0041,Bob Robinson,bob.robinson41@example.com,Minneapolis,MN,US,SMB,2025-05-17,2025-05-17T00:00:00
+CUST-0042,Beth Moore,beth.moore42@example.com,San Diego,CA,US,B2C,2024-01-29,2024-01-29T00:00:00
+CUST-0043,Frank Green,frank.green43@example.com,Las Vegas,NV,US,B2C,2025-02-11,2025-02-11T00:00:00
+CUST-0044,Mia Scott,mia.scott44@example.com,Atlanta,GA,US,SMB,2023-09-01,2023-09-01T00:00:00
+CUST-0045,Mike Garcia,mike.garcia45@example.com,Chicago,IL,US,SMB,2023-12-08,2023-12-08T00:00:00
+CUST-0046,Xena Jackson,xena.jackson46@example.com,Philadelphia,PA,US,B2C,2025-04-23,2025-04-23T00:00:00
+CUST-0047,Beth Hernandez,beth.hernandez47@example.com,San Jose,CA,US,SMB,2024-08-29,2024-08-29T00:00:00
+CUST-0048,Xavier Perez,xavier.perez48@example.com,Sacramento,CA,US,B2C,2024-08-23,2024-08-23T00:00:00
+CUST-0049,Will Hill,will.hill49@example.com,San Diego,CA,US,B2C,2023-12-01,2023-12-01T00:00:00
+CUST-0050,Una White,una.white50@example.com,Sacramento,CA,US,B2C,2023-03-03,2023-03-03T00:00:00
+CUST-0051,Iris Young,iris.young51@example.com,Los Angeles,CA,US,B2C,2024-09-08,2024-09-08T00:00:00
+CUST-0052,Xena Stewart,xena.stewart52@example.com,Houston,TX,US,B2C,2023-04-11,2023-04-11T00:00:00
+CUST-0053,Laura Turner,laura.turner53@example.com,Cleveland,OH,US,SMB,2024-11-12,2024-11-12T00:00:00
+CUST-0054,Frank Allen,frank.allen54@example.com,Seattle,WA,US,B2C,2024-08-24,2024-08-24T00:00:00
+CUST-0055,Mike Garcia,mike.garcia55@example.com,Las Vegas,NV,US,B2C,2024-06-03,2024-06-03T00:00:00
+CUST-0056,Tom Davis,tom.davis56@example.com,Atlanta,GA,US,B2C,2023-08-15,2023-08-15T00:00:00
+CUST-0057,Noah Johnson,noah.johnson57@example.com,Kansas City,MO,US,B2C,2023-02-21,2023-02-21T00:00:00
+CUST-0058,Bob Wilson,bob.wilson58@example.com,Los Angeles,CA,US,SMB,2023-06-02,2023-06-02T00:00:00
+CUST-0059,Henry Nelson,henry.nelson59@example.com,Phoenix,AZ,US,B2C,2024-07-10,2024-07-10T00:00:00
+CUST-0060,Julia Phillips,julia.phillips60@example.com,Los Angeles,CA,US,B2C,2024-12-06,2024-12-06T00:00:00
+CUST-0061,Paul Stewart,paul.stewart61@example.com,Miami,FL,US,SMB,2024-08-20,2024-08-20T00:00:00
+CUST-0062,Yara Allen,yara.allen62@example.com,Austin,TX,US,SMB,2025-01-20,2025-01-20T00:00:00
+CUST-0063,Alice Taylor,alice.taylor63@example.com,Philadelphia,PA,US,B2C,2024-09-25,2024-09-25T00:00:00
+CUST-0064,Alice Green,alice.green64@example.com,Sacramento,CA,US,B2C,2025-02-09,2025-02-09T00:00:00
+CUST-0065,Zoe Evans,zoe.evans65@example.com,Memphis,TN,US,B2C,2023-07-29,2023-07-29T00:00:00
+CUST-0066,Uma Anderson,uma.anderson66@example.com,Raleigh,NC,US,B2C,2023-06-26,2023-06-26T00:00:00
+CUST-0067,Julia Davis,julia.davis67@example.com,Atlanta,GA,US,B2C,2023-06-07,2023-06-07T00:00:00
+CUST-0068,Victor Wilson,victor.wilson68@example.com,Nashville,TN,US,B2C,2023-03-11,2023-03-11T00:00:00
+CUST-0069,Tina Collins,tina.collins69@example.com,San Diego,CA,US,B2C,2025-01-30,2025-01-30T00:00:00
+CUST-0070,Zoe Green,zoe.green70@example.com,San Diego,CA,US,B2C,2023-02-14,2023-02-14T00:00:00
+CUST-0071,Olivia Collins,olivia.collins71@example.com,Kansas City,MO,US,B2C,2024-03-17,2024-03-17T00:00:00
+CUST-0072,Diana Hernandez,diana.hernandez72@example.com,Houston,TX,US,SMB,2023-11-21,2023-11-21T00:00:00
+CUST-0073,Frank Gonzalez,frank.gonzalez73@example.com,Houston,TX,US,B2C,2023-08-13,2023-08-13T00:00:00
+CUST-0074,Alice Collins,alice.collins74@example.com,Phoenix,AZ,US,B2C,2023-12-24,2023-12-24T00:00:00
+CUST-0075,Vera Gonzalez,vera.gonzalez75@example.com,Minneapolis,MN,US,B2C,2024-05-15,2024-05-15T00:00:00
+CUST-0076,Fiona Mitchell,fiona.mitchell76@example.com,Raleigh,NC,US,B2B,2025-05-10,2025-05-10T00:00:00
+CUST-0077,Frank Martin,frank.martin77@example.com,Minneapolis,MN,US,B2B,2024-10-20,2024-10-20T00:00:00
+CUST-0078,Xavier Jackson,xavier.jackson78@example.com,Dallas,TX,US,B2B,2024-02-19,2024-02-19T00:00:00
+CUST-0079,Evan Evans,evan.evans79@example.com,Raleigh,NC,US,B2B,2023-08-09,2023-08-09T00:00:00
+CUST-0080,Olivia Rodriguez,olivia.rodriguez80@example.com,Chicago,IL,US,SMB,2024-07-04,2024-07-04T00:00:00
+CUST-0081,Victor Miller,victor.miller81@example.com,Las Vegas,NV,US,SMB,2023-02-08,2023-02-08T00:00:00
+CUST-0082,Noah Lee,noah.lee82@example.com,Boston,MA,US,B2C,2024-10-22,2024-10-22T00:00:00
+CUST-0083,Liam Stewart,liam.stewart83@example.com,Atlanta,GA,US,SMB,2023-05-25,2023-05-25T00:00:00
+CUST-0084,Will Miller,will.miller84@example.com,Cleveland,OH,US,B2C,2025-03-29,2025-03-29T00:00:00
+CUST-0085,Diana Martinez,diana.martinez85@example.com,Houston,TX,US,SMB,2024-12-09,2024-12-09T00:00:00
+CUST-0086,Paul Thompson,paul.thompson86@example.com,Kansas City,MO,US,SMB,2025-01-20,2025-01-20T00:00:00
+CUST-0087,Vera Wright,vera.wright87@example.com,Phoenix,AZ,US,B2C,2025-01-10,2025-01-10T00:00:00
+CUST-0088,Chris Moore,chris.moore88@example.com,Seattle,WA,US,B2C,2025-02-14,2025-02-14T00:00:00
+CUST-0089,Bob Baker,bob.baker89@example.com,Los Angeles,CA,US,B2C,2024-12-07,2024-12-07T00:00:00
+CUST-0090,Penny Williams,penny.williams90@example.com,Austin,TX,US,B2C,2023-12-28,2023-12-28T00:00:00
+CUST-0091,Ivan Perez,ivan.perez91@example.com,San Jose,CA,US,B2C,2023-06-05,2023-06-05T00:00:00
+CUST-0092,Zara Allen,zara.allen92@example.com,Atlanta,GA,US,B2B,2023-04-25,2023-04-25T00:00:00
+CUST-0093,Reid Young,reid.young93@example.com,Los Angeles,CA,US,B2C,2024-03-23,2024-03-23T00:00:00
+CUST-0094,Tom Jackson,tom.jackson94@example.com,Philadelphia,PA,US,B2B,2024-10-21,2024-10-21T00:00:00
+CUST-0095,Chris Edwards,chris.edwards95@example.com,Austin,TX,US,B2C,2024-09-22,2024-09-22T00:00:00
+CUST-0096,Alice Robinson,alice.robinson96@example.com,Kansas City,MO,US,SMB,2024-02-25,2024-02-25T00:00:00
+CUST-0097,Frank Davis,frank.davis97@example.com,Minneapolis,MN,US,B2C,2025-02-22,2025-02-22T00:00:00
+CUST-0098,Uma Evans,uma.evans98@example.com,Memphis,TN,US,SMB,2025-02-28,2025-02-28T00:00:00
+CUST-0099,Reid Perez,reid.perez99@example.com,Cleveland,OH,US,SMB,2024-10-29,2024-10-29T00:00:00
+CUST-0100,Quinn Perez,quinn.perez100@example.com,Nashville,TN,US,B2B,2023-07-17,2023-07-17T00:00:00
+CUST-0101,George Lopez,george.lopez101@example.com,Miami,FL,US,B2C,2023-08-22,2023-08-22T00:00:00
+CUST-0102,Penny Young,penny.young102@example.com,Dallas,TX,US,SMB,2024-03-04,2024-03-04T00:00:00
+CUST-0103,Reid Roberts,reid.roberts103@example.com,Seattle,WA,US,B2C,2023-07-13,2023-07-13T00:00:00
+CUST-0104,Ivan Hill,ivan.hill104@example.com,San Antonio,TX,US,B2C,2024-10-06,2024-10-06T00:00:00
+CUST-0105,Grace Lewis,grace.lewis105@example.com,Seattle,WA,US,B2C,2025-01-02,2025-01-02T00:00:00
+CUST-0106,Evan Jackson,evan.jackson106@example.com,Dallas,TX,US,B2C,2024-07-10,2024-07-10T00:00:00
+CUST-0107,Sam Gonzalez,sam.gonzalez107@example.com,Dallas,TX,US,B2C,2024-05-13,2024-05-13T00:00:00
+CUST-0108,Jack Adams,jack.adams108@example.com,Philadelphia,PA,US,B2B,2024-09-09,2024-09-09T00:00:00
+CUST-0109,Will Green,will.green109@example.com,Cleveland,OH,US,B2C,2023-05-13,2023-05-13T00:00:00
+CUST-0110,Mike Garcia,mike.garcia110@example.com,Seattle,WA,US,SMB,2024-02-15,2024-02-15T00:00:00
+CUST-0111,Reid Hall,reid.hall111@example.com,Las Vegas,NV,US,SMB,2024-11-30,2024-11-30T00:00:00
+CUST-0112,Beth Young,beth.young112@example.com,Miami,FL,US,B2C,2023-11-22,2023-11-22T00:00:00
+CUST-0113,Olivia Taylor,olivia.taylor113@example.com,Atlanta,GA,US,B2C,2025-04-25,2025-04-25T00:00:00
+CUST-0114,Diana Adams,diana.adams114@example.com,Denver,CO,US,SMB,2023-05-08,2023-05-08T00:00:00
+CUST-0115,Grace Edwards,grace.edwards115@example.com,Portland,OR,US,B2C,2023-11-19,2023-11-19T00:00:00
+CUST-0116,Fiona Gonzalez,fiona.gonzalez116@example.com,Nashville,TN,US,B2C,2025-03-13,2025-03-13T00:00:00
+CUST-0117,Vera Gonzalez,vera.gonzalez117@example.com,Houston,TX,US,SMB,2023-02-10,2023-02-10T00:00:00
+CUST-0118,Iris Perez,iris.perez118@example.com,Austin,TX,US,B2C,2023-12-26,2023-12-26T00:00:00
+CUST-0119,Nancy Stewart,nancy.stewart119@example.com,Miami,FL,US,SMB,2023-03-07,2023-03-07T00:00:00
+CUST-0120,Elena White,elena.white120@example.com,Atlanta,GA,US,B2C,2023-12-29,2023-12-29T00:00:00
+CUST-0121,Elena Young,elena.young121@example.com,Portland,OR,US,B2C,2024-12-31,2024-12-31T00:00:00
+CUST-0122,Grace King,grace.king122@example.com,New York,NY,US,B2C,2024-01-13,2024-01-13T00:00:00
+CUST-0123,Xavier Green,xavier.green123@example.com,Boston,MA,US,B2B,2023-08-31,2023-08-31T00:00:00
+CUST-0124,Vera Mitchell,vera.mitchell124@example.com,Denver,CO,US,B2C,2024-03-23,2024-03-23T00:00:00
+CUST-0125,Diana Wilson,diana.wilson125@example.com,Kansas City,MO,US,B2C,2023-05-21,2023-05-21T00:00:00
+CUST-0126,Nancy Miller,nancy.miller126@example.com,Atlanta,GA,US,B2C,2025-03-10,2025-03-10T00:00:00
+CUST-0127,George Gonzalez,george.gonzalez127@example.com,Austin,TX,US,B2B,2023-03-16,2023-03-16T00:00:00
+CUST-0128,Karen Green,karen.green128@example.com,Atlanta,GA,US,B2B,2024-08-08,2024-08-08T00:00:00
+CUST-0129,Tom Perez,tom.perez129@example.com,Miami,FL,US,B2C,2023-11-20,2023-11-20T00:00:00
+CUST-0130,Nancy Robinson,nancy.robinson130@example.com,Boston,MA,US,B2C,2024-08-25,2024-08-25T00:00:00
+CUST-0131,Henry Collins,henry.collins131@example.com,Houston,TX,US,SMB,2025-03-11,2025-03-11T00:00:00
+CUST-0132,Beth Lewis,beth.lewis132@example.com,Atlanta,GA,US,B2C,2024-06-26,2024-06-26T00:00:00
+CUST-0133,Kevin Taylor,kevin.taylor133@example.com,Boston,MA,US,SMB,2023-02-20,2023-02-20T00:00:00
+CUST-0134,Sam Mitchell,sam.mitchell134@example.com,Portland,OR,US,B2C,2024-04-03,2024-04-03T00:00:00
+CUST-0135,Sam Scott,sam.scott135@example.com,Sacramento,CA,US,B2B,2025-05-21,2025-05-21T00:00:00
+CUST-0136,Reid Edwards,reid.edwards136@example.com,Austin,TX,US,B2C,2025-02-11,2025-02-11T00:00:00
+CUST-0137,Reid Phillips,reid.phillips137@example.com,Portland,OR,US,B2C,2025-02-08,2025-02-08T00:00:00
+CUST-0138,Xavier Wright,xavier.wright138@example.com,New York,NY,US,B2C,2023-10-07,2023-10-07T00:00:00
+CUST-0139,Alice Davis,alice.davis139@example.com,Seattle,WA,US,SMB,2023-09-05,2023-09-05T00:00:00
+CUST-0140,Victor Martin,victor.martin140@example.com,Sacramento,CA,US,B2C,2024-04-22,2024-04-22T00:00:00
+CUST-0141,Wendy Johnson,wendy.johnson141@example.com,San Diego,CA,US,SMB,2024-03-03,2024-03-03T00:00:00
+CUST-0142,Kevin Mitchell,kevin.mitchell142@example.com,Boston,MA,US,B2C,2025-02-18,2025-02-18T00:00:00
+CUST-0143,Zara Williams,zara.williams143@example.com,Raleigh,NC,US,B2C,2023-10-08,2023-10-08T00:00:00
+CUST-0144,Mike Roberts,mike.roberts144@example.com,Los Angeles,CA,US,B2B,2025-02-22,2025-02-22T00:00:00
+CUST-0145,Zara Smith,zara.smith145@example.com,Las Vegas,NV,US,B2B,2025-01-27,2025-01-27T00:00:00
+CUST-0146,Fiona Davis,fiona.davis146@example.com,Memphis,TN,US,SMB,2023-04-06,2023-04-06T00:00:00
+CUST-0147,Bob White,bob.white147@example.com,San Antonio,TX,US,B2C,2024-04-26,2024-04-26T00:00:00
+CUST-0148,Reid Carter,reid.carter148@example.com,Minneapolis,MN,US,B2C,2024-12-04,2024-12-04T00:00:00
+CUST-0149,Una Martin,una.martin149@example.com,Las Vegas,NV,US,B2C,2023-03-26,2023-03-26T00:00:00
+CUST-0150,Alice Johnson,alice.johnson150@example.com,Houston,TX,US,SMB,2025-04-11,2025-04-11T00:00:00
+CUST-0151,Evan Stewart,evan.stewart151@example.com,Minneapolis,MN,US,B2C,2023-02-08,2023-02-08T00:00:00
+CUST-0152,Olivia Turner,olivia.turner152@example.com,San Antonio,TX,US,B2B,2025-04-06,2025-04-06T00:00:00
+CUST-0153,Oscar Collins,oscar.collins153@example.com,Kansas City,MO,US,B2B,2025-02-10,2025-02-10T00:00:00
+CUST-0154,Reid Adams,reid.adams154@example.com,Minneapolis,MN,US,B2C,2023-05-27,2023-05-27T00:00:00
+CUST-0155,Carol Lee,carol.lee155@example.com,Philadelphia,PA,US,B2C,2025-02-16,2025-02-16T00:00:00
+CUST-0156,Ivan Allen,ivan.allen156@example.com,Boston,MA,US,B2C,2023-08-16,2023-08-16T00:00:00
+CUST-0157,Fiona Davis,fiona.davis157@example.com,Raleigh,NC,US,B2C,2024-04-30,2024-04-30T00:00:00
+CUST-0158,Oscar Gonzalez,oscar.gonzalez158@example.com,Los Angeles,CA,US,B2C,2024-12-09,2024-12-09T00:00:00
+CUST-0159,Noah Davis,noah.davis159@example.com,Memphis,TN,US,SMB,2024-02-26,2024-02-26T00:00:00
+CUST-0160,Laura Lopez,laura.lopez160@example.com,Denver,CO,US,B2C,2025-04-08,2025-04-08T00:00:00
+CUST-0161,Evan Johnson,evan.johnson161@example.com,Los Angeles,CA,US,SMB,2024-11-16,2024-11-16T00:00:00
+CUST-0162,Wendy Baker,wendy.baker162@example.com,Austin,TX,US,B2C,2024-12-26,2024-12-26T00:00:00
+CUST-0163,Elena Carter,elena.carter163@example.com,Phoenix,AZ,US,SMB,2024-07-02,2024-07-02T00:00:00
+CUST-0164,Diana Lee,diana.lee164@example.com,Boston,MA,US,B2C,2023-07-13,2023-07-13T00:00:00
+CUST-0165,Fiona Phillips,fiona.phillips165@example.com,Nashville,TN,US,B2C,2024-05-02,2024-05-02T00:00:00
+CUST-0166,Mia Edwards,mia.edwards166@example.com,Boston,MA,US,B2C,2024-09-05,2024-09-05T00:00:00
+CUST-0167,Chris Young,chris.young167@example.com,Memphis,TN,US,B2B,2024-10-13,2024-10-13T00:00:00
+CUST-0168,Wendy Edwards,wendy.edwards168@example.com,Houston,TX,US,B2C,2025-01-16,2025-01-16T00:00:00
+CUST-0169,Zoe Adams,zoe.adams169@example.com,Austin,TX,US,B2C,2023-03-23,2023-03-23T00:00:00
+CUST-0170,Grace Miller,grace.miller170@example.com,Sacramento,CA,US,SMB,2025-01-29,2025-01-29T00:00:00
+CUST-0171,Noah Davis,noah.davis171@example.com,San Diego,CA,US,B2C,2023-12-08,2023-12-08T00:00:00
+CUST-0172,Nancy Lopez,nancy.lopez172@example.com,Austin,TX,US,SMB,2023-11-20,2023-11-20T00:00:00
+CUST-0173,Uma Moore,uma.moore173@example.com,Austin,TX,US,B2C,2023-05-26,2023-05-26T00:00:00
+CUST-0174,Will Wright,will.wright174@example.com,Portland,OR,US,SMB,2024-08-23,2024-08-23T00:00:00
+CUST-0175,Bob Martin,bob.martin175@example.com,Austin,TX,US,B2C,2024-04-05,2024-04-05T00:00:00
+CUST-0176,Henry Jackson,henry.jackson176@example.com,Chicago,IL,US,B2C,2024-01-13,2024-01-13T00:00:00
+CUST-0177,Chris Wright,chris.wright177@example.com,Memphis,TN,US,B2B,2024-02-05,2024-02-05T00:00:00
+CUST-0178,Diana Scott,diana.scott178@example.com,Portland,OR,US,B2C,2024-08-23,2024-08-23T00:00:00
+CUST-0179,Nancy Martinez,nancy.martinez179@example.com,Boston,MA,US,B2C,2024-12-05,2024-12-05T00:00:00
+CUST-0180,Aaron Hill,aaron.hill180@example.com,Boston,MA,US,SMB,2024-07-16,2024-07-16T00:00:00
+CUST-0181,Zoe Perez,zoe.perez181@example.com,Atlanta,GA,US,SMB,2024-01-26,2024-01-26T00:00:00
+CUST-0182,Grace Evans,grace.evans182@example.com,Raleigh,NC,US,B2B,2024-03-13,2024-03-13T00:00:00
+CUST-0183,Aaron Harris,aaron.harris183@example.com,Miami,FL,US,B2C,2024-10-24,2024-10-24T00:00:00
+CUST-0184,Zoe Roberts,zoe.roberts184@example.com,San Jose,CA,US,B2C,2024-03-22,2024-03-22T00:00:00
+CUST-0185,Frank Williams,frank.williams185@example.com,Los Angeles,CA,US,SMB,2023-05-01,2023-05-01T00:00:00
+CUST-0186,Penny Williams,penny.williams186@example.com,Los Angeles,CA,US,B2C,2024-09-23,2024-09-23T00:00:00
+CUST-0187,Quinn Hall,quinn.hall187@example.com,Phoenix,AZ,US,B2C,2023-08-29,2023-08-29T00:00:00
+CUST-0188,David Nelson,david.nelson188@example.com,Cleveland,OH,US,B2C,2025-05-13,2025-05-13T00:00:00
+CUST-0189,Penny Baker,penny.baker189@example.com,Raleigh,NC,US,B2C,2024-05-29,2024-05-29T00:00:00
+CUST-0190,Julia Moore,julia.moore190@example.com,Philadelphia,PA,US,B2B,2023-12-20,2023-12-20T00:00:00
+CUST-0191,Frank Allen,frank.allen191@example.com,San Jose,CA,US,SMB,2024-03-15,2024-03-15T00:00:00
+CUST-0192,David Stewart,david.stewart192@example.com,Seattle,WA,US,B2C,2023-07-24,2023-07-24T00:00:00
+CUST-0193,Paul Carter,paul.carter193@example.com,Memphis,TN,US,B2B,2025-01-20,2025-01-20T00:00:00
+CUST-0194,Laura Clark,laura.clark194@example.com,Kansas City,MO,US,B2C,2023-11-15,2023-11-15T00:00:00
+CUST-0195,Alice Green,alice.green195@example.com,Philadelphia,PA,US,B2C,2023-08-06,2023-08-06T00:00:00
+CUST-0196,Xavier Taylor,xavier.taylor196@example.com,Memphis,TN,US,B2C,2025-01-01,2025-01-01T00:00:00
+CUST-0197,Penny Evans,penny.evans197@example.com,Sacramento,CA,US,B2C,2023-02-12,2023-02-12T00:00:00
+CUST-0198,Karen Roberts,karen.roberts198@example.com,Minneapolis,MN,US,B2B,2023-01-15,2023-01-15T00:00:00
+CUST-0199,Henry Allen,henry.allen199@example.com,Seattle,WA,US,B2C,2023-05-23,2023-05-23T00:00:00
+CUST-0200,Quinn Davis,quinn.davis200@example.com,Minneapolis,MN,US,B2C,2023-08-07,2023-08-07T00:00:00
+CUST-0201,Victor Walker,victor.walker201@example.com,Seattle,WA,US,B2C,2023-03-18,2023-03-18T00:00:00
+CUST-0202,Paul Anderson,paul.anderson202@example.com,San Antonio,TX,US,SMB,2023-03-28,2023-03-28T00:00:00
+CUST-0203,Carol Hill,carol.hill203@example.com,Philadelphia,PA,US,B2C,2024-12-09,2024-12-09T00:00:00
+CUST-0204,Jack Hall,jack.hall204@example.com,Sacramento,CA,US,B2B,2024-01-01,2024-01-01T00:00:00
+CUST-0205,Yara Johnson,yara.johnson205@example.com,Chicago,IL,US,B2C,2024-10-04,2024-10-04T00:00:00
+CUST-0206,Reid Turner,reid.turner206@example.com,Raleigh,NC,US,B2C,2023-11-18,2023-11-18T00:00:00
+CUST-0207,George Rodriguez,george.rodriguez207@example.com,Las Vegas,NV,US,B2B,2023-07-04,2023-07-04T00:00:00
+CUST-0208,Evan Williams,evan.williams208@example.com,Atlanta,GA,US,B2B,2024-07-11,2024-07-11T00:00:00
+CUST-0209,Aaron Campbell,aaron.campbell209@example.com,Dallas,TX,US,SMB,2023-03-07,2023-03-07T00:00:00
+CUST-0210,Quinn Hall,quinn.hall210@example.com,Boston,MA,US,B2B,2023-07-27,2023-07-27T00:00:00
+CUST-0211,Reid Robinson,reid.robinson211@example.com,Denver,CO,US,SMB,2024-05-16,2024-05-16T00:00:00
+CUST-0212,Paul Wright,paul.wright212@example.com,Houston,TX,US,B2C,2023-05-17,2023-05-17T00:00:00
+CUST-0213,Rachel Wright,rachel.wright213@example.com,Denver,CO,US,B2C,2023-05-19,2023-05-19T00:00:00
+CUST-0214,Zoe Miller,zoe.miller214@example.com,New York,NY,US,SMB,2024-06-13,2024-06-13T00:00:00
+CUST-0215,Una Hill,una.hill215@example.com,Portland,OR,US,B2C,2024-06-19,2024-06-19T00:00:00
+CUST-0216,Alice Garcia,alice.garcia216@example.com,San Diego,CA,US,B2C,2024-12-10,2024-12-10T00:00:00
+CUST-0217,Bob Lopez,bob.lopez217@example.com,Kansas City,MO,US,B2C,2023-10-03,2023-10-03T00:00:00
+CUST-0218,Victor Thompson,victor.thompson218@example.com,Houston,TX,US,B2C,2023-12-22,2023-12-22T00:00:00
+CUST-0219,Alice Rodriguez,alice.rodriguez219@example.com,San Antonio,TX,US,B2B,2024-12-28,2024-12-28T00:00:00
+CUST-0220,Aaron Hill,aaron.hill220@example.com,Memphis,TN,US,SMB,2023-01-22,2023-01-22T00:00:00
+CUST-0221,Fiona Phillips,fiona.phillips221@example.com,Seattle,WA,US,B2B,2023-01-20,2023-01-20T00:00:00
+CUST-0222,George Parker,george.parker222@example.com,Denver,CO,US,B2C,2023-09-06,2023-09-06T00:00:00
+CUST-0223,Xena Hill,xena.hill223@example.com,Miami,FL,US,SMB,2024-04-20,2024-04-20T00:00:00
+CUST-0224,David Miller,david.miller224@example.com,Denver,CO,US,SMB,2023-08-27,2023-08-27T00:00:00
+CUST-0225,Wendy Scott,wendy.scott225@example.com,Boston,MA,US,B2B,2023-02-09,2023-02-09T00:00:00
+CUST-0226,Uma Collins,uma.collins226@example.com,Chicago,IL,US,B2C,2023-01-20,2023-01-20T00:00:00
+CUST-0227,Olivia Roberts,olivia.roberts227@example.com,Atlanta,GA,US,B2B,2023-02-01,2023-02-01T00:00:00
+CUST-0228,Fiona Martinez,fiona.martinez228@example.com,New York,NY,US,B2C,2025-02-07,2025-02-07T00:00:00
+CUST-0229,Carol Allen,carol.allen229@example.com,Miami,FL,US,B2C,2023-02-07,2023-02-07T00:00:00
+CUST-0230,Sophie Stewart,sophie.stewart230@example.com,Raleigh,NC,US,B2C,2024-04-16,2024-04-16T00:00:00
+CUST-0231,Xena White,xena.white231@example.com,Austin,TX,US,B2B,2025-03-22,2025-03-22T00:00:00
+CUST-0232,George Davis,george.davis232@example.com,Philadelphia,PA,US,B2C,2024-01-28,2024-01-28T00:00:00
+CUST-0233,Oscar Harris,oscar.harris233@example.com,Kansas City,MO,US,SMB,2024-05-04,2024-05-04T00:00:00
+CUST-0234,Liam Smith,liam.smith234@example.com,Los Angeles,CA,US,SMB,2024-07-05,2024-07-05T00:00:00
+CUST-0235,Carol Robinson,carol.robinson235@example.com,Chicago,IL,US,B2B,2023-03-07,2023-03-07T00:00:00
+CUST-0236,Mike Baker,mike.baker236@example.com,Las Vegas,NV,US,B2C,2023-07-22,2023-07-22T00:00:00
+CUST-0237,Sophie Gonzalez,sophie.gonzalez237@example.com,Atlanta,GA,US,SMB,2024-06-17,2024-06-17T00:00:00
+CUST-0238,Tina Williams,tina.williams238@example.com,Cleveland,OH,US,B2C,2024-11-02,2024-11-02T00:00:00
+CUST-0239,Fiona Jackson,fiona.jackson239@example.com,Raleigh,NC,US,B2C,2024-05-04,2024-05-04T00:00:00
+CUST-0240,Will Allen,will.allen240@example.com,San Antonio,TX,US,B2C,2023-10-14,2023-10-14T00:00:00
+CUST-0241,Bob Nelson,bob.nelson241@example.com,Austin,TX,US,SMB,2023-09-25,2023-09-25T00:00:00
+CUST-0242,Evan Green,evan.green242@example.com,San Antonio,TX,US,B2C,2024-10-31,2024-10-31T00:00:00
+CUST-0243,Reid Young,reid.young243@example.com,Dallas,TX,US,SMB,2023-07-17,2023-07-17T00:00:00
+CUST-0244,Una Martin,una.martin244@example.com,Memphis,TN,US,B2C,2023-12-29,2023-12-29T00:00:00
+CUST-0245,Tina Miller,tina.miller245@example.com,San Antonio,TX,US,SMB,2024-02-02,2024-02-02T00:00:00
+CUST-0246,Sophie Anderson,sophie.anderson246@example.com,Las Vegas,NV,US,B2B,2025-03-13,2025-03-13T00:00:00
+CUST-0247,Rachel Lee,rachel.lee247@example.com,Memphis,TN,US,SMB,2024-05-21,2024-05-21T00:00:00
+CUST-0248,Aaron Stewart,aaron.stewart248@example.com,Portland,OR,US,B2B,2024-09-10,2024-09-10T00:00:00
+CUST-0249,Uma Young,uma.young249@example.com,Houston,TX,US,B2C,2025-02-11,2025-02-11T00:00:00
+CUST-0250,Jack Stewart,jack.stewart250@example.com,Raleigh,NC,US,B2B,2023-09-24,2023-09-24T00:00:00
+CUST-0251,Diana Brown,diana.brown251@example.com,San Jose,CA,US,SMB,2024-03-20,2024-03-20T00:00:00
+CUST-0252,Karen Hall,karen.hall252@example.com,Dallas,TX,US,B2C,2025-01-29,2025-01-29T00:00:00
+CUST-0253,Sam Davis,sam.davis253@example.com,Los Angeles,CA,US,B2C,2024-07-24,2024-07-24T00:00:00
+CUST-0254,Beth Johnson,beth.johnson254@example.com,San Diego,CA,US,SMB,2024-04-26,2024-04-26T00:00:00
+CUST-0255,Fiona Campbell,fiona.campbell255@example.com,Dallas,TX,US,B2C,2024-04-29,2024-04-29T00:00:00
+CUST-0256,Tom Edwards,tom.edwards256@example.com,Sacramento,CA,US,B2C,2023-08-10,2023-08-10T00:00:00
+CUST-0257,Beth Stewart,beth.stewart257@example.com,San Diego,CA,US,SMB,2024-07-28,2024-07-28T00:00:00
+CUST-0258,Tina Jackson,tina.jackson258@example.com,Nashville,TN,US,SMB,2024-08-15,2024-08-15T00:00:00
+CUST-0259,Una Thompson,una.thompson259@example.com,Boston,MA,US,B2B,2023-01-20,2023-01-20T00:00:00
+CUST-0260,Karen Wright,karen.wright260@example.com,Portland,OR,US,B2C,2023-11-04,2023-11-04T00:00:00
+CUST-0261,Olivia Turner,olivia.turner261@example.com,San Antonio,TX,US,B2C,2024-09-07,2024-09-07T00:00:00
+CUST-0262,Iris Moore,iris.moore262@example.com,Dallas,TX,US,B2C,2023-04-26,2023-04-26T00:00:00
+CUST-0263,Olivia Brown,olivia.brown263@example.com,Nashville,TN,US,B2B,2024-10-19,2024-10-19T00:00:00
+CUST-0264,Diana Mitchell,diana.mitchell264@example.com,Portland,OR,US,SMB,2024-05-09,2024-05-09T00:00:00
+CUST-0265,Xavier Edwards,xavier.edwards265@example.com,Sacramento,CA,US,B2B,2023-12-30,2023-12-30T00:00:00
+CUST-0266,Mia Perez,mia.perez266@example.com,Las Vegas,NV,US,B2C,2023-04-01,2023-04-01T00:00:00
+CUST-0267,Nancy Walker,nancy.walker267@example.com,Phoenix,AZ,US,B2C,2024-12-28,2024-12-28T00:00:00
+CUST-0268,Paul Miller,paul.miller268@example.com,Austin,TX,US,B2C,2023-11-04,2023-11-04T00:00:00
+CUST-0269,Will Carter,will.carter269@example.com,Denver,CO,US,B2C,2023-03-04,2023-03-04T00:00:00
+CUST-0270,Grace Smith,grace.smith270@example.com,Kansas City,MO,US,B2B,2023-02-10,2023-02-10T00:00:00
+CUST-0271,Frank Martin,frank.martin271@example.com,Los Angeles,CA,US,B2C,2025-04-11,2025-04-11T00:00:00
+CUST-0272,Chris Brown,chris.brown272@example.com,Sacramento,CA,US,B2C,2024-04-25,2024-04-25T00:00:00
+CUST-0273,Zoe Mitchell,zoe.mitchell273@example.com,San Diego,CA,US,B2C,2025-04-14,2025-04-14T00:00:00
+CUST-0274,Reid Miller,reid.miller274@example.com,Portland,OR,US,B2B,2024-06-25,2024-06-25T00:00:00
+CUST-0275,David Campbell,david.campbell275@example.com,Memphis,TN,US,B2C,2024-04-30,2024-04-30T00:00:00
+CUST-0276,Xena Thompson,xena.thompson276@example.com,Denver,CO,US,B2C,2024-06-17,2024-06-17T00:00:00
+CUST-0277,Uma Moore,uma.moore277@example.com,New York,NY,US,B2C,2024-09-15,2024-09-15T00:00:00
+CUST-0278,Uma Phillips,uma.phillips278@example.com,Phoenix,AZ,US,B2C,2025-05-24,2025-05-24T00:00:00
+CUST-0279,Zoe Harris,zoe.harris279@example.com,Denver,CO,US,B2C,2025-04-30,2025-04-30T00:00:00
+CUST-0280,Uma Lewis,uma.lewis280@example.com,Boston,MA,US,B2C,2023-07-16,2023-07-16T00:00:00
+CUST-0281,Reid Young,reid.young281@example.com,San Antonio,TX,US,B2C,2024-11-07,2024-11-07T00:00:00
+CUST-0282,Diana White,diana.white282@example.com,Cleveland,OH,US,SMB,2024-04-03,2024-04-03T00:00:00
+CUST-0283,Ivan Garcia,ivan.garcia283@example.com,Philadelphia,PA,US,B2C,2023-08-17,2023-08-17T00:00:00
+CUST-0284,Mia Evans,mia.evans284@example.com,Denver,CO,US,B2C,2025-04-13,2025-04-13T00:00:00
+CUST-0285,Xavier Phillips,xavier.phillips285@example.com,Memphis,TN,US,B2C,2024-12-10,2024-12-10T00:00:00
+CUST-0286,Evan Williams,evan.williams286@example.com,San Diego,CA,US,B2C,2025-01-25,2025-01-25T00:00:00
+CUST-0287,Una Davis,una.davis287@example.com,New York,NY,US,B2C,2023-03-06,2023-03-06T00:00:00
+CUST-0288,Oscar Smith,oscar.smith288@example.com,Houston,TX,US,B2B,2025-02-18,2025-02-18T00:00:00
+CUST-0289,Fiona Walker,fiona.walker289@example.com,San Antonio,TX,US,B2C,2025-03-09,2025-03-09T00:00:00
+CUST-0290,Liam Wright,liam.wright290@example.com,Memphis,TN,US,B2C,2023-05-17,2023-05-17T00:00:00
+CUST-0291,Alice Martin,alice.martin291@example.com,Raleigh,NC,US,B2B,2024-02-17,2024-02-17T00:00:00
+CUST-0292,Wendy Taylor,wendy.taylor292@example.com,Cleveland,OH,US,SMB,2023-07-23,2023-07-23T00:00:00
+CUST-0293,Reid Martin,reid.martin293@example.com,San Antonio,TX,US,SMB,2024-10-21,2024-10-21T00:00:00
+CUST-0294,Beth Lee,beth.lee294@example.com,Sacramento,CA,US,SMB,2023-12-18,2023-12-18T00:00:00
+CUST-0295,Zara Brown,zara.brown295@example.com,San Jose,CA,US,SMB,2023-08-26,2023-08-26T00:00:00
+CUST-0296,Henry Thompson,henry.thompson296@example.com,Boston,MA,US,B2C,2023-06-30,2023-06-30T00:00:00
+CUST-0297,Evan Martin,evan.martin297@example.com,Philadelphia,PA,US,B2C,2024-03-03,2024-03-03T00:00:00
+CUST-0298,Fiona Thompson,fiona.thompson298@example.com,Minneapolis,MN,US,SMB,2025-03-19,2025-03-19T00:00:00
+CUST-0299,Bob Gonzalez,bob.gonzalez299@example.com,Dallas,TX,US,B2C,2024-06-26,2024-06-26T00:00:00
+CUST-0300,Julia Taylor,julia.taylor300@example.com,Las Vegas,NV,US,SMB,2023-09-03,2023-09-03T00:00:00

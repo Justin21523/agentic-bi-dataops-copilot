@@ -1,0 +1,100 @@
+product_id,name,category,subcategory,price,cost,stock_quantity,is_active,created_at
+PROD-001,Wireless Bluetooth Headphones,Electronics,Audio,79.99,35.0,44,True,2023-01-01 00:00:00
+PROD-002,USB-C Charging Cable 6ft,Electronics,Accessories,12.99,4.0,386,True,2023-01-01 00:00:00
+PROD-003,Portable Power Bank 10000mAh,Electronics,Accessories,29.99,12.0,327,True,2023-01-01 00:00:00
+PROD-004,Laptop Stand Adjustable,Electronics,Accessories,34.99,14.0,219,True,2023-01-01 00:00:00
+PROD-005,Mechanical Keyboard TKL,Electronics,Peripherals,89.99,40.0,216,True,2023-01-01 00:00:00
+PROD-006,Wireless Mouse Ergonomic,Electronics,Peripherals,39.99,16.0,429,True,2023-01-01 00:00:00
+PROD-007,Monitor 24-inch 1080p,Electronics,Displays,199.99,90.0,42,True,2023-01-01 00:00:00
+PROD-008,Webcam 1080p HD,Electronics,Accessories,49.99,20.0,348,True,2023-01-01 00:00:00
+PROD-009,Smart Speaker Mini,Electronics,Audio,59.99,25.0,100,True,2023-01-01 00:00:00
+PROD-010,Noise Cancelling Earbuds,Electronics,Audio,129.99,55.0,47,True,2023-01-01 00:00:00
+PROD-011,Men's Running Shoes,Apparel,Footwear,89.99,35.0,263,True,2023-01-01 00:00:00
+PROD-012,Women's Yoga Pants,Apparel,Activewear,49.99,18.0,487,True,2023-01-01 00:00:00
+PROD-013,Men's Casual T-Shirt,Apparel,Tops,24.99,8.0,367,True,2023-01-01 00:00:00
+PROD-014,Women's Winter Jacket,Apparel,Outerwear,149.99,60.0,380,True,2023-01-01 00:00:00
+PROD-015,Men's Slim-Fit Jeans,Apparel,Bottoms,59.99,22.0,358,True,2023-01-01 00:00:00
+PROD-016,Women's Summer Dress,Apparel,Dresses,44.99,16.0,393,True,2023-01-01 00:00:00
+PROD-017,Unisex Baseball Cap,Apparel,Accessories,19.99,7.0,256,True,2023-01-01 00:00:00
+PROD-018,Athletic Socks 6-Pack,Apparel,Accessories,14.99,5.0,64,True,2023-01-01 00:00:00
+PROD-019,Hoodie Zip-Up,Apparel,Tops,54.99,20.0,419,True,2023-01-01 00:00:00
+PROD-020,Leggings High-Waist,Apparel,Activewear,39.99,14.0,225,True,2023-01-01 00:00:00
+PROD-021,Non-Stick Frying Pan Set,Home & Garden,Cookware,49.99,20.0,250,True,2023-01-01 00:00:00
+PROD-022,Coffee Maker 12-Cup,Home & Garden,Kitchen,79.99,32.0,185,True,2023-01-01 00:00:00
+PROD-023,Air Purifier HEPA,Home & Garden,Appliances,129.99,55.0,91,True,2023-01-01 00:00:00
+PROD-024,Blackout Curtains Pair,Home & Garden,Decor,39.99,15.0,463,True,2023-01-01 00:00:00
+PROD-025,Bamboo Cutting Board Set,Home & Garden,Kitchen,29.99,11.0,390,True,2023-01-01 00:00:00
+PROD-026,Indoor Plant Pot Set 3-Pack,Home & Garden,Garden,24.99,9.0,321,True,2023-01-01 00:00:00
+PROD-027,Vacuum Cleaner Robot,Home & Garden,Appliances,249.99,110.0,201,True,2023-01-01 00:00:00
+PROD-028,Scented Candle Set,Home & Garden,Decor,19.99,7.0,411,True,2023-01-01 00:00:00
+PROD-029,Storage Ottoman,Home & Garden,Furniture,89.99,38.0,272,True,2023-01-01 00:00:00
+PROD-030,Throw Pillow Set,Home & Garden,Decor,34.99,13.0,221,True,2023-01-01 00:00:00
+PROD-031,Yoga Mat Non-Slip,Sports & Outdoors,Fitness,29.99,11.0,225,True,2023-01-01 00:00:00
+PROD-032,Resistance Bands Set,Sports & Outdoors,Fitness,19.99,7.0,113,True,2023-01-01 00:00:00
+PROD-033,Camping Tent 2-Person,Sports & Outdoors,Camping,149.99,62.0,46,True,2023-01-01 00:00:00
+PROD-034,Hiking Backpack 40L,Sports & Outdoors,Camping,89.99,36.0,277,True,2023-01-01 00:00:00
+PROD-035,Water Bottle Insulated 32oz,Sports & Outdoors,Hydration,24.99,9.0,443,True,2023-01-01 00:00:00
+PROD-036,Jump Rope Speed,Sports & Outdoors,Fitness,14.99,5.0,31,True,2023-01-01 00:00:00
+PROD-037,Dumbbells Adjustable Set,Sports & Outdoors,Fitness,199.99,88.0,429,True,2023-01-01 00:00:00
+PROD-038,Bike Helmet Adult,Sports & Outdoors,Cycling,59.99,24.0,413,True,2023-01-01 00:00:00
+PROD-039,Foam Roller Massage,Sports & Outdoors,Recovery,24.99,9.0,138,True,2023-01-01 00:00:00
+PROD-040,Sports Water Bottle 24oz,Sports & Outdoors,Hydration,19.99,7.0,315,True,2023-01-01 00:00:00
+PROD-041,Python Crash Course Book,Books,Programming,39.99,15.0,82,True,2023-01-01 00:00:00
+PROD-042,Data Science Handbook,Books,Data Science,49.99,19.0,379,True,2023-01-01 00:00:00
+PROD-043,The Art of War,Books,Classics,9.99,3.0,350,True,2023-01-01 00:00:00
+PROD-044,Atomic Habits,Books,Self-Help,16.99,6.0,177,True,2023-01-01 00:00:00
+PROD-045,Clean Code,Books,Programming,44.99,17.0,33,True,2023-01-01 00:00:00
+PROD-046,Deep Work,Books,Productivity,18.99,7.0,485,True,2023-01-01 00:00:00
+PROD-047,Thinking Fast and Slow,Books,Psychology,17.99,7.0,222,True,2023-01-01 00:00:00
+PROD-048,The Lean Startup,Books,Business,19.99,8.0,446,True,2023-01-01 00:00:00
+PROD-049,Designing Data-Intensive Apps,Books,Programming,59.99,23.0,338,True,2023-01-01 00:00:00
+PROD-050,Sapiens,Books,History,18.99,7.0,389,True,2023-01-01 00:00:00
+PROD-051,LEGO Classic Large Set,Toys,Building,89.99,38.0,379,True,2023-01-01 00:00:00
+PROD-052,Board Game Pandemic,Toys,Board Games,44.99,18.0,97,True,2023-01-01 00:00:00
+PROD-053,Rubik's Cube 3x3,Toys,Puzzles,9.99,3.5,181,True,2023-01-01 00:00:00
+PROD-054,RC Car Off-Road,Toys,Remote Control,49.99,20.0,233,True,2023-01-01 00:00:00
+PROD-055,Jigsaw Puzzle 1000pc,Toys,Puzzles,19.99,7.0,248,True,2023-01-01 00:00:00
+PROD-056,Stuffed Animal Bear,Toys,Plush,24.99,9.0,21,True,2023-01-01 00:00:00
+PROD-057,Play-Doh Starter Set,Toys,Arts & Crafts,14.99,5.0,273,True,2023-01-01 00:00:00
+PROD-058,Card Game Uno,Toys,Card Games,7.99,2.5,77,True,2023-01-01 00:00:00
+PROD-059,Magnetic Drawing Board,Toys,Educational,19.99,7.0,371,True,2023-01-01 00:00:00
+PROD-060,Science Experiment Kit,Toys,Educational,34.99,13.0,341,True,2023-01-01 00:00:00
+PROD-061,Face Moisturizer SPF 30,Beauty,Skincare,29.99,11.0,461,True,2023-01-01 00:00:00
+PROD-062,Shampoo Argan Oil,Beauty,Haircare,19.99,7.0,372,True,2023-01-01 00:00:00
+PROD-063,Electric Toothbrush,Beauty,Oral Care,49.99,20.0,183,True,2023-01-01 00:00:00
+PROD-064,Perfume Floral 50ml,Beauty,Fragrance,59.99,22.0,483,True,2023-01-01 00:00:00
+PROD-065,Makeup Brush Set 12pc,Beauty,Makeup,24.99,9.0,205,True,2023-01-01 00:00:00
+PROD-066,Vitamin C Serum,Beauty,Skincare,34.99,13.0,162,True,2023-01-01 00:00:00
+PROD-067,Hair Dryer 1875W,Beauty,Haircare,44.99,17.0,452,True,2023-01-01 00:00:00
+PROD-068,Sunscreen SPF 50+,Beauty,Skincare,19.99,7.0,185,True,2023-01-01 00:00:00
+PROD-069,Lip Balm Set 6-Pack,Beauty,Lip Care,12.99,4.5,38,True,2023-01-01 00:00:00
+PROD-070,Nail Polish Set 20 Colors,Beauty,Nails,22.99,8.0,234,True,2023-01-01 00:00:00
+PROD-071,Organic Coffee Beans 1kg,Food & Grocery,Coffee & Tea,24.99,9.0,397,True,2023-01-01 00:00:00
+PROD-072,Green Tea Matcha 100g,Food & Grocery,Coffee & Tea,19.99,7.0,94,True,2023-01-01 00:00:00
+PROD-073,Protein Bars Variety 24-Pack,Food & Grocery,Snacks,34.99,13.0,231,True,2023-01-01 00:00:00
+PROD-074,Olive Oil Extra Virgin 1L,Food & Grocery,Oils & Vinegars,19.99,7.0,64,True,2023-01-01 00:00:00
+PROD-075,Dark Chocolate 72% 3-Pack,Food & Grocery,Confectionery,14.99,5.0,343,True,2023-01-01 00:00:00
+PROD-076,Granola Bars Oat 12-Pack,Food & Grocery,Snacks,12.99,4.5,237,True,2023-01-01 00:00:00
+PROD-077,Honey Raw Organic 500g,Food & Grocery,Sweeteners,17.99,7.0,165,True,2023-01-01 00:00:00
+PROD-078,Mixed Nuts Roasted 500g,Food & Grocery,Snacks,22.99,8.5,113,True,2023-01-01 00:00:00
+PROD-079,Vitamin D3 Supplement 90ct,Food & Grocery,Supplements,19.99,7.0,282,True,2023-01-01 00:00:00
+PROD-080,Whey Protein Powder 1kg,Food & Grocery,Supplements,49.99,20.0,334,True,2023-01-01 00:00:00
+PROD-081,USB Hub 7-Port,Electronics,Accessories,29.99,11.0,470,True,2023-01-01 00:00:00
+PROD-082,Desk Lamp LED Adjustable,Home & Garden,Lighting,39.99,15.0,218,True,2023-01-01 00:00:00
+PROD-083,Running Belt Waist Pack,Sports & Outdoors,Accessories,17.99,6.5,80,True,2023-01-01 00:00:00
+PROD-084,Cookbook: 30-Minute Meals,Books,Cooking,29.99,11.0,416,True,2023-01-01 00:00:00
+PROD-085,Dart Board Set,Toys,Games,39.99,15.0,314,True,2023-01-01 00:00:00
+PROD-086,Face Wash Gentle Foam,Beauty,Skincare,17.99,6.5,350,True,2023-01-01 00:00:00
+PROD-087,Trail Mix Variety 6-Pack,Food & Grocery,Snacks,19.99,7.5,48,True,2023-01-01 00:00:00
+PROD-088,Portable Bluetooth Speaker,Electronics,Audio,49.99,20.0,156,True,2023-01-01 00:00:00
+PROD-089,Hand Weights 5lb Pair,Sports & Outdoors,Fitness,24.99,9.0,383,True,2023-01-01 00:00:00
+PROD-090,Photo Book DIY Kit,Toys,Arts & Crafts,27.99,10.0,416,True,2023-01-01 00:00:00
+PROD-091,Face Mask Sheet 10-Pack,Beauty,Skincare,15.99,5.5,217,True,2023-01-01 00:00:00
+PROD-092,Coffee Mug Ceramic 16oz,Home & Garden,Kitchen,14.99,5.0,402,True,2023-01-01 00:00:00
+PROD-093,Plant-Based Protein 500g,Food & Grocery,Supplements,39.99,15.0,420,True,2023-01-01 00:00:00
+PROD-094,Ergonomic Chair Cushion,Home & Garden,Furniture,44.99,17.0,193,True,2023-01-01 00:00:00
+PROD-095,Crossword Puzzle Book,Books,Puzzles,11.99,4.0,449,True,2023-01-01 00:00:00
+PROD-096,Resistance Tube Kit,Sports & Outdoors,Fitness,22.99,8.5,144,True,2023-01-01 00:00:00
+PROD-097,Pore Minimizing Toner,Beauty,Skincare,26.99,10.0,119,True,2023-01-01 00:00:00
+PROD-098,Instant Oats 1kg,Food & Grocery,Breakfast,9.99,3.5,341,True,2023-01-01 00:00:00
+PROD-099,Power Strip 6-Outlet,Electronics,Accessories,19.99,7.0,318,True,2023-01-01 00:00:00
