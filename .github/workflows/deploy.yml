@@ -46,8 +46,8 @@ jobs:
             grep -c "agentic-bi-dataops-copilot" ~/justin-portfolio/docker/nginx.conf 2>/dev/null || echo "grep fail"
 
             echo "=== [4/6] Rebuild portfolio ==="
-            echo "--- inspect screenshots format ---"
-            cat ~/justin-portfolio/content/projects/excel-python-data-analysis/project.override.json 2>/dev/null | python3 -c "import json,sys; d=json.load(sys.stdin); print(list(d.keys()))" || echo "no excel project"
+            echo "--- inspect media format ---"
+            cat ~/justin-portfolio/content/projects/excel-python-data-analysis/project.override.json 2>/dev/null | python3 -c "import json,sys; d=json.load(sys.stdin); print(json.dumps(d.get('media',[])[0], indent=2, ensure_ascii=False))" || echo "no excel project"
             echo "--- copy screenshots to portfolio public ---"
             PUBDIR=~/justin-portfolio/public/portfolio/projects/agentic-bi-dataops-copilot
             mkdir -p "$PUBDIR/screenshots"
