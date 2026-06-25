@@ -52,20 +52,21 @@
   ],
   "media": [
     {
-      "id": "nl-query-screenshot",
-      "type": "image",
-      "src": "/portfolio/projects/agentic-bi-dataops-copilot/screenshots/nl-query.webp",
+      "id": "demo-tour-video",
+      "type": "video",
+      "src": "/portfolio/projects/agentic-bi-dataops-copilot/demo/demo-tour.webm",
+      "poster": "/portfolio/projects/agentic-bi-dataops-copilot/cover.webp",
       "alt": {
-        "zh-TW": "自然語言查詢介面，支援中文提問並自動轉換為 SQL。",
-        "en": "Natural Language Query interface — ask questions in plain language and get SQL results."
+        "zh-TW": "Agentic BI DataOps Copilot 完整 16 步驟 Data Journey Tour 錄影。",
+        "en": "Full 16-step Data Journey Tour recording of Agentic BI DataOps Copilot."
       },
       "title": {
-        "zh-TW": "自然語言查詢",
-        "en": "Natural Language Query"
+        "zh-TW": "Data Journey Tour 導覽錄影",
+        "en": "Data Journey Tour Recording"
       },
       "caption": {
-        "zh-TW": "輸入中文問題，AI 自動生成 SQL 並查詢 DuckDB 倉儲。",
-        "en": "Type a question in plain language; the AI generates SQL and queries the DuckDB warehouse."
+        "zh-TW": "16 步驟互動導覽，涵蓋 Schema 探索、NL 查詢、SQL 驗證、儀表板分析到護欄審計的完整 DataOps 工作流程。",
+        "en": "16-step interactive tour covering Schema discovery, NL query, SQL validation, dashboard analytics, and guardrail audit — the full DataOps pipeline."
       },
       "featured": true
     },
@@ -82,25 +83,93 @@
         "en": "Dashboard"
       },
       "caption": {
-        "zh-TW": "一覽系統健康狀態、資料表統計與最近查詢記錄。",
-        "en": "Overview of system health, table statistics, and recent query history."
+        "zh-TW": "一覽系統健康狀態、4,596 筆資料表統計與最近查詢記錄。",
+        "en": "Overview of system health, 4,596-row warehouse statistics, and recent query history."
       }
     },
     {
-      "id": "workflow-screenshot",
+      "id": "nl-query-screenshot",
       "type": "image",
-      "src": "/portfolio/projects/agentic-bi-dataops-copilot/screenshots/workflow.webp",
+      "src": "/portfolio/projects/agentic-bi-dataops-copilot/screenshots/nl-query.webp",
       "alt": {
-        "zh-TW": "DataOps 工作流程圖，展示資料管道各個階段。",
-        "en": "DataOps workflow map showing all pipeline stages."
+        "zh-TW": "自然語言查詢介面，支援中文提問並自動轉換為 SQL。",
+        "en": "Natural Language Query interface — ask questions in plain language and get SQL results."
       },
       "title": {
-        "zh-TW": "工作流程圖",
-        "en": "Workflow Map"
+        "zh-TW": "自然語言查詢",
+        "en": "Natural Language Query"
       },
       "caption": {
-        "zh-TW": "互動式流程圖，點選任一節點即可跳轉到對應功能頁面。",
-        "en": "Interactive workflow diagram — click any node to jump to the corresponding feature page."
+        "zh-TW": "輸入中文問題，AI 自動生成 SQL 並查詢 DuckDB 倉儲。",
+        "en": "Type a question in plain language; the AI generates SQL and queries the DuckDB warehouse."
+      }
+    },
+    {
+      "id": "guardrails-screenshot",
+      "type": "image",
+      "src": "/portfolio/projects/agentic-bi-dataops-copilot/screenshots/guardrails.webp",
+      "alt": {
+        "zh-TW": "護欄分析頁面，顯示 SQL 安全驗證統計。",
+        "en": "Guardrail Analytics page showing SQL safety validation statistics."
+      },
+      "title": {
+        "zh-TW": "護欄分析",
+        "en": "Guardrail Analytics"
+      },
+      "caption": {
+        "zh-TW": "SQL 安全強制執行 — 97% 安全率，查詢驗證稽核軌跡與封鎖原因分類。",
+        "en": "SQL safety enforcement — 97% safe rate, query validation audit trail and block-reason classification."
+      }
+    },
+    {
+      "id": "customers-screenshot",
+      "type": "image",
+      "src": "/portfolio/projects/agentic-bi-dataops-copilot/screenshots/customers.webp",
+      "alt": {
+        "zh-TW": "客戶分析頁面，顯示 RFM 分群與 LTV 分佈。",
+        "en": "Customer Analytics page showing RFM segmentation and LTV distribution."
+      },
+      "title": {
+        "zh-TW": "客戶分析",
+        "en": "Customer Analytics"
+      },
+      "caption": {
+        "zh-TW": "300 名客戶的 RFM 近度/頻率散佈圖、各分群收入佔比與 LTV 直方圖。",
+        "en": "RFM recency/frequency scatter for 300 customers, segment revenue breakdown, and LTV histogram."
+      }
+    },
+    {
+      "id": "revenue-screenshot",
+      "type": "image",
+      "src": "/portfolio/projects/agentic-bi-dataops-copilot/screenshots/revenue.webp",
+      "alt": {
+        "zh-TW": "收入智慧分析頁面，顯示銷售趨勢與分析圖表。",
+        "en": "Revenue Intelligence page with sales trend charts and analytics."
+      },
+      "title": {
+        "zh-TW": "收入智慧",
+        "en": "Revenue Intelligence"
+      },
+      "caption": {
+        "zh-TW": "收入趨勢分析、客戶分群與銷售預測。",
+        "en": "Revenue trend analysis, customer segmentation, and sales forecasting."
+      }
+    },
+    {
+      "id": "schema-explorer-screenshot",
+      "type": "image",
+      "src": "/portfolio/projects/agentic-bi-dataops-copilot/screenshots/schema-explorer.webp",
+      "alt": {
+        "zh-TW": "Schema 探索器，顯示資料表結構與欄位說明。",
+        "en": "Schema Explorer showing table structures and column descriptions."
+      },
+      "title": {
+        "zh-TW": "Schema 探索器",
+        "en": "Schema Explorer"
+      },
+      "caption": {
+        "zh-TW": "瀏覽 7 張資料表的欄位定義、業務語意描述與資料關聯。",
+        "en": "Browse column definitions, business semantic descriptions, and relationships across 7 warehouse tables."
       }
     },
     {
@@ -121,37 +190,37 @@
       }
     },
     {
-      "id": "schema-explorer-screenshot",
+      "id": "workflow-screenshot",
       "type": "image",
-      "src": "/portfolio/projects/agentic-bi-dataops-copilot/screenshots/schema-explorer.webp",
+      "src": "/portfolio/projects/agentic-bi-dataops-copilot/screenshots/workflow.webp",
       "alt": {
-        "zh-TW": "Schema 探索器，顯示資料表結構與欄位說明。",
-        "en": "Schema Explorer showing table structures and column descriptions."
+        "zh-TW": "DataOps 工作流程圖，展示資料管道各個階段。",
+        "en": "DataOps workflow map showing all pipeline stages."
       },
       "title": {
-        "zh-TW": "Schema 探索器",
-        "en": "Schema Explorer"
+        "zh-TW": "工作流程圖",
+        "en": "Workflow Map"
       },
       "caption": {
-        "zh-TW": "瀏覽資料倉儲的所有資料表、欄位定義與業務語意描述。",
-        "en": "Browse all warehouse tables, column definitions, and business semantic descriptions."
+        "zh-TW": "互動式流程圖，點選任一節點即可跳轉到對應功能頁面。",
+        "en": "Interactive workflow diagram — click any node to jump to the corresponding feature page."
       }
     },
     {
-      "id": "guardrails-screenshot",
+      "id": "query-history-screenshot",
       "type": "image",
-      "src": "/portfolio/projects/agentic-bi-dataops-copilot/screenshots/guardrails.webp",
+      "src": "/portfolio/projects/agentic-bi-dataops-copilot/screenshots/query-history.webp",
       "alt": {
-        "zh-TW": "護欄分析頁面，顯示 SQL 安全驗證統計。",
-        "en": "Guardrail Analytics page showing SQL safety validation statistics."
+        "zh-TW": "查詢歷史頁面，顯示過去所有 SQL 執行記錄。",
+        "en": "Query History page showing all past SQL execution records."
       },
       "title": {
-        "zh-TW": "護欄分析",
-        "en": "Guardrail Analytics"
+        "zh-TW": "查詢歷史",
+        "en": "Query History"
       },
       "caption": {
-        "zh-TW": "SQL 安全強制執行 — 查詢驗證積核軌跡與封鎖率統計。",
-        "en": "SQL safety enforcement — query validation audit trail and block-rate statistics."
+        "zh-TW": "完整查詢稽核軌跡，包含 SQL、執行時間、結果筆數與安全狀態。",
+        "en": "Full query audit trail with SQL, execution time, result count, and safety status."
       }
     },
     {
@@ -172,20 +241,20 @@
       }
     },
     {
-      "id": "revenue-screenshot",
+      "id": "data-quality-screenshot",
       "type": "image",
-      "src": "/portfolio/projects/agentic-bi-dataops-copilot/screenshots/revenue.webp",
+      "src": "/portfolio/projects/agentic-bi-dataops-copilot/screenshots/data-quality.webp",
       "alt": {
-        "zh-TW": "收入智慧分析頁面，顯示銷售趨勢與分析圖表。",
-        "en": "Revenue Intelligence page with sales trend charts and analytics."
+        "zh-TW": "資料品質頁面，顯示各資料表的品質分數與異常檢測。",
+        "en": "Data Quality page showing quality scores and anomaly detection per table."
       },
       "title": {
-        "zh-TW": "收入智慧",
-        "en": "Revenue Intelligence"
+        "zh-TW": "資料品質",
+        "en": "Data Quality"
       },
       "caption": {
-        "zh-TW": "收入趨勢分析、客戶分群與銷售預測。",
-        "en": "Revenue trend analysis, customer segmentation, and sales forecasting."
+        "zh-TW": "各資料表完整性、唯一性、NULL 率與資料品質分數一覽。",
+        "en": "Per-table completeness, uniqueness, NULL rate, and data quality score overview."
       }
     }
   ]
