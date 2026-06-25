@@ -50,7 +50,9 @@ jobs:
             cp ~/agentic-bi-dataops-copilot/portfolio-content/screenshots/*.webp "$PUBDIR/screenshots/" && echo "screenshots copied" || echo "screenshot copy FAIL"
             cp ~/agentic-bi-dataops-copilot/portfolio-content/screenshots/cover.webp "$PUBDIR/cover.webp" && echo "cover.webp copied" || echo "cover copy FAIL"
             cp ~/agentic-bi-dataops-copilot/portfolio-content/demo/demo-tour.webm "$PUBDIR/demo/" && echo "demo-tour.webm copied" || echo "demo copy FAIL"
-            python3 ~/agentic-bi-dataops-copilot/portfolio-content/inject-scan-report.py 2>&1
+            echo "--- Restore full scan report (96 projects) to prevent catalog from shrinking ---"
+            cp ~/agentic-bi-dataops-copilot/portfolio-content/project-scan-report.json \
+               ~/justin-portfolio/data/generated/project-scan-report.json && echo "scan report restored (96 projects)" || echo "scan report copy FAIL"
             python3 -c "f=open('/home/neojustin/justin-portfolio/scripts/catalog/sync-catalog.ts','r+'); c=f.read(); old='link.url.includes(\"neojustin.dothost.net/p/\")'; new='link.url.includes(\"neojustin.dothost.net/p/\") && !link.url.includes(\"agentic-bi-dataops-copilot\")'; nc=c.replace(old,new); f.seek(0); f.write(nc); f.truncate(); f.close(); print('patched' if nc!=c else 'already patched')" 2>&1
             cd ~/justin-portfolio
             npm ci 2>/dev/null || npm install
