@@ -32,15 +32,18 @@ jobs:
             cp .env.example .env 2>/dev/null || true
 
             echo "=== [2/6] Portfolio content entry ==="
+            echo "HOME=$HOME"
+            echo "Source dir:"
+            ls ~/agentic-bi-dataops-copilot/portfolio-content/ 2>&1 || echo "SOURCE MISSING"
             CONTENT_DIR=~/justin-portfolio/content/projects/agentic-bi-dataops-copilot
-            mkdir -p "$CONTENT_DIR"
-            cp ~/agentic-bi-dataops-copilot/portfolio-content/agentic-bi-dataops-copilot/project.override.json "$CONTENT_DIR/"
-            cp ~/agentic-bi-dataops-copilot/portfolio-content/agentic-bi-dataops-copilot/en.md "$CONTENT_DIR/"
-            cp ~/agentic-bi-dataops-copilot/portfolio-content/agentic-bi-dataops-copilot/zh-TW.md "$CONTENT_DIR/"
-            echo "Content files copied."
+            mkdir -p "$CONTENT_DIR" && echo "mkdir OK: $CONTENT_DIR"
+            cp ~/agentic-bi-dataops-copilot/portfolio-content/agentic-bi-dataops-copilot/project.override.json "$CONTENT_DIR/" && echo "json OK" || echo "json FAIL"
+            cp ~/agentic-bi-dataops-copilot/portfolio-content/agentic-bi-dataops-copilot/en.md "$CONTENT_DIR/" && echo "en.md OK" || echo "en.md FAIL"
+            cp ~/agentic-bi-dataops-copilot/portfolio-content/agentic-bi-dataops-copilot/zh-TW.md "$CONTENT_DIR/" && echo "zh-TW.md OK" || echo "zh-TW.md FAIL"
 
             echo "=== [3/6] Portfolio nginx proxy ==="
-            python3 ~/agentic-bi-dataops-copilot/portfolio-content/inject-nginx.py
+            python3 ~/agentic-bi-dataops-copilot/portfolio-content/inject-nginx.py 2>&1 && echo "inject OK" || echo "inject FAIL"
+            grep -c "agentic-bi-dataops-copilot" ~/justin-portfolio/docker/nginx.conf 2>/dev/null || echo "grep fail"
 
             echo "=== [4/6] Rebuild portfolio ==="
             cd ~/justin-portfolio
