@@ -19,18 +19,18 @@ jobs:
           command_timeout: 30m
           script_stop: false
           script: |
-            echo "=== SERVER EXPLORE ==="
-            echo "--- Home dir ---"
-            ls -la ~/
-            echo "--- /var/www or /srv ---"
-            ls /var/www/ 2>/dev/null || echo "no /var/www"
-            ls /srv/ 2>/dev/null || echo "no /srv"
-            echo "--- Docker containers ---"
-            docker ps --format "table {{.Names}}\t{{.Status}}\t{{.Ports}}"
-            echo "--- Nginx sites ---"
-            ls /etc/nginx/sites-enabled/ 2>/dev/null || ls /etc/nginx/conf.d/ 2>/dev/null || echo "no nginx config found"
-            echo "--- Nginx projects config sample ---"
-            cat /etc/nginx/sites-enabled/* 2>/dev/null | head -80 || cat /etc/nginx/conf.d/*.conf 2>/dev/null | head -80 || true
-            echo "--- /projects or portfolio dir ---"
-            find / -name "projects" -type d -maxdepth 6 2>/dev/null | head -10
+            echo "=== PORTFOLIO EXPLORE ==="
+            echo "--- content/projects listing ---"
+            ls ~/justin-portfolio/content/projects/ 2>/dev/null | head -20
+            echo "--- sample project entry ---"
+            cat ~/justin-portfolio/content/projects/*.json 2>/dev/null | head -60 || \
+            cat ~/justin-portfolio/content/projects/*.md 2>/dev/null | head -60 || \
+            ls ~/justin-portfolio/content/projects/ 2>/dev/null
+            echo "--- docker-compose.yml snippet ---"
+            grep -A10 "agentic\|retailpulse\|fandom\|information-retrieval" ~/justin-portfolio/docker-compose.yml 2>/dev/null | head -80
+            echo "--- portfolio docker-compose services count ---"
+            grep "^\s*[a-z].*:" ~/justin-portfolio/docker-compose.yml 2>/dev/null | wc -l
+            echo "--- projects dir structure ---"
+            ls ~/justin-portfolio/projects/ 2>/dev/null | head -5
+            cat ~/justin-portfolio/projects/*.json 2>/dev/null | head -60
             echo "=== DONE ==="
