@@ -65,10 +65,10 @@ jobs:
             cp ~/agentic-bi-dataops-copilot/portfolio-content/screenshots/*.webp "$PUBDIR/screenshots/" 2>&1 && echo "screenshots copied" || echo "screenshot copy FAIL"
             cp ~/agentic-bi-dataops-copilot/portfolio-content/screenshots/cover.webp "$PUBDIR/cover.webp" 2>&1 && echo "cover.webp copied" || echo "cover copy FAIL"
             ls "$PUBDIR/screenshots/" 2>/dev/null | head -5
-            echo "--- check our project links in catalog ---"
-            python3 -c "import json; cat=json.load(open('/home/neojustin/justin-portfolio/src/generated/project-catalog.json')); projects=cat.get('projects', cat if isinstance(cat,list) else []); [print('links:',json.dumps(p.get('links',[]),ensure_ascii=False)) for p in projects if 'agentic-bi' in (p.get('slug','') or p.get('id',''))]" 2>&1 || echo "catalog check failed"
-            echo "--- other projects with live/demo links ---"
-            python3 -c "import json; cat=json.load(open('/home/neojustin/justin-portfolio/src/generated/project-catalog.json')); projects=cat.get('projects', cat if isinstance(cat,list) else []); [print(p.get('slug','?'),l.get('kind'),l.get('url','')[:60]) for p in projects for l in p.get('links',[]) if l.get('kind') in ('live','demo','preview')]" 2>&1 | head -10 || echo "no live links found"
+            echo "--- portfolio schema link kinds ---"
+            grep -r "kind\|LinkKind\|live\|demo\|external\|website" ~/justin-portfolio/src/lib/catalog/schema* 2>/dev/null | grep -v ".js:" | head -10
+            echo "--- our project links in catalog after build ---"
+            python3 -c "import json; cat=json.load(open('/home/neojustin/justin-portfolio/src/generated/project-catalog.json')); projects=cat.get('projects', cat if isinstance(cat,list) else []); [print('links:',json.dumps(p.get('links',[]),ensure_ascii=False)) for p in projects if 'agentic-bi' in str(p)]" 2>&1 || echo "catalog check failed"
             echo "--- inject into scan report ---"
             python3 ~/agentic-bi-dataops-copilot/portfolio-content/inject-scan-report.py 2>&1 && echo "scan inject OK" || echo "scan inject FAIL"
             cd ~/justin-portfolio
