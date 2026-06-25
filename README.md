@@ -1,194 +1,333 @@
-# Lyrics Cultural Analytics Lab
+# Agentic BI / DataOps Copilot
 
-Lyrics Cultural Analytics Lab 是一個淺色模式的歌詞文化分析與機器學習解釋平台。它把 copyright-safe metadata、BoW features、TF-IDF、topic modeling、相似度、分類模型與視覺化報表整合成可追蹤 workflow，不公開完整歌詞，只使用 metadata、BoW features、模型輸出與聚合結果。
+**Schema-aware Text2SQL + SQL Guardrails over a DuckDB retail warehouse**
 
-## Project Overview
+中文/英文雙語自然語言分析平台 · 三重 SQL 安全驗證 · 本地 DuckDB · 零 API Key 可運行
 
-This monorepo is a runnable data product, not a notebook-only analysis. It provides a FastAPI backend, DuckDB feature store, scikit-learn analysis endpoints, evaluation scripts, and a bilingual React TypeScript dashboard.
+---
 
-## UI Design System
+## 截圖展示 / Screenshots & Demo
 
-The frontend follows a light professional analytics theme inspired by Geckoboard, Tableau, Urban Institute, and Berkeley data visualization guidance:
+> 進入網頁後導覽模式自動啟動，逐步帶覽所有 16 個功能階段。  
+> The guided tour auto-starts when you open the app and walks through all 16 DataOps stages.
 
-- Color tokens live in `frontend/src/styles/tokens.css`.
-- Primary blue: `#1696D2`; dark heading/nav ink: `#0A4B69`; page background: `#F5F7FA`; panel background: `#FFFFFF`.
-- Accent colors are limited to yellow `#FDBF11` and magenta `#EC008B`; categorical charts should stay at six colors or fewer.
-- Typography uses a sans-serif stack with numeric metrics in monospace.
-- Layout primitives live in `layout.css`, component styling in `components.css`, and visualization styling in `charts.css`.
-- Pages use an executive-summary pattern: top-left KPI/summary, adjacent status context, then supporting analysis cards and charts.
+![導覽展示 / Tour Demo](docs/demo.gif)
 
-Current redesign review screenshots:
+### 各功能頁面 / Feature Pages
 
-- `docs/screenshots/overview-redesign.png`
-- `docs/screenshots/workflow-redesign.png`
-- `docs/screenshots/ml-lab-redesign.png`
-- `docs/screenshots/ml-lab-visual-upgrade.png`
-- `docs/screenshots/evaluation-visual-upgrade.png`
-- `docs/screenshots/genre-classifier-visual-upgrade.png`
-- `docs/screenshots/similar-songs-visual-upgrade.png`
-- `docs/screenshots/artist-style-visual-upgrade.png`
-- `docs/screenshots/workflow-journey.png`
-- `docs/screenshots/ml-lab-journey.png`
-- `docs/screenshots/evaluation-journey.png`
-- `docs/screenshots/workflow-journey-v2.png`
-- `docs/screenshots/ml-lab-journey-v2.png`
-- `docs/screenshots/evaluation-journey-v2.png`
+| Dashboard | Workflow Map | NL Query |
+|:---------:|:-----------:|:--------:|
+| ![Dashboard](docs/screenshots/page-dashboard-1.png) | ![Workflow](docs/screenshots/page-workflow-1.png) | ![NL Query](docs/screenshots/page-nl-query-1.png) |
 
-## Guided Assistant Demo
+| Customer Analytics | Product Matrix | Funnel & Cohort |
+|:-----------------:|:-------------:|:---------------:|
+| ![Customers](docs/screenshots/page-customers-1.png) | ![Products](docs/screenshots/page-products-1.png) | ![Funnel](docs/screenshots/page-funnel-cohort-1.png) |
 
-The app now includes a floating guided assistant for interview/demo walkthroughs. It opens as an app-style panel, jumps to the relevant page and chart, highlights the active analysis region, and explains the meaning of each step in Traditional Chinese by default with English available from the language switcher.
+| Revenue Intelligence | Guardrails | Insights |
+|:--------------------:|:----------:|:--------:|
+| ![Revenue](docs/screenshots/page-revenue-1.png) | ![Guardrails](docs/screenshots/page-guardrails-1.png) | ![Insights](docs/screenshots/page-insights-1.png) |
 
-The guided walkthrough covers 24 steps:
+| SQL Playground | Data Quality | Schema Explorer |
+|:--------------:|:------------:|:---------------:|
+| ![Playground](docs/screenshots/page-sql-playground-1.png) | ![DQ](docs/screenshots/page-data-quality-1.png) | ![Schema](docs/screenshots/page-schema-explorer-1.png) |
 
-- product overview and story builder
-- upload/sample dataset workflow
-- schema inspection, cleaning, TF-IDF, model comparison, tree, clustering, and tradeoff explanation
-- explainability center and model disagreement
-- similar-song network, artist network, artist fingerprint
-- evaluation path, confusion matrix, error storyline
-- report workspace and licensing safety
+---
 
-Playwright validation artifacts:
+## Overview / 專案概述
 
-- Full guided-tour recording: `docs/videos/guided-tour.webm`
-- Step-by-step screenshots: `docs/screenshots/guided-tour/step-01.png` through `docs/screenshots/guided-tour/step-24.png`
+Agentic BI / DataOps Copilot 是一個面向資料倉儲的自然語言分析平台。使用者可以用中文或英文提問，系統會進行 schema retrieval、Text2SQL、SQL safety validation、query execution、chart recommendation、query history 與 data quality checks。
 
-Representative screens:
+This is a **portfolio-quality, production-like** repository demonstrating:
 
-![Guided assistant overview](docs/screenshots/guided-tour/step-01.png)
-![Guided assistant model explanation](docs/screenshots/guided-tour/step-11.png)
-![Guided assistant report safety](docs/screenshots/guided-tour/step-24.png)
+- **Schema-aware Text2SQL** — keyword-scored catalog retrieval → SQL generation
+- **Three-pass SQL guardrails** — regex + AST + table whitelist; defense-in-depth with read-only DuckDB
+- **Zero-dependency baseline** — rule-based adapter runs with no LLM API key
+- **Evaluability** — benchmark YAML + metrics (valid_sql_rate, unsafe_rejection_rate, execution_accuracy)
+- **Beautiful frontend** — Streamlit with Plotly charts, live API health badge, polished UI
 
-To regenerate the screenshots and recording locally:
+> 這個專案重點是安全、可解釋、可評估，不是讓 agent 看起來很炫。  
+> The focus is safety, explainability, and evaluability — not making the agent look impressive.
+
+---
+
+## Quick Start
+
+### React Frontend (推薦 / Recommended)
 
 ```bash
-make api
-make frontend
+git clone https://github.com/Justin21523/agentic-bi-dataops-copilot.git
+cd agentic-bi-dataops-copilot
+
+# Backend (FastAPI + DuckDB)
+cp .env.example .env
+make install           # uv sync
+make sample-data       # generate synthetic retail CSV files
+make etl               # load into DuckDB warehouse
+PYTHONPATH=src uv run uvicorn api.main:app --host 0.0.0.0 --port 8003
+
+# Frontend (React + Vite) — new tab
 cd frontend
-npm run test:e2e -- src/tests/e2e/guided-tour.spec.ts
+npm install
+npm run dev
 ```
 
-## Why Copyright-Safe Lyric Analytics Matters
+Open **http://localhost:5173** — the interactive tour starts automatically!
 
-Lyric analytics is useful for cultural trend research, music metadata enrichment, and recommender systems. Public demos should avoid redistributing protected text, so this project exposes only metadata, bag-of-words features, model outputs, vectors, and aggregates.
-
-## Dataset and Licensing Notes
-
-Primary supported sources are musiXmatch BoW and WASABI metadata. When real data is unavailable, `make sample-data` creates realistic local derived-feature samples without complete lyric text.
-
-## No Full Lyrics Policy
-
-No API response, frontend mock, test fixture, sample dataset, or demo UI may include complete lyrics, raw lyric text, or line-by-line lyrics. Backend safety tests fail if forbidden lyric text fields appear in sample files or song-related API responses.
-
-## Architecture
-
-```mermaid
-flowchart LR
-  A[musiXmatch BoW / WASABI metadata / sample generator] --> B[ETL]
-  B --> C[DuckDB]
-  C --> D[NLP pipelines]
-  D --> C
-  C --> E[FastAPI /api/v1]
-  E --> F[React TypeScript bilingual dashboard]
-  D --> G[Evaluation reports]
-```
-
-## Backend API Endpoints
-
-- Health: `GET /api/v1/health`
-- Datasets: upload a safe derived CSV bundle with `POST /api/v1/datasets/upload`
-- Songs: search, detail, similar songs, topics, sentiment
-- Artists: search, profile, songs, style fingerprint
-- Analytics: overview, workflow profile, topics, sentiment trends, yearly terms, genres, languages
-- Analysis Platform: story builder, explainability center, data lineage replay, report generation, classification comparison, clustering, TF-IDF, and topic modeling summaries
-- Models: genre prediction and evaluation summary
-- Safety: policy and audit
-
-## React Frontend Pages
-
-The UI includes Overview, Analysis Stories, Data Workflow, Data Journey Replay, ML Lab, Explainability Center, Topic Explorer, Sentiment Trends, Artist Style Fingerprint, Similar Songs, Genre Classifier, Cultural Timeline, Evaluation, Report Workspace, and Licensing pages.
-
-## Bilingual UI Support
-
-Default language is Traditional Chinese `zh-TW`. Users can switch to English `en-US`; the selection is stored in localStorage. UI strings live in `frontend/src/i18n/locales/`.
-
-## Data Pipeline
-
-Run `make sample-data`, `make train`, `make evaluate`, and `make etl` to generate safe sample data, derived model outputs, metrics, and DuckDB tables.
-
-The web app also includes a session dataset flow. Upload `artists.csv`, `songs.csv`, and `lyric_bow_features.csv`; the backend validates that no raw lyric columns are present, creates a temporary `dataset_id`, and runs the same preparation, model, evaluation, and quality-report steps. If no dataset is uploaded, the UI uses the sample dataset. Upload responses include a processing timeline for Validation, Cleaning, Feature generation, Training, and Evaluation, plus readable fix suggestions when validation fails.
-
-The dashboard journey overlay lets users follow the data from Upload to Clean, TF-IDF, Model, and Report. Each step includes animated data-flow particles, before/after mini visuals, page navigation, chart highlighting, and short teaching copy so the analysis process is visible instead of only summarized as final metrics.
-
-Analysis Story Builder turns metrics into evidence-linked insight cards with severity, confidence, and next actions. Explainability Center compares feature importance, signed linear terms, per-class behavior, model disagreement, and error cases. Data Journey Replay follows one song through metadata, validation, cleaning, BoW, TF-IDF, topics, prediction, and report output. Report Workspace produces safe Markdown and print-friendly HTML reports.
-
-For the complete local preparation workflow, run:
+### Legacy Streamlit
 
 ```bash
-make data-ready
+make api            # FastAPI on :8000 (keep running in tab 1)
+make app            # Streamlit on :8501 (tab 2)
 ```
 
-For licensed external files, provide normalized derived-feature CSVs locally and run the backend `prepare_data` module with `--input-dir`. The validator rejects raw lyric columns before training or ETL.
+Then open **http://localhost:8501** and ask:
 
-You can also run:
+> "Show me top 10 customers by revenue"
 
-```bash
-make import-data INPUT=/absolute/path/to/safe-derived-csv
+---
+
+## System Architecture
+
+```
+User Question (EN/ZH)
+        │
+        ▼
+Schema Retriever ──► catalog.yaml ──► relevant table DDL
+        │
+        ▼
+Text2SQL Adapter (rule-based default | OpenAI via LLM_PROVIDER=openai)
+        │
+        ▼
+SQL Validator ─── THREE PASSES ───────────────────────────────────────
+  Pass 1: Regex (DROP/DELETE/UPDATE/INSERT/ALTER/TRUNCATE + 15 more)
+  Pass 2: sqlparse AST (multi-statement, non-SELECT, comment injection)
+  Pass 3: Table whitelist (only RETAIL_TABLES allowed)
+        │
+        ├── BLOCKED ──► ValidationResult(is_safe=False, risk_level=CRITICAL|WARNING)
+        │
+        ▼ SAFE
+Query Executor (read_only=True DuckDB — defense layer 2)
+  Inject LIMIT → Execute with timeout → Log to query_history
+        │
+        ▼
+Chart Recommender → Plotly visualization
 ```
 
-This maps common musiXmatch/WASABI-style aliases, validates safety, trains/evaluates, writes a data quality report, and loads DuckDB.
+---
 
-## NLP Pipeline
+## Repository Structure
 
-The MVP includes TF-IDF feature construction, NMF topic modeling, proxy sentiment scoring, logistic regression, decision tree, random forest, linear SVM, gradient boosting, AdaBoost, voting ensemble, clustering, cosine similarity, yearly term trends, and artist-level style fingerprints. The ML Lab visualizes tree structures with clickable node explanations, cluster profiles with representative songs, top terms, topic mix, and contrast terms, and model comparison charts for baseline and ensemble methods.
-
-Classification evaluation uses a split-first scikit-learn pipeline: TF-IDF is fit only on the training split, then the held-out split is transformed with the train vocabulary. Interactive genre prediction is labeled as demo inference because it uses a separate full-demo fitted model for user-adjustable feature vectors.
-
-## Evaluation Metrics
-
-Evaluation reports include accuracy, macro-F1, Recall@K, nDCG@K, simplified topic coherence, and no-raw-lyrics safety audit status.
-The dashboard also shows confusion matrix, per-genre metrics, retrieval examples, and an error-case storyline explaining which genres are confused, why the issue matters, and how to improve the data or model.
-
-## How to Run Locally
-
-```bash
-make install
-make data-ready
-make import-fixture
-make test
-make test-e2e
+```
+agentic-bi-dataops-copilot/
+├── src/
+│   ├── ingestion/          # DuckDB DDL, ETL loader
+│   ├── preprocessing/      # Cleaner, SQL validator, Query executor
+│   ├── features/           # Catalog loader, Chart recommender
+│   ├── models/             # Rule-based + LLM Text2SQL adapters
+│   ├── retrieval/          # Schema retriever (keyword scoring)
+│   ├── evaluation/         # Benchmark runner + metrics
+│   ├── api/                # FastAPI: schemas, routes, dependencies
+│   └── app/                # Streamlit: home + 4 pages
+├── configs/
+│   ├── settings.yaml       # Default configuration
+│   ├── few_shot_examples.yaml
+│   └── benchmark_queries.yaml
+├── data/
+│   └── metadata/catalog.yaml  # Rich semantic catalog (single source of truth)
+├── docs/
+│   ├── architecture.md
+│   ├── security_and_guardrails.md
+│   ├── model_card.md
+│   ├── data_card.md
+│   ├── evaluation.md
+│   └── demo_script.md
+├── tests/                  # pytest — 20+ test functions
+├── scripts/                # generate_sample_data.py, run_etl.py
+├── Dockerfile
+├── docker-compose.yml
+└── Makefile
 ```
 
-## How to Run Backend
+---
+
+## Warehouse Tables
+
+| Table | Description | Rows |
+|---|---|---|
+| `customers` | Retail customers with segment | ~300 |
+| `products` | 100 SKUs across 8 categories | 100 |
+| `orders` | Order header with status | ~750 |
+| `order_items` | Line items with discount | ~2,200 |
+| `payments` | 1:1 with orders, multi-method | ~750 |
+| `reviews` | Product reviews (1–5 stars) | ~450 |
+| `daily_sales` | ETL-materialized daily KPIs | varies |
+| `query_history` | All past queries (queryable) | grows |
+
+---
+
+## API Endpoints
+
+| Method | Path | Description |
+|---|---|---|
+| `GET` | `/health` | API + DB status |
+| `GET` | `/metadata/tables` | List all catalog tables |
+| `GET` | `/metadata/tables/{name}` | Table schema + column details |
+| `POST` | `/query/nl` | NL → SQL → execute → chart |
+| `POST` | `/query/sql/validate` | Validate SQL safety |
+| `POST` | `/query/sql/execute` | Execute validated SQL |
+| `GET` | `/query/history` | Query history |
+| `POST` | `/chart/recommend` | Column types → chart type |
+| `GET` | `/dq/report` | Null rates + distinct counts |
+
+Interactive docs: **http://localhost:8000/docs**
+
+---
+
+## Streamlit Pages
+
+| Page | Description |
+|---|---|
+| Home | API health status, feature overview |
+| NL Query | Question → SQL → safety badge → results → chart |
+| Query History | Browsable history with expandable SQL |
+| Data Quality | Per-table null rates + Plotly bar charts |
+| Metadata Explorer | Schema browser with semantic tags + data preview |
+
+---
+
+## SQL Safety Guardrails
+
+```
+Three-pass validator (src/preprocessing/validator.py):
+
+Pass 1 — Regex:     DROP, DELETE, UPDATE, INSERT, ALTER, TRUNCATE,
+                    CREATE, REPLACE, MERGE, EXEC, GRANT, REVOKE,
+                    ATTACH, DETACH, COPY, VACUUM, PRAGMA, LOAD,
+                    null bytes, SQL comments (--, /**/)
+
+Pass 2 — AST:       Multi-statement (semicolons), non-SELECT type,
+                    comment token injection
+
+Pass 3 — Whitelist: Only {orders, order_items, customers, products,
+                    payments, reviews, daily_sales} allowed
+
+Layer 2:            read_only=True DuckDB connection (engine-enforced)
+Layer 3:            LIMIT injection — all queries capped at MAX_ROWS
+Layer 4:            Thread timeout — queries killed after QUERY_TIMEOUT seconds
+```
+
+---
+
+## Text2SQL Adapters
+
+### Rule-Based (default, zero cost)
+
+10 regex-template patterns covering common retail analytics queries. No API key required.
+
+### OpenAI GPT-4o (upgrade)
 
 ```bash
+export LLM_PROVIDER=openai
+export OPENAI_API_KEY=sk-...
 make api
 ```
 
-FastAPI runs at `http://localhost:8000`.
+Schema-aware system prompt + 7 curated few-shot examples. All LLM output is passed through the same validator before execution — the LLM is never trusted directly.
 
-## How to Run Frontend
+---
+
+## Evaluation
 
 ```bash
-make frontend
+make evaluate
 ```
 
-Vite runs at `http://localhost:5173`.
+Runs 12 benchmark cases (8 safe queries + 4 unsafe rejections):
 
-## Limitations
+| Metric | Target |
+|---|---|
+| `unsafe_rejection_rate` | **100%** |
+| `valid_sql_rate` (rule-based) | > 75% |
+| `execution_accuracy` | > 70% |
+| `false_positive_rate` | < 5% |
 
-The included models are MVP baselines for product demonstration. Replace sample data with properly licensed BoW and metadata before research or production use.
+---
 
-## Resume Bullets
+## Docker
 
-中文：
+```bash
+make docker-up
+# API:  http://localhost:8000
+# App:  http://localhost:8501
+```
 
-- 建立 copyright-safe 歌詞 NLP 資料產品，使用 FastAPI、DuckDB 與 React TypeScript 呈現主題、情緒、相似度與文化趨勢分析。
-- 設計不公開完整歌詞的資料與 API 安全邊界，透過 pytest 驗證 sample data 與 response 不含 raw lyric 欄位。
-- 實作 bilingual zh-TW/en-US dashboard，支援模型評估、歌手風格指紋、曲風分類與年代詞彙演化。
+The Streamlit container automatically connects to the API container via `API_BASE_URL=http://api:8000`.
 
-English:
+---
 
-- Built a copyright-safe lyrics NLP data product with FastAPI, DuckDB, and React TypeScript for topic, sentiment, similarity, and cultural trend analytics.
-- Designed API and data safety boundaries that expose derived features only, with pytest coverage for forbidden raw lyric fields.
-- Implemented a bilingual zh-TW/en-US dashboard covering evaluation, artist style fingerprints, genre classification, and yearly term evolution.
+## Configuration
+
+Copy `.env.example` to `.env` and adjust:
+
+```bash
+DUCKDB_PATH=data/warehouse.duckdb    # DuckDB file path
+LLM_PROVIDER=rule_based              # or: openai
+OPENAI_API_KEY=your_key_here         # only needed for LLM_PROVIDER=openai
+MAX_ROWS=10000                       # max rows per query
+QUERY_TIMEOUT=30                     # seconds before query is killed
+LOG_LEVEL=INFO
+```
+
+---
+
+## Development
+
+```bash
+make test        # pytest -v
+make lint        # ruff check
+make format      # ruff format
+make test-cov    # coverage report
+```
+
+All tests use an in-memory DuckDB with injected seed data. No disk I/O, no external services required.
+
+---
+
+## What Remains for Production
+
+1. Authentication — add JWT/OAuth middleware to FastAPI
+2. Rate limiting — add per-IP limits via a reverse proxy or middleware
+3. OpenAI adapter — the stub needs real API call implementation
+4. Spider/BIRD evaluation — add external benchmark adapter
+5. Semantic search — replace keyword scoring with sentence-transformer embeddings
+6. Streaming responses — add SSE for real-time query progress
+7. Multi-tenancy — namespace query_history by user
+
+---
+
+## Tech Stack
+
+| Layer | Technology |
+|---|---|
+| Backend | Python 3.11+, FastAPI, Pydantic v2 |
+| Package manager | uv |
+| Database | DuckDB (OLAP, in-process) |
+| Data processing | pandas, numpy |
+| SQL parsing | sqlparse, sqlglot |
+| Frontend | Streamlit, Plotly |
+| HTTP client | httpx |
+| Config | pydantic-settings + YAML |
+| Tests | pytest |
+| Container | Docker, docker-compose |
+
+---
+
+## License
+
+MIT — see LICENSE. This project uses synthetic data only. No real customer information.
+
+---
+
+## 致謝 / Acknowledgements
+
+This project was built as a portfolio demonstration of production-quality data engineering and AI safety patterns. The dataset is entirely synthetic.

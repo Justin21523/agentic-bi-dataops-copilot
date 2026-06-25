@@ -1,20 +1,65 @@
-.venv/
-node_modules/
-dist/
+# Python
 __pycache__/
-.pytest_cache/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+*.egg-info/
+dist/
+build/
+.eggs/
+*.egg
+.venv/
+venv/
+env/
+
+# uv
+.uv/
+uv.lock
+
+# DuckDB warehouse (generated)
+data/warehouse.duckdb
+data/warehouse.duckdb.wal
+
+# Generated sample data (never commit raw data)
+data/sample/*.csv
+data/sample/*.parquet
+
+# Evaluation reports
+reports/
+
+# Environment
+.env
+.env.local
+
+# Jupyter
+.ipynb_checkpoints/
+notebooks/.ipynb_checkpoints/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+logs/
+
+# Coverage
 .coverage
-data/sample/*.duckdb
-data/sample/*.wal
-data/sample/*.tmp
-data/raw/*
-!data/raw/README.md
-data/import_fixture_work/
-data/uploads/
-backend/data/sample/*.duckdb
-backend/data/sample/*.wal
-backend/data/sample/*.tmp
-frontend/coverage/
+htmlcov/
+.pytest_cache/
+
+# Node
+node_modules/
+frontend/node_modules/
+
+# Playwright artifacts
 frontend/test-results/
-frontend/tsconfig.tsbuildinfo
-docs/videos/playwright-results/
+frontend/playwright-report/
+frontend/.playwright-browsers/
