@@ -62,5 +62,11 @@ jobs:
             echo "=== [6/6] Status check ==="
             docker ps --format "table {{.Names}}\t{{.Status}}\t{{.Ports}}" | grep -E "agentic|portfolio-web|NAMES" || true
             curl -s --max-time 10 http://localhost:8003/health && echo " - API healthy" || echo " - API starting..."
+            echo "--- nginx proxy check ---"
+            grep -c "agentic-bi-dataops-copilot" ~/justin-portfolio/docker/nginx.conf 2>/dev/null && echo "nginx has proxy rules" || echo "nginx missing proxy rules"
+            echo "--- portfolio content check ---"
+            ls ~/justin-portfolio/content/projects/agentic-bi-dataops-copilot/ 2>/dev/null || echo "content dir missing"
+            echo "--- portfolio out/ check ---"
+            ls ~/justin-portfolio/out/portfolio/projects/ 2>/dev/null | grep -i agentic || echo "agentic not in portfolio out/"
             echo "Live at: https://neojustin.dothost.net/p/agentic-bi-dataops-copilot/"
             echo "=== Deployment complete ==="
