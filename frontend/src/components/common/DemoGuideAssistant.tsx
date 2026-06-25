@@ -26,7 +26,7 @@ export function DemoGuideAssistant() {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const location = useLocation();
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(true);
   const [playing, setPlaying] = useState(false);
   const [index, setIndex] = useState(0);
   const step = guideSteps[index];

@@ -17,6 +17,8 @@ import { SentimentTrendsPage } from './pages/SentimentTrendsPage';
 import { SimilarSongsPage } from './pages/SimilarSongsPage';
 import { TopicExplorerPage } from './pages/TopicExplorerPage';
 
+const basename = import.meta.env.BASE_URL === '/' ? '/' : import.meta.env.BASE_URL.replace(/\/$/, '');
+
 export const router = createBrowserRouter([
   {
     path: '/',
@@ -41,4 +43,4 @@ export const router = createBrowserRouter([
       { path: '*', element: <NotFoundPage /> }
     ]
   }
-]);
+], { basename });

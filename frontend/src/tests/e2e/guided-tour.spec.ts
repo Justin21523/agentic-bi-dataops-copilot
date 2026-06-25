@@ -9,7 +9,10 @@ test.use({ video: 'on', viewport: { width: 1440, height: 1000 } });
 test('guided demo assistant walks through the full product', async ({ page }, testInfo) => {
   mkdirSync(screenshotDir, { recursive: true });
   await page.goto('/');
-  await page.getByTestId('guide-launch').click();
+  const launch = page.getByTestId('guide-launch');
+  if (await launch.isVisible()) {
+    await launch.click();
+  }
   await expect(page.getByTestId('guide-panel')).toBeVisible();
 
   const total = await page.locator('.guide-step-map button').count();
