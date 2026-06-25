@@ -62,7 +62,7 @@ export default function Dashboard() {
 
   const totalRows = dq?.tables.reduce((s, t) => s + t.row_count, 0) ?? 0
   const safeQueries = history?.items.filter(i => i.is_safe).length ?? 0
-  const totalQ = history?.total ?? 0
+  const totalQ = history?.items.length ?? 0
 
   return (
     <div className="space-y-6">

@@ -17,11 +17,30 @@ from utils.log import get_logger
 log = get_logger(__name__)
 
 
+def _ensure_data_loaded(db_path: str) -> None:
+    """Run ETL if the warehouse is empty (e.g. first boot or volume loss)."""
+    import duckdb
+    try:
+        probe = duckdb.connect(db_path)
+        create_schema(probe)
+        count = probe.execute("SELECT COUNT(*) FROM customers").fetchone()[0]
+        probe.close()
+        if count == 0:
+            log.info("Empty warehouse detected — running auto-ETL to seed sample data")
+            from ingestion.loader import run_etl
+            run_etl(db_path=db_path)
+            log.info("Auto-ETL complete")
+    except Exception as exc:
+        log.warning("Auto-ETL check skipped: %s", exc)
+
+
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     """Startup: open DuckDB, load catalog, init executor. Shutdown: close connections."""
     settings = get_settings()
     log.info("Starting Agentic BI DataOps Copilot API")
+
+    _ensure_data_loaded(settings.duckdb_path)
 
     conn = get_connection(settings.duckdb_path)
     create_schema(conn)

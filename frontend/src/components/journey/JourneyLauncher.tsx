@@ -7,9 +7,9 @@ export default function JourneyLauncher() {
   const { state, dispatch } = useJourney()
   const { t } = useLang()
 
-  // Auto-start only for first-time visitors (hasSeenTour = false)
+  // Auto-start on every fresh page load so demo visitors always see the tour
   useEffect(() => {
-    if (!state.isActive && !state.hasSeenTour) {
+    if (!state.isActive) {
       const timer = setTimeout(() => {
         dispatch({ type: 'START' })
       }, 1000)
