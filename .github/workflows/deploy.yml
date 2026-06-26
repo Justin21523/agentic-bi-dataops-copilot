@@ -32,15 +32,8 @@ jobs:
               git clone https://github.com/Justin21523/agentic-bi-dataops-copilot.git ~/agentic-bi-dataops-copilot
             fi
             cd ~/agentic-bi-dataops-copilot
-            LLAMA_URL="${{ secrets.LLAMA_CPP_BASE_URL }}"
-            if [ -n "$LLAMA_URL" ]; then
-              printf 'LLM_PROVIDER=llama_cpp\nLLAMA_CPP_BASE_URL=%s\nLLAMA_CPP_MODEL=default\n' "$LLAMA_URL" \
-                > .env
-              echo "LLM config: llama_cpp → $LLAMA_URL"
-            else
-              cp .env.example .env 2>/dev/null || true
-              echo "LLM config: rule_based (LLAMA_CPP_BASE_URL secret not set)"
-            fi
+            cp .env.example .env 2>/dev/null || true
+            echo "LLM config: rule_based (demo mode)"
 
             echo "=== [2/6] Portfolio content entry ==="
             CONTENT_DIR=~/justin-portfolio/content/projects/agentic-bi-dataops-copilot

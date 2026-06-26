@@ -170,7 +170,7 @@ export default function NLQuery() {
   const adapterLabel = (name: string) => {
     if (name === 'llama_cpp') return { text: 'llama.cpp', color: 'bg-violet-100 text-violet-700' }
     if (name.startsWith('openai')) return { text: name, color: 'bg-emerald-100 text-emerald-700' }
-    if (name === 'rule_based') return { text: 'Rule-based', color: 'bg-amber-100 text-amber-700' }
+    if (name === 'rule_based') return { text: 'SmartQuery', color: 'bg-indigo-100 text-indigo-700' }
     return { text: name, color: 'bg-slate-100 text-slate-600' }
   }
 
@@ -220,13 +220,21 @@ export default function NLQuery() {
         <div className={`flex items-center gap-2 px-3 py-2 rounded-lg text-xs border ${
           llmOnline && llmProvider === 'llama_cpp'
             ? 'bg-blue-50 text-blue-700 border-blue-200'
+            : llmProvider === 'rule_based'
+            ? 'bg-indigo-50 text-indigo-700 border-indigo-200'
             : 'bg-amber-50 text-amber-700 border-amber-200'
         }`}>
           <span className={`w-2 h-2 rounded-full flex-shrink-0 ${
-            llmOnline && llmProvider === 'llama_cpp' ? 'bg-blue-500' : 'bg-amber-400'
+            llmOnline && llmProvider === 'llama_cpp'
+              ? 'bg-blue-500'
+              : llmProvider === 'rule_based'
+              ? 'bg-indigo-500'
+              : 'bg-amber-400'
           }`} />
           {llmOnline && llmProvider === 'llama_cpp'
             ? 'Qwen2.5-7B 已連線 — 完整自然語言查詢支援，可輸入任意問題'
+            : llmProvider === 'rule_based'
+            ? 'Demo 模式 — SmartQuery 引擎已就緒，支援 10+ 種業務分析，點擊右側範例立即體驗'
             : 'LLM 目前離線 — 使用關鍵字模板模式，請參考下方範例查詢'}
         </div>
       )}

@@ -17,9 +17,146 @@ class Template:
 
 
 _TEMPLATES: list[Template] = [
+    # ── Chinese language templates (matched first) ────────────────────────────
+    Template(
+        pattern=re.compile(r"前\s*(?P<n>\d+)\s*名客戶|按消費金額.*客戶|消費.*排名", re.I),
+        sql=(
+            "SELECT c.customer_id, c.name, "
+            "ROUND(SUM(p.amount), 2) AS total_spending "
+            "FROM customers c "
+            "JOIN orders o ON c.customer_id = o.customer_id "
+            "JOIN payments p ON o.order_id = p.order_id "
+            "WHERE p.status = 'completed' "
+            "GROUP BY c.customer_id, c.name "
+            "ORDER BY total_spending DESC "
+            "LIMIT {n}"
+        ),
+        description="前N名客戶按消費金額",
+    ),
+    Template(
+        pattern=re.compile(r"每月.*收入|按月.*收入|月.*總收入|收入.*按月", re.I),
+        sql=(
+            "SELECT DATE_TRUNC('month', p.paid_at) AS month, "
+            "ROUND(SUM(p.amount), 2) AS total_revenue "
+            "FROM payments p "
+            "WHERE p.status = 'completed' "
+            "GROUP BY 1 "
+            "ORDER BY 1"
+        ),
+        description="每月總收入",
+    ),
+    Template(
+        pattern=re.compile(r"按.*品類.*收入|品類.*收入|品類.*分解", re.I),
+        sql=(
+            "SELECT p.category, "
+            "ROUND(SUM(oi.line_total), 2) AS total_revenue, "
+            "SUM(oi.quantity) AS total_units "
+            "FROM order_items oi "
+            "JOIN products p ON oi.product_id = p.product_id "
+            "JOIN orders o ON oi.order_id = o.order_id "
+            "WHERE o.status = 'completed' "
+            "GROUP BY p.category "
+            "ORDER BY total_revenue DESC"
+        ),
+        description="按品類分解收入",
+    ),
+    Template(
+        pattern=re.compile(r"各品類.*評分|平均.*評分.*品類|品類.*平均.*評分|產品評分", re.I),
+        sql=(
+            "SELECT p.category, "
+            "ROUND(AVG(r.score), 2) AS avg_rating, "
+            "COUNT(r.review_id) AS review_count "
+            "FROM reviews r "
+            "JOIN products p ON r.product_id = p.product_id "
+            "GROUP BY p.category "
+            "ORDER BY avg_rating DESC "
+            "LIMIT 20"
+        ),
+        description="各品類平均評分",
+    ),
+    Template(
+        pattern=re.compile(r"每日.*銷售|日銷售趨勢|日.*銷售.*趨勢|銷售趨勢", re.I),
+        sql=(
+            "SELECT date, revenue, order_count, avg_order_value, "
+            "unique_customers, units_sold, top_category "
+            "FROM daily_sales "
+            "ORDER BY date DESC "
+            "LIMIT 30"
+        ),
+        description="每日銷售趨勢",
+    ),
+    Template(
+        pattern=re.compile(r"按狀態.*訂單|訂單.*狀態|訂單.*分解|狀態分布", re.I),
+        sql=(
+            "SELECT status, COUNT(*) AS order_count, "
+            "ROUND(100.0 * COUNT(*) / SUM(COUNT(*)) OVER (), 2) AS pct_of_total "
+            "FROM orders "
+            "GROUP BY status "
+            "ORDER BY order_count DESC"
+        ),
+        description="訂單狀態分布",
+    ),
+    Template(
+        pattern=re.compile(r"哪些產品.*收入|產品.*收入最高|收入最高.*產品", re.I),
+        sql=(
+            "SELECT p.product_id, p.name, p.category, "
+            "ROUND(SUM(oi.line_total), 2) AS total_revenue, "
+            "SUM(oi.quantity) AS units_sold "
+            "FROM products p "
+            "JOIN order_items oi ON p.product_id = oi.product_id "
+            "JOIN orders o ON oi.order_id = o.order_id "
+            "WHERE o.status = 'completed' "
+            "GROUP BY p.product_id, p.name, p.category "
+            "ORDER BY total_revenue DESC "
+            "LIMIT 10"
+        ),
+        description="產品收入排名",
+    ),
+    Template(
+        pattern=re.compile(r"列出.*客戶|紐約.*客戶|客戶.*在.*市|查詢客戶", re.I),
+        sql=(
+            "SELECT customer_id, name, city, state, segment, signup_date "
+            "FROM customers "
+            "ORDER BY customer_id "
+            "LIMIT 50"
+        ),
+        description="列出客戶",
+    ),
+    Template(
+        pattern=re.compile(r"暢銷產品|銷售量.*產品|最暢銷|按銷售量", re.I),
+        sql=(
+            "SELECT p.product_id, p.name, p.category, "
+            "SUM(oi.quantity) AS total_units_sold, "
+            "ROUND(SUM(oi.line_total), 2) AS total_revenue "
+            "FROM products p "
+            "JOIN order_items oi ON p.product_id = oi.product_id "
+            "JOIN orders o ON oi.order_id = o.order_id "
+            "WHERE o.status = 'completed' "
+            "GROUP BY p.product_id, p.name, p.category "
+            "ORDER BY total_units_sold DESC "
+            "LIMIT 10"
+        ),
+        description="暢銷產品排名",
+    ),
+    Template(
+        pattern=re.compile(r"已完成.*訂單|完成.*訂單|今年.*訂單|訂單.*今年", re.I),
+        sql=(
+            "SELECT o.order_id, c.name AS customer_name, "
+            "CAST(o.order_date AS DATE)::VARCHAR AS order_date, "
+            "o.total_amount, o.shipping_city "
+            "FROM orders o "
+            "JOIN customers c ON o.customer_id = c.customer_id "
+            "WHERE o.status = 'completed' "
+            "AND EXTRACT(year FROM o.order_date) = EXTRACT(year FROM CURRENT_DATE) "
+            "ORDER BY o.order_date DESC "
+            "LIMIT 50"
+        ),
+        description="已完成訂單（今年）",
+    ),
+    # ── English templates ─────────────────────────────────────────────────────
     Template(
         pattern=re.compile(
-            r"top\s+(?P<n>\d+)\s+customers?\s+by\s+"
+            r"top\s+(?P<n>\d+)\s+customers?\s+by\s+(?:total\s+)?"
             r"(?P<metric>revenue|spending|sales|amount|value)",
             re.I,
         ),
@@ -152,7 +289,9 @@ _TEMPLATES: list[Template] = [
     ),
     Template(
         pattern=re.compile(
-            r"order(?:s)?\s+(?:by\s+)?status|status\s+(?:of\s+)?orders?",
+            r"order(?:s)?\s+(?:count\s+)?(?:breakdown\s+)?(?:by\s+)?status|"
+            r"order\s+status\s+(?:breakdown|distribution|summary)|"
+            r"status\s+(?:of\s+)?orders?",
             re.I,
         ),
         sql=(
@@ -166,7 +305,7 @@ _TEMPLATES: list[Template] = [
     ),
     Template(
         pattern=re.compile(
-            r"(?:revenue|sales)\s+(?:by|per)\s+(?:product\s+)?category",
+            r"(?:revenue|sales)\s+(?:breakdown\s+)?(?:by|per)\s+(?:product\s+)?category",
             re.I,
         ),
         sql=(
@@ -435,6 +574,61 @@ _TEMPLATES: list[Template] = [
         ),
         description="Recent NL query history",
     ),
+    Template(
+        pattern=re.compile(
+            r"(?:which|top)\s+products?\s+(?:have\s+)?(?:the\s+)?highest\s+revenue|"
+            r"products?\s+(?:by|with)\s+(?:highest|most)\s+revenue|"
+            r"most\s+profitable\s+products?",
+            re.I,
+        ),
+        sql=(
+            "SELECT p.product_id, p.name, p.category, "
+            "ROUND(SUM(oi.line_total), 2) AS total_revenue, "
+            "SUM(oi.quantity) AS units_sold "
+            "FROM products p "
+            "JOIN order_items oi ON p.product_id = oi.product_id "
+            "JOIN orders o ON oi.order_id = o.order_id "
+            "WHERE o.status = 'completed' "
+            "GROUP BY p.product_id, p.name, p.category "
+            "ORDER BY total_revenue DESC "
+            "LIMIT 10"
+        ),
+        description="Products ranked by total revenue",
+    ),
+    Template(
+        pattern=re.compile(
+            r"(?:show|list|get|display)\s+(?:all\s+)?completed\s+orders?|"
+            r"completed\s+orders?\s+(?:this\s+year|in\s+\d{4})?|"
+            r"orders?\s+(?:that\s+are\s+)?completed",
+            re.I,
+        ),
+        sql=(
+            "SELECT o.order_id, c.name AS customer_name, "
+            "CAST(o.order_date AS DATE)::VARCHAR AS order_date, "
+            "o.total_amount, o.shipping_city "
+            "FROM orders o "
+            "JOIN customers c ON o.customer_id = c.customer_id "
+            "WHERE o.status = 'completed' "
+            "AND EXTRACT(year FROM o.order_date) = EXTRACT(year FROM CURRENT_DATE) "
+            "ORDER BY o.order_date DESC "
+            "LIMIT 50"
+        ),
+        description="Completed orders this year",
+    ),
+    Template(
+        pattern=re.compile(
+            r"(?:list|show|get)\s+(?:all\s+)?customers?\s+(?:from|in|based\s+in)\s+(?P<city>[A-Za-z\s]+)",
+            re.I,
+        ),
+        sql=(
+            "SELECT customer_id, name, city, state, segment, signup_date "
+            "FROM customers "
+            "WHERE LOWER(city) LIKE LOWER('%{city}%') "
+            "ORDER BY name "
+            "LIMIT 50"
+        ),
+        description="Customers from a specific city",
+    ),
 ]
 
 _DEFAULTS: dict[str, str] = {
@@ -521,6 +715,6 @@ class RuleBasedAdapter(Text2SQLAdapter):
                 return sql.strip()
 
         raise NotImplementedError(
-            f"No template matched for question: {question!r}. "
-            "Try LLM_PROVIDER=openai for more complex queries."
+            "此查詢未能匹配預設模板，請嘗試更明確的關鍵字，或點擊右側「範例查詢」。"
+            " (Try keywords like: 'top customers', 'revenue by month', 'order status', 'daily sales')"
         )
