@@ -8,6 +8,7 @@
     "build": "tsc -b && vite build",
     "test": "vitest run --environment jsdom",
     "test:e2e": "playwright test",
+    "capture:media": "node scripts/capture-portfolio-media.mjs",
     "preview": "vite preview --host 0.0.0.0"
   },
   "dependencies": {

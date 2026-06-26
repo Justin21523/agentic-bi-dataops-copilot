@@ -1,9 +1,9 @@
 {
   "accuracy": 1.0,
   "macro_f1": 1.0,
-  "majority_baseline_accuracy": 0.2,
+  "majority_baseline_accuracy": 0.187,
   "tfidf_accuracy": 1.0,
-  "accuracy_lift": 0.8,
+  "accuracy_lift": 0.813,
   "confusion_matrix": {
     "labels": [
       "electronic",
@@ -16,7 +16,7 @@
     ],
     "matrix": [
       [
-        2,
+        9,
         0,
         0,
         0,
@@ -26,7 +26,7 @@
       ],
       [
         0,
-        3,
+        9,
         0,
         0,
         0,
@@ -36,7 +36,7 @@
       [
         0,
         0,
-        2,
+        14,
         0,
         0,
         0,
@@ -46,7 +46,7 @@
         0,
         0,
         0,
-        2,
+        9,
         0,
         0,
         0
@@ -56,7 +56,7 @@
         0,
         0,
         0,
-        1,
+        8,
         0,
         0
       ],
@@ -66,7 +66,7 @@
         0,
         0,
         0,
-        2,
+        12,
         0
       ],
       [
@@ -76,7 +76,7 @@
         0,
         0,
         0,
-        3
+        14
       ]
     ]
   },
@@ -85,51 +85,51 @@
       "precision": 1.0,
       "recall": 1.0,
       "f1": 1.0,
-      "support": 2
+      "support": 9
     },
     "folk": {
       "precision": 1.0,
       "recall": 1.0,
       "f1": 1.0,
-      "support": 3
+      "support": 9
     },
     "hip-hop": {
       "precision": 1.0,
       "recall": 1.0,
       "f1": 1.0,
-      "support": 2
+      "support": 14
     },
     "latin": {
       "precision": 1.0,
       "recall": 1.0,
       "f1": 1.0,
-      "support": 2
+      "support": 9
     },
     "pop": {
       "precision": 1.0,
       "recall": 1.0,
       "f1": 1.0,
-      "support": 1
+      "support": 8
     },
     "r-and-b": {
       "precision": 1.0,
       "recall": 1.0,
       "f1": 1.0,
-      "support": 2
+      "support": 12
     },
     "rock": {
       "precision": 1.0,
       "recall": 1.0,
       "f1": 1.0,
-      "support": 3
+      "support": 14
     }
   },
   "leakage_audit": {
     "status": "pass",
     "target": "genre",
     "split_seed": 7,
-    "train_count": 45,
-    "test_count": 15,
+    "train_count": 225,
+    "test_count": 75,
     "overlap_count": 0,
     "vectorizer_fit_scope": "train_split_only",
     "test_transform_scope": "heldout_split_using_train_vocabulary",
@@ -142,8 +142,8 @@
       "genre"
     ]
   },
-  "recall_at_k": 0.867,
-  "ndcg_at_k": 0.847,
+  "recall_at_k": 0.847,
+  "ndcg_at_k": 0.829,
   "retrieval_examples": [
     {
       "song_id": "song_0001",
@@ -154,21 +154,21 @@
           "song_id": "song_0058",
           "title": "Derived Feature Track 58",
           "genre": "latin",
-          "similarity_score": 0.854,
+          "similarity_score": 0.8747,
           "genre_match": true
         },
         {
-          "song_id": "song_0030",
-          "title": "Derived Feature Track 30",
+          "song_id": "song_0213",
+          "title": "Derived Feature Track 213",
           "genre": "latin",
-          "similarity_score": 0.8133,
+          "similarity_score": 0.8736,
           "genre_match": true
         },
         {
-          "song_id": "song_0057",
-          "title": "Derived Feature Track 57",
+          "song_id": "song_0159",
+          "title": "Derived Feature Track 159",
           "genre": "latin",
-          "similarity_score": 0.8092,
+          "similarity_score": 0.8616,
           "genre_match": true
         }
       ]
@@ -179,24 +179,24 @@
       "genre": "pop",
       "matches": [
         {
+          "song_id": "song_0112",
+          "title": "Derived Feature Track 112",
+          "genre": "pop",
+          "similarity_score": 0.7877,
+          "genre_match": true
+        },
+        {
+          "song_id": "song_0225",
+          "title": "Derived Feature Track 225",
+          "genre": "pop",
+          "similarity_score": 0.7751,
+          "genre_match": true
+        },
+        {
           "song_id": "song_0004",
           "title": "Derived Feature Track 4",
           "genre": "pop",
-          "similarity_score": 0.7691,
-          "genre_match": true
-        },
-        {
-          "song_id": "song_0027",
-          "title": "Derived Feature Track 27",
-          "genre": "pop",
-          "similarity_score": 0.7451,
-          "genre_match": true
-        },
-        {
-          "song_id": "song_0020",
-          "title": "Derived Feature Track 20",
-          "genre": "pop",
-          "similarity_score": 0.6824,
+          "similarity_score": 0.7332,
           "genre_match": true
         }
       ]
@@ -207,24 +207,24 @@
       "genre": "r-and-b",
       "matches": [
         {
+          "song_id": "song_0206",
+          "title": "Derived Feature Track 206",
+          "genre": "r-and-b",
+          "similarity_score": 0.8469,
+          "genre_match": true
+        },
+        {
+          "song_id": "song_0227",
+          "title": "Derived Feature Track 227",
+          "genre": "r-and-b",
+          "similarity_score": 0.8282,
+          "genre_match": true
+        },
+        {
           "song_id": "song_0026",
           "title": "Derived Feature Track 26",
           "genre": "r-and-b",
-          "similarity_score": 0.8514,
-          "genre_match": true
-        },
-        {
-          "song_id": "song_0053",
-          "title": "Derived Feature Track 53",
-          "genre": "r-and-b",
-          "similarity_score": 0.8311,
-          "genre_match": true
-        },
-        {
-          "song_id": "song_0013",
-          "title": "Derived Feature Track 13",
-          "genre": "r-and-b",
-          "similarity_score": 0.8027,
+          "similarity_score": 0.824,
           "genre_match": true
         }
       ]
@@ -235,24 +235,24 @@
       "genre": "pop",
       "matches": [
         {
-          "song_id": "song_0027",
-          "title": "Derived Feature Track 27",
+          "song_id": "song_0181",
+          "title": "Derived Feature Track 181",
           "genre": "pop",
-          "similarity_score": 0.855,
+          "similarity_score": 0.8626,
           "genre_match": true
         },
         {
-          "song_id": "song_0012",
-          "title": "Derived Feature Track 12",
+          "song_id": "song_0292",
+          "title": "Derived Feature Track 292",
           "genre": "pop",
-          "similarity_score": 0.8368,
+          "similarity_score": 0.8579,
           "genre_match": true
         },
         {
-          "song_id": "song_0020",
-          "title": "Derived Feature Track 20",
+          "song_id": "song_0182",
+          "title": "Derived Feature Track 182",
           "genre": "pop",
-          "similarity_score": 0.8122,
+          "similarity_score": 0.8479,
           "genre_match": true
         }
       ]
@@ -266,21 +266,21 @@
           "song_id": "song_0057",
           "title": "Derived Feature Track 57",
           "genre": "latin",
-          "similarity_score": 0.7749,
+          "similarity_score": 0.7944,
           "genre_match": true
         },
         {
           "song_id": "song_0032",
           "title": "Derived Feature Track 32",
           "genre": "latin",
-          "similarity_score": 0.7539,
+          "similarity_score": 0.776,
           "genre_match": true
         },
         {
           "song_id": "song_0039",
           "title": "Derived Feature Track 39",
           "genre": "latin",
-          "similarity_score": 0.7489,
+          "similarity_score": 0.7664,
           "genre_match": true
         }
       ]
@@ -296,21 +296,21 @@
           "song_id": "song_0058",
           "title": "Derived Feature Track 58",
           "genre": "latin",
-          "similarity_score": 0.854,
+          "similarity_score": 0.8747,
           "genre_match": true
         },
         {
-          "song_id": "song_0030",
-          "title": "Derived Feature Track 30",
+          "song_id": "song_0213",
+          "title": "Derived Feature Track 213",
           "genre": "latin",
-          "similarity_score": 0.8133,
+          "similarity_score": 0.8736,
           "genre_match": true
         },
         {
-          "song_id": "song_0057",
-          "title": "Derived Feature Track 57",
+          "song_id": "song_0159",
+          "title": "Derived Feature Track 159",
           "genre": "latin",
-          "similarity_score": 0.8092,
+          "similarity_score": 0.8616,
           "genre_match": true
         }
       ]
@@ -321,24 +321,24 @@
       "genre": "pop",
       "matches": [
         {
+          "song_id": "song_0112",
+          "title": "Derived Feature Track 112",
+          "genre": "pop",
+          "similarity_score": 0.7877,
+          "genre_match": true
+        },
+        {
+          "song_id": "song_0225",
+          "title": "Derived Feature Track 225",
+          "genre": "pop",
+          "similarity_score": 0.7751,
+          "genre_match": true
+        },
+        {
           "song_id": "song_0004",
           "title": "Derived Feature Track 4",
           "genre": "pop",
-          "similarity_score": 0.7691,
-          "genre_match": true
-        },
-        {
-          "song_id": "song_0027",
-          "title": "Derived Feature Track 27",
-          "genre": "pop",
-          "similarity_score": 0.7451,
-          "genre_match": true
-        },
-        {
-          "song_id": "song_0020",
-          "title": "Derived Feature Track 20",
-          "genre": "pop",
-          "similarity_score": 0.6824,
+          "similarity_score": 0.7332,
           "genre_match": true
         }
       ]
@@ -349,31 +349,31 @@
       "genre": "r-and-b",
       "matches": [
         {
+          "song_id": "song_0206",
+          "title": "Derived Feature Track 206",
+          "genre": "r-and-b",
+          "similarity_score": 0.8469,
+          "genre_match": true
+        },
+        {
+          "song_id": "song_0227",
+          "title": "Derived Feature Track 227",
+          "genre": "r-and-b",
+          "similarity_score": 0.8282,
+          "genre_match": true
+        },
+        {
           "song_id": "song_0026",
           "title": "Derived Feature Track 26",
           "genre": "r-and-b",
-          "similarity_score": 0.8514,
-          "genre_match": true
-        },
-        {
-          "song_id": "song_0053",
-          "title": "Derived Feature Track 53",
-          "genre": "r-and-b",
-          "similarity_score": 0.8311,
-          "genre_match": true
-        },
-        {
-          "song_id": "song_0013",
-          "title": "Derived Feature Track 13",
-          "genre": "r-and-b",
-          "similarity_score": 0.8027,
+          "similarity_score": 0.824,
           "genre_match": true
         }
       ]
     }
   ],
   "bad_examples": [],
-  "topic_coherence": 0.488,
+  "topic_coherence": 0.328,
   "safety": {
     "status": "pass",
     "no_raw_lyrics": true,

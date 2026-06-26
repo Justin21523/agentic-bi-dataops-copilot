@@ -22,3 +22,25 @@ services:
       - "${FRONTEND_PORT:-5173}:5173"
     depends_on:
       - backend
+  portfolio-backend:
+    image: python:3.12-slim
+    working_dir: /app
+    volumes:
+      - .:/app
+    environment:
+      LYRICS_LAB_CORS_ORIGINS: ${LYRICS_LAB_CORS_ORIGINS:-["https://neojustin.dothost.net","http://localhost:3000","http://127.0.0.1:3000"]}
+    command: sh -c "pip install -e 'backend[dev]' && python -m lyrics_lab.ingestion.prepare_data && python -m uvicorn lyrics_lab.api.main:app --app-dir backend/src --host 0.0.0.0 --port 8000"
+    ports:
+      - "${PORTFOLIO_BACKEND_PORT:-18080}:8000"
+  portfolio-frontend:
+    build:
+      context: .
+      dockerfile: docker/frontend.Dockerfile
+      args:
+        VITE_BASE_PATH: /p/lyrics-cultural-analytics-lab/
+        VITE_API_BASE_URL: /p/lyrics-cultural-analytics-lab/api/v1
+    image: justin-portfolio-lyrics-cultural-analytics-lab-frontend
+    ports:
+      - "${PORTFOLIO_FRONTEND_PORT:-15173}:5173"
+    depends_on:
+      - portfolio-backend
