@@ -3,8 +3,20 @@ import sys
 import os
 
 HOME = os.path.expanduser('~')
-NGINX_CONF = f'{HOME}/justin-portfolio/docker/nginx.conf'
-SNIPPET_FILE = f'{HOME}/agentic-bi-dataops-copilot/portfolio-content/nginx-proxy.conf'
+NGINX_CONF = next(
+    path for path in (
+        f'{HOME}/justin-portfolio/docker/nginx.conf',
+        f'{HOME}/web-projects/justin-portfolio/docker/nginx.conf',
+    )
+    if os.path.exists(path)
+)
+SNIPPET_FILE = next(
+    path for path in (
+        f'{HOME}/agentic-bi-dataops-copilot/portfolio-content/nginx-proxy.conf',
+        f'{HOME}/web-projects/agentic-bi-dataops-copilot/portfolio-content/nginx-proxy.conf',
+    )
+    if os.path.exists(path)
+)
 MARKER = 'agentic-bi-dataops-copilot'
 
 snippet = open(SNIPPET_FILE).read()
