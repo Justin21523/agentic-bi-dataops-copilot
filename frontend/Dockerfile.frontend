@@ -3,6 +3,10 @@ WORKDIR /app
 COPY package*.json ./
 RUN npm install
 COPY . .
+ARG VITE_BASE_PATH=/p/agentic-bi-dataops-copilot/
+ARG VITE_API_BASE=/p/agentic-bi-dataops-copilot/api
+ENV VITE_BASE_PATH=$VITE_BASE_PATH
+ENV VITE_API_BASE=$VITE_API_BASE
 RUN npx vite build --mode production
 
 FROM nginx:alpine
