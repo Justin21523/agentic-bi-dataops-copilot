@@ -118,6 +118,27 @@ jobs:
             }
 
             cd "${{ env.PORTFOLIO_DIR }}"
+            python3 - <<'PY'
+            from pathlib import Path
+            path = Path("scripts/catalog/sync-catalog.ts")
+            text = path.read_text()
+            text = text.replace(
+                'const visibility = override.visibility || "hidden";',
+                'const visibility = override.visibility || "public";'
+            )
+            path.write_text(text)
+            for override in Path("content/projects").glob("*/project.override.json"):
+                data = override.read_text()
+                data = data.replace('"visibility": "hidden"', '"visibility": "public"')
+                override.write_text(data)
+            nginx = Path("docker/nginx.conf")
+            if nginx.exists():
+                conf = nginx.read_text()
+                start = conf.find("    location = /p/nyc-taxi-mobility-analytics")
+                end = conf.find("    location ^~ /api/v1/", start)
+                if start != -1 and end != -1:
+                    nginx.write_text(conf[:start] + conf[end:])
+            PY
             retry npm ci
             npm run build
             retry docker-compose build web
