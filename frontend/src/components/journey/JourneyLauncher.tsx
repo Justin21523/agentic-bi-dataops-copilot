@@ -7,17 +7,22 @@ export default function JourneyLauncher() {
   const { state, dispatch } = useJourney()
   const { t } = useLang()
 
-  // Auto-start on every fresh page load so demo visitors always see the tour
+  // Auto-start only from the demo entry page, or when explicitly requested.
+  // Deep links should stay on the requested page instead of being moved by the tour.
   useEffect(() => {
     const params = new URLSearchParams(window.location.search)
     if (params.has('noTour')) return
-    if (!state.isActive) {
+    const shouldStart =
+      params.has('tour') ||
+      (!state.hasSeenTour && window.location.pathname === import.meta.env.BASE_URL)
+
+    if (shouldStart && !state.isActive) {
       const timer = setTimeout(() => {
         dispatch({ type: 'START' })
       }, 1000)
       return () => clearTimeout(timer)
     }
-  }, []) // only fires on mount
+  }, [dispatch, state.hasSeenTour, state.isActive])
 
   if (state.isActive) return null
 
