@@ -5,83 +5,180 @@ on:
     branches: [ main ]
   workflow_dispatch:
 
+env:
+  HOST: live.dothost.net
+  USERNAME: neojustin
+  PORT: 2965
+  PROJECT_DIR: /home/neojustin/agentic-bi-dataops-copilot
+  PORTFOLIO_DIR: /home/neojustin/justin-portfolio
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-
-      - name: Deploy via SSH
+      - name: Stage 1 - update repo and env
         uses: appleboy/ssh-action@v1.0.3
         with:
-          host: live.dothost.net
-          username: neojustin
+          host: ${{ env.HOST }}
+          username: ${{ env.USERNAME }}
           password: ${{ secrets.SSH_PASSWORD }}
-          port: 2965
-          command_timeout: 30m
-          script_stop: false
+          port: ${{ env.PORT }}
+          command_timeout: 12m
+          script_stop: true
           script: |
-            echo "--- prune docker to free disk space ---"
-            docker system prune -f 2>&1 | grep -E "reclaimed|Total"
-            df -h / 2>/dev/null | tail -1
+            set -e
+            retry() {
+              n=0
+              until "$@"; do
+                n=$((n+1))
+                if [ "$n" -ge 12 ]; then return 1; fi
+                echo "retry $n: $*"
+                sleep 10
+              done
+            }
 
-            echo "=== [1/6] Update project repo ==="
-            if [ -d ~/agentic-bi-dataops-copilot ]; then
-              cd ~/agentic-bi-dataops-copilot && git pull origin main
+            mkdir -p "${{ env.PROJECT_DIR }}"
+            if [ -d "${{ env.PROJECT_DIR }}/.git" ]; then
+              cd "${{ env.PROJECT_DIR }}"
+              retry git fetch origin main
+              git reset --hard origin/main
             else
-              git clone https://github.com/Justin21523/agentic-bi-dataops-copilot.git ~/agentic-bi-dataops-copilot
+              rm -rf "${{ env.PROJECT_DIR }}"
+              retry git clone https://github.com/Justin21523/agentic-bi-dataops-copilot.git "${{ env.PROJECT_DIR }}"
+              cd "${{ env.PROJECT_DIR }}"
             fi
-            cd ~/agentic-bi-dataops-copilot
-            cp .env.example .env 2>/dev/null || true
-            echo "LLM config: rule_based (demo mode)"
 
-            echo "=== [2/6] Portfolio content entry ==="
-            CONTENT_DIR=~/justin-portfolio/content/projects/agentic-bi-dataops-copilot
-            mkdir -p "$CONTENT_DIR"
-            cp ~/agentic-bi-dataops-copilot/portfolio-content/agentic-bi-dataops-copilot/project.override.json "$CONTENT_DIR/" && echo "json OK" || echo "json FAIL"
-            cp ~/agentic-bi-dataops-copilot/portfolio-content/agentic-bi-dataops-copilot/en.md "$CONTENT_DIR/" && echo "en.md OK" || echo "en.md FAIL"
-            cp ~/agentic-bi-dataops-copilot/portfolio-content/agentic-bi-dataops-copilot/zh-TW.md "$CONTENT_DIR/" && echo "zh-TW.md OK" || echo "zh-TW.md FAIL"
+            cat > .env <<'EOF'
+            DUCKDB_PATH=data/warehouse.duckdb
+            API_HOST=0.0.0.0
+            API_PORT=8000
+            API_BASE_URL=http://localhost:8000
+            LLM_PROVIDER=llama_cpp
+            LLAMA_CPP_BASE_URL=http://host.docker.internal:8080/v1
+            LLAMA_CPP_MODEL=default
+            LOG_LEVEL=INFO
+            MAX_ROWS=10000
+            QUERY_TIMEOUT=30
+            SAMPLE_DATA_PATH=data/sample
+            METADATA_CATALOG_PATH=data/metadata/catalog.yaml
+            SAMPLE_SEED=42
+            SAMPLE_CUSTOMERS=300
+            SAMPLE_PRODUCTS=100
+            SAMPLE_ORDERS=750
+            EOF
 
-            echo "=== [3/6] Portfolio nginx proxy ==="
-            python3 ~/agentic-bi-dataops-copilot/portfolio-content/inject-nginx.py 2>&1 && echo "inject OK" || echo "inject FAIL"
+            docker system prune -f || true
 
-            echo "=== [4/6] Rebuild portfolio ==="
-            PUBDIR=~/justin-portfolio/public/portfolio/projects/agentic-bi-dataops-copilot
-            mkdir -p "$PUBDIR/screenshots" "$PUBDIR/demo"
-            cp ~/agentic-bi-dataops-copilot/portfolio-content/screenshots/*.webp "$PUBDIR/screenshots/" && echo "screenshots copied" || echo "screenshot copy FAIL"
-            cp ~/agentic-bi-dataops-copilot/portfolio-content/screenshots/cover.webp "$PUBDIR/cover.webp" && echo "cover.webp copied" || echo "cover copy FAIL"
-            cp ~/agentic-bi-dataops-copilot/portfolio-content/demo/demo-tour.webm "$PUBDIR/demo/" && echo "demo-tour.webm copied" || echo "demo copy FAIL"
-            echo "--- Restore full scan report (96 projects) to prevent catalog from shrinking ---"
-            cp ~/agentic-bi-dataops-copilot/portfolio-content/project-scan-report.json \
-               ~/justin-portfolio/data/generated/project-scan-report.json && echo "scan report restored (96 projects)" || echo "scan report copy FAIL"
-            python3 -c "f=open('/home/neojustin/justin-portfolio/scripts/catalog/sync-catalog.ts','r+'); c=f.read(); old='link.url.includes(\"neojustin.dothost.net/p/\")'; new='link.url.includes(\"neojustin.dothost.net/p/\") && !link.url.includes(\"agentic-bi-dataops-copilot\")'; nc=c.replace(old,new); f.seek(0); f.write(nc); f.truncate(); f.close(); print('patched' if nc!=c else 'already patched')" 2>&1
-            cd ~/justin-portfolio
-            npm ci 2>/dev/null || npm install
-            npm run build 2>&1 | grep -iE "Saved|Error|agentic"
-            docker-compose build web
-            docker-compose up -d web
-            echo "Portfolio rebuilt."
+      - name: Stage 2 - sync portfolio content
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ env.HOST }}
+          username: ${{ env.USERNAME }}
+          password: ${{ secrets.SSH_PASSWORD }}
+          port: ${{ env.PORT }}
+          command_timeout: 12m
+          script_stop: true
+          script: |
+            set -e
+            cd "${{ env.PROJECT_DIR }}"
 
-            echo "=== [5/6] Build and start BI Copilot services ==="
-            cd ~/agentic-bi-dataops-copilot
-            docker-compose down 2>/dev/null || true
-            docker-compose build api
-            docker-compose build frontend
-            echo "--- Run ETL before API starts (avoids DuckDB lock conflict) ---"
+            CONTENT_DIR="${{ env.PORTFOLIO_DIR }}/content/projects/agentic-bi-dataops-copilot"
+            PUBDIR="${{ env.PORTFOLIO_DIR }}/public/portfolio/projects/agentic-bi-dataops-copilot"
+            mkdir -p "$CONTENT_DIR" "$PUBDIR/screenshots" "$PUBDIR/demo"
+
+            cp portfolio-content/agentic-bi-dataops-copilot/project.override.json "$CONTENT_DIR/"
+            cp portfolio-content/agentic-bi-dataops-copilot/en.md "$CONTENT_DIR/"
+            cp portfolio-content/agentic-bi-dataops-copilot/zh-TW.md "$CONTENT_DIR/"
+            cp portfolio-content/screenshots/*.webp "$PUBDIR/screenshots/"
+            cp portfolio-content/screenshots/cover.webp "$PUBDIR/cover.webp"
+            cp portfolio-content/demo/demo-tour.webm "$PUBDIR/demo/"
+            mkdir -p "${{ env.PORTFOLIO_DIR }}/data/generated"
+            cp portfolio-content/project-scan-report.json "${{ env.PORTFOLIO_DIR }}/data/generated/project-scan-report.json"
+            python3 portfolio-content/inject-nginx.py
+
+      - name: Stage 3 - rebuild portfolio web
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ env.HOST }}
+          username: ${{ env.USERNAME }}
+          password: ${{ secrets.SSH_PASSWORD }}
+          port: ${{ env.PORT }}
+          command_timeout: 20m
+          script_stop: true
+          script: |
+            set -e
+            retry() {
+              n=0
+              until "$@"; do
+                n=$((n+1))
+                if [ "$n" -ge 10 ]; then return 1; fi
+                echo "retry $n: $*"
+                sleep 12
+              done
+            }
+
+            cd "${{ env.PORTFOLIO_DIR }}"
+            retry npm ci
+            npm run build
+            retry docker-compose build web
+            retry docker-compose up -d web
+
+      - name: Stage 4 - rebuild app services
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ env.HOST }}
+          username: ${{ env.USERNAME }}
+          password: ${{ secrets.SSH_PASSWORD }}
+          port: ${{ env.PORT }}
+          command_timeout: 25m
+          script_stop: true
+          script: |
+            set -e
+            retry() {
+              n=0
+              until "$@"; do
+                n=$((n+1))
+                if [ "$n" -ge 10 ]; then return 1; fi
+                echo "retry $n: $*"
+                sleep 12
+              done
+            }
+
+            cd "${{ env.PROJECT_DIR }}"
+            docker-compose down || true
+            retry docker-compose build api
+            retry docker-compose build frontend
             docker run --rm \
-              -v ~/agentic-bi-dataops-copilot/data:/app/data \
+              -v "${{ env.PROJECT_DIR }}/data:/app/data" \
               -e PYTHONPATH=/app/src \
               -e DUCKDB_PATH=data/warehouse.duckdb \
               agentic-bi:local \
-              uv run python scripts/run_etl.py 2>&1 && echo "ETL OK" || echo "ETL FAIL"
+              uv run python scripts/run_etl.py
             API_PORT=8003 docker-compose up -d api
-            echo "Waiting 30s for API startup..."
-            sleep 30
             API_PORT=8003 docker-compose up -d frontend
 
-            echo "=== [6/6] Status check ==="
-            docker ps --format "table {{.Names}}\t{{.Status}}\t{{.Ports}}" | grep -E "agentic|portfolio-web|NAMES" || true
-            curl -s --max-time 10 http://localhost:8003/health && echo " - API healthy" || echo " - API starting..."
-            grep -l "agentic-bi-dataops-copilot" ~/justin-portfolio/src/generated/*.json 2>/dev/null && echo "PROJECT IN CATALOG" || echo "not in catalog"
+      - name: Stage 5 - health check
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ env.HOST }}
+          username: ${{ env.USERNAME }}
+          password: ${{ secrets.SSH_PASSWORD }}
+          port: ${{ env.PORT }}
+          command_timeout: 10m
+          script_stop: true
+          script: |
+            set -e
+            for i in $(seq 1 30); do
+              if curl -fsS http://localhost:8003/health; then
+                echo "API healthy"
+                break
+              fi
+              echo "waiting for API health: $i"
+              sleep 10
+            done
+
+            curl -fsS http://localhost:8003/health | grep -q '"llm_provider":"llama_cpp"'
+            curl -fsSI https://neojustin.dothost.net/p/agentic-bi-dataops-copilot/ >/dev/null
+            grep -l "agentic-bi-dataops-copilot" "${{ env.PORTFOLIO_DIR }}"/src/generated/*.json >/dev/null
+            docker ps --format "table {{.Names}}\t{{.Status}}\t{{.Ports}}" | grep -E "agentic|portfolio-web|NAMES"
             echo "Live at: https://neojustin.dothost.net/p/agentic-bi-dataops-copilot/"
-            echo "=== Deployment complete ==="

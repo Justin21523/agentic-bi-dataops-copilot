@@ -9,6 +9,8 @@ export default function JourneyLauncher() {
 
   // Auto-start on every fresh page load so demo visitors always see the tour
   useEffect(() => {
+    const params = new URLSearchParams(window.location.search)
+    if (params.has('noTour')) return
     if (!state.isActive) {
       const timer = setTimeout(() => {
         dispatch({ type: 'START' })

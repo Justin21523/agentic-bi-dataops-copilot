@@ -11,25 +11,37 @@
 > 進入網頁後導覽模式自動啟動，逐步帶覽所有 16 個功能階段。  
 > The guided tour auto-starts when you open the app and walks through all 16 DataOps stages.
 
-![導覽展示 / Tour Demo](docs/demo.gif)
+[完整導覽錄影 / Full Tour Recording](docs/videos/guided-tour.webm)
+
+### Playwright 驗證資產 / Playwright Verification Assets
+
+Playwright validates the active React app routes, core interactions, 16-step guided journey, and captures viewport-sized screenshots for every feature page.
+
+- Tour recording: [docs/videos/guided-tour.webm](docs/videos/guided-tour.webm)
+- Tour step screenshots: [docs/screenshots/guided-tour/](docs/screenshots/guided-tour/)
+- Page screenshots: [docs/screenshots/pages/](docs/screenshots/pages/)
 
 ### 各功能頁面 / Feature Pages
 
-| Dashboard | Workflow Map | NL Query |
-|:---------:|:-----------:|:--------:|
-| ![Dashboard](docs/screenshots/page-dashboard-1.png) | ![Workflow](docs/screenshots/page-workflow-1.png) | ![NL Query](docs/screenshots/page-nl-query-1.png) |
+| Data Upload | Dashboard | Workflow Map |
+|:-----------:|:---------:|:------------:|
+| ![Data Upload](docs/screenshots/pages/upload/01.png) | ![Dashboard](docs/screenshots/pages/dashboard/01.png) | ![Workflow](docs/screenshots/pages/workflow/01.png) |
 
-| Customer Analytics | Product Matrix | Funnel & Cohort |
-|:-----------------:|:-------------:|:---------------:|
-| ![Customers](docs/screenshots/page-customers-1.png) | ![Products](docs/screenshots/page-products-1.png) | ![Funnel](docs/screenshots/page-funnel-cohort-1.png) |
+| NL Query | SQL Playground | Query History |
+|:--------:|:--------------:|:-------------:|
+| ![NL Query](docs/screenshots/pages/nl-query/01.png) | ![SQL Playground](docs/screenshots/pages/sql-playground/01.png) | ![Query History](docs/screenshots/pages/query-history/01.png) |
 
-| Revenue Intelligence | Guardrails | Insights |
-|:--------------------:|:----------:|:--------:|
-| ![Revenue](docs/screenshots/page-revenue-1.png) | ![Guardrails](docs/screenshots/page-guardrails-1.png) | ![Insights](docs/screenshots/page-insights-1.png) |
+| Data Quality | Schema Explorer | Customer Analytics |
+|:------------:|:---------------:|:-----------------:|
+| ![Data Quality](docs/screenshots/pages/data-quality/01.png) | ![Schema Explorer](docs/screenshots/pages/schema-explorer/01.png) | ![Customers](docs/screenshots/pages/customers/01.png) |
 
-| SQL Playground | Data Quality | Schema Explorer |
-|:--------------:|:------------:|:---------------:|
-| ![Playground](docs/screenshots/page-sql-playground-1.png) | ![DQ](docs/screenshots/page-data-quality-1.png) | ![Schema](docs/screenshots/page-schema-explorer-1.png) |
+| Product Matrix | Funnel & Cohort | Revenue Intelligence |
+|:--------------:|:---------------:|:--------------------:|
+| ![Products](docs/screenshots/pages/products/01.png) | ![Funnel](docs/screenshots/pages/funnel/01.png) | ![Revenue](docs/screenshots/pages/revenue/01.png) |
+
+| Guardrails | Insights |
+|:----------:|:--------:|
+| ![Guardrails](docs/screenshots/pages/guardrails/01.png) | ![Insights](docs/screenshots/pages/insights/01.png) |
 
 ---
 

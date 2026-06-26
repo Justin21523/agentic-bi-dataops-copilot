@@ -1,0 +1,39 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "noEmit": true
+  },
+  "include": [
+    "src/main.tsx",
+    "src/App.tsx",
+    "src/api/client.ts",
+    "src/api/types.ts",
+    "src/components/ChartRenderer.tsx",
+    "src/components/DataTable.tsx",
+    "src/components/Layout.tsx",
+    "src/components/MetricCard.tsx",
+    "src/components/SafetyBadge.tsx",
+    "src/components/SqlBlock.tsx",
+    "src/components/journey/**/*.tsx",
+    "src/context/**/*.tsx",
+    "src/data/journeySteps.ts",
+    "src/data/overlayActors.ts",
+    "src/i18n/translations.ts",
+    "src/pages/CustomerAnalytics.tsx",
+    "src/pages/Dashboard.tsx",
+    "src/pages/DataQuality.tsx",
+    "src/pages/FunnelCohort.tsx",
+    "src/pages/GuardrailAnalytics.tsx",
+    "src/pages/InsightCards.tsx",
+    "src/pages/MetadataExplorer.tsx",
+    "src/pages/NLQuery.tsx",
+    "src/pages/ProductMatrix.tsx",
+    "src/pages/QueryHistory.tsx",
+    "src/pages/RevenueIntelligence.tsx",
+    "src/pages/SQLPlayground.tsx",
+    "src/pages/UploadPage.tsx",
+    "src/pages/WorkflowMap.tsx",
+    "src/types/**/*.ts",
+    "src/vite-env.d.ts"
+  ]
+}

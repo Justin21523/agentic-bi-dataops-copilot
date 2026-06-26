@@ -5,9 +5,11 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc && vite build",
+    "typecheck": "tsc -p tsconfig.app.json",
+    "build": "npm run typecheck && vite build --mode production",
     "preview": "vite preview --port 3000",
     "test": "PLAYWRIGHT_BROWSERS_PATH=.playwright-browsers playwright test",
+    "test:e2e": "PLAYWRIGHT_BROWSERS_PATH=.playwright-browsers playwright test src/tests/e2e",
     "test:report": "PLAYWRIGHT_BROWSERS_PATH=.playwright-browsers playwright show-report"
   },
   "dependencies": {

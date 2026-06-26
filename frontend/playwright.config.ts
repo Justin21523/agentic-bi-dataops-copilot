@@ -6,7 +6,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const BROWSERS = path.join(__dirname, '.playwright-browsers')
 
 export default defineConfig({
-  testDir: './tests',
+  testDir: './src/tests',
   outputDir: './test-results',
   use: {
     baseURL: 'http://localhost:5173',

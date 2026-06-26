@@ -71,6 +71,23 @@
       "featured": true
     },
     {
+      "id": "upload-screenshot",
+      "type": "image",
+      "src": "/portfolio/projects/agentic-bi-dataops-copilot/screenshots/upload.webp",
+      "alt": {
+        "zh-TW": "資料旅程入口頁面，支援 CSV 上傳與範例資料載入。",
+        "en": "Data Journey Entry page for CSV upload and sample data loading."
+      },
+      "title": {
+        "zh-TW": "資料旅程入口",
+        "en": "Data Journey Entry"
+      },
+      "caption": {
+        "zh-TW": "從 CSV 或內建範例資料啟動完整 16 步 DataOps 導覽。",
+        "en": "Start the full 16-step DataOps journey from CSV upload or built-in sample data."
+      }
+    },
+    {
       "id": "dashboard-screenshot",
       "type": "image",
       "src": "/portfolio/projects/agentic-bi-dataops-copilot/screenshots/dashboard.webp",
@@ -156,6 +173,23 @@
       }
     },
     {
+      "id": "nl-query-screenshot",
+      "type": "image",
+      "src": "/portfolio/projects/agentic-bi-dataops-copilot/screenshots/nl-query.webp",
+      "alt": {
+        "zh-TW": "自然語言查詢頁面，顯示 LLM 狀態、範例問題與 SQL 生成流程。",
+        "en": "Natural Language Query page showing LLM status, example prompts, and SQL generation workflow."
+      },
+      "title": {
+        "zh-TW": "自然語言查詢",
+        "en": "Natural Language Query"
+      },
+      "caption": {
+        "zh-TW": "中文或英文提問後，系統會生成可審計 SQL，通過安全驗證後執行。",
+        "en": "Ask in Chinese or English; the system generates auditable SQL and executes it after safety validation."
+      }
+    },
+    {
       "id": "sql-playground-screenshot",
       "type": "image",
       "src": "/portfolio/projects/agentic-bi-dataops-copilot/screenshots/sql-playground.webp",
@@ -187,6 +221,23 @@
       "caption": {
         "zh-TW": "99 項產品的 BCG 矩陣（銷售量 vs 平均評分）、品類收入 Treemap 與毛利趨勢分析。",
         "en": "BCG matrix (sales vs avg rating), category revenue treemap, and margin trend for 99 products."
+      }
+    },
+    {
+      "id": "funnel-screenshot",
+      "type": "image",
+      "src": "/portfolio/projects/agentic-bi-dataops-copilot/screenshots/funnel.webp",
+      "alt": {
+        "zh-TW": "漏斗與世代分析頁面，顯示訂單轉換與留存熱力圖。",
+        "en": "Funnel and Cohort page showing order conversion and retention heatmap."
+      },
+      "title": {
+        "zh-TW": "漏斗與世代分析",
+        "en": "Funnel & Cohort"
+      },
+      "caption": {
+        "zh-TW": "訂單狀態漏斗、付款趨勢與 cohort 留存，協助定位轉換瓶頸。",
+        "en": "Order status funnel, payment trends, and cohort retention help identify conversion bottlenecks."
       }
     },
     {

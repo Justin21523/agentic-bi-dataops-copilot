@@ -873,7 +873,7 @@
     "lastUpdate": "2026-06-14T14:56:59+08:00",
     "gitRemote": "https://github.com/Justin21523/modelops-dashboard",
     "gitBranch": "main",
-    "gitLastCommitMessage": "docs: remove LLM_PROVIDER.md",
+    "gitLastCommitMessage": "docs: remove legacy automation notes",
     "canBuild": true,
     "canRun": true,
     "hasMedia": false,
@@ -1573,7 +1573,7 @@
     "path": "/home/justin/web-projects/ytp-factory",
     "type": "Python",
     "hasReadme": true,
-    "readmeContent": "# YTP Factory\n\n**AI-Driven YouTube Poop Generation System with Advanced Intelligence**\n\nYTP Factory is a comprehensive, **fully automated** AI system that transforms normal videos into high-quality YouTube Poop (YTP) content using cutting-edge AI technologies: multi-agent reasoning, RAG retrieval, machine learning models, and multimodal generation.\n\n**🤖 100% Automated • 🧠 AI Agents • 📚 RAG Memory • 🎨 Multimodal Generation • 🚀 Production-Ready**\n\n---\n\n## 🌟 Key Features\n\n### Complete AI-Driven System (Phases P0-P8)\n\n**Core Pipeline (P0-P2)** ✅ **97% Complete**\n- 6-stage automated pipeline with checkpoint/resume capability\n- Multi-provider LLM support (Local/OpenAI/LLMVendor)\n- Advanced TTS engines (XTTS, OpenAI TTS)\n- 4 YTP style presets with customization\n- Robust error handling and s",
+    "readmeContent": "# YTP Factory\n\n**AI-Driven YouTube Poop Generation System with Advanced Intelligence**\n\nYTP Factory is a comprehensive, **fully automated** AI system that transforms normal videos into high-quality YouTube Poop (YTP) content using cutting-edge AI technologies: multi-agent reasoning, RAG retrieval, machine learning models, and multimodal generation.\n\n**🤖 100% Automated • 🧠 AI Agents • 📚 RAG Memory • 🎨 Multimodal Generation • 🚀 Production-Ready**\n\n---\n\n## 🌟 Key Features\n\n### Complete AI-Driven System (Phases P0-P8)\n\n**Core Pipeline (P0-P2)** ✅ **97% Complete**\n- 6-stage automated pipeline with checkpoint/resume capability\n- Multi-provider LLM support (Local/OpenAI-compatible)\n- Advanced TTS engines (XTTS, OpenAI TTS)\n- 4 YTP style presets with customization\n- Robust error handling and s",
     "detectedStack": [
       "Python"
     ],
